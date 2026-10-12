@@ -1,0 +1,22 @@
+{
+  "name": "firm-connect",
+  "version": "0.1.0",
+  "description": "Email lookup, resume-based interest matching, email verification and calendar scheduling for students networking with big firms.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node --no-warnings=ExperimentalWarning server/index.js",
+    "dev": "node --watch --no-warnings=ExperimentalWarning server/index.js",
+    "test": "node --no-warnings=ExperimentalWarning --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "express": "^4.21.2",
+    "mammoth": "^1.8.0",
+    "multer": "^2.0.2",
+    "pdf-parse": "^1.1.1"
+  }
+}

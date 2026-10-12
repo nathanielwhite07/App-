@@ -1,0 +1,90 @@
+{
+  "_note": "Simulated DNS/SMTP answers for the fictional .example seed domains so the verifier can be demoed offline. Real domains always use live lookups.",
+  "domains": {
+    "northbridgecapital.example": {
+      "mx": [
+        "mx1.northbridgecapital.example"
+      ],
+      "spf": true,
+      "dmarc": "reject",
+      "catchAll": false
+    },
+    "halcyonpartners.example": {
+      "mx": [
+        "halcyonpartners-example.mail.protection.outlook.com"
+      ],
+      "spf": true,
+      "dmarc": "quarantine",
+      "catchAll": false
+    },
+    "meridianam.example": {
+      "mx": [
+        "aspmx.l.google.com"
+      ],
+      "spf": true,
+      "dmarc": "none",
+      "catchAll": true
+    },
+    "vantagetech.example": {
+      "mx": [
+        "aspmx.l.google.com"
+      ],
+      "spf": true,
+      "dmarc": "reject",
+      "catchAll": false
+    },
+    "sterlingrowe.example": {
+      "mx": [
+        "mx.sterlingrowe.example"
+      ],
+      "spf": false,
+      "dmarc": null,
+      "catchAll": false
+    },
+    "atlasadvisory.example": {
+      "mx": [
+        "mx-a.pphosted.com"
+      ],
+      "spf": true,
+      "dmarc": "reject",
+      "catchAll": false
+    }
+  },
+  "mailboxes": [
+    "ava.chen@northbridgecapital.example",
+    "liam.schultz@northbridgecapital.example",
+    "sophia.bennett@northbridgecapital.example",
+    "recruiting@northbridgecapital.example",
+    "mia.castillo@northbridgecapital.example",
+    "ethan.shah@northbridgecapital.example",
+    "pokafor@halcyonpartners.example",
+    "dpark@halcyonpartners.example",
+    "grace.r@halcyonpartners.example",
+    "mward@halcyonpartners.example",
+    "cromero@halcyonpartners.example",
+    "jnguyen@halcyonpartners.example",
+    "isabella_morales@meridianam.example",
+    "ryan_fischer@meridianam.example",
+    "kevin_price@meridianam.example",
+    "elena_thompson@meridianam.example",
+    "tyler_sullivan@meridianam.example",
+    "hannah@vantagetech.example",
+    "omar@vantagetech.example",
+    "natalie@vantagetech.examp1e",
+    "lucas@vantagetech.example",
+    "maya@vantagetech.example",
+    "brandon@vantagetech.example",
+    "sarahn@sterlingrowe.example",
+    "andref@sterlingrowe.example",
+    "juliar@sterlingrowe.example",
+    "victorb@sterlingrowe.example",
+    "leahl@sterlingrowe.example",
+    "samuelg@sterlingrowe.example",
+    "zoe.liu@atlasadvisory.example",
+    "jason.patel@atlasadvisory.example",
+    "camila.rivera@atlasadvisory.example",
+    "derek.hassan@atlasadvisory.example",
+    "fatima.iyer@atlasadvisory.example",
+    "owen.murphy@atlasadvisory.example"
+  ]
+}

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FirmConnect</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Auth -->
+  <section id="auth" class="auth" hidden>
+    <div class="auth-card">
+      <h1 class="brand">Firm<span>Connect</span></h1>
+      <p class="muted">Find people at top firms, see what you have in common, verify their email, and book the coffee chat.</p>
+      <div class="tabs small" role="tablist">
+        <button class="tab active" data-auth="login">Log in</button>
+        <button class="tab" data-auth="signup">Sign up</button>
+      </div>
+      <form id="auth-form">
+        <label class="signup-only">Full name <input name="name" autocomplete="name"></label>
+        <label>Email <input name="email" type="email" required autocomplete="email"></label>
+        <label>Password <input name="password" type="password" required minlength="8" autocomplete="current-password"></label>
+        <label class="signup-only">School <input name="school" placeholder="e.g. University of Michigan"></label>
+        <label class="signup-only">City <input name="location" placeholder="e.g. New York, NY"></label>
+        <button class="btn primary" type="submit">Continue</button>
+        <p class="error" id="auth-error"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- App -->
+  <div id="app" hidden>
+    <header class="topbar">
+      <h1 class="brand">Firm<span>Connect</span></h1>
+      <nav class="tabs" id="nav">
+        <button class="tab" data-view="matches">For you</button>
+        <button class="tab" data-view="search">Directory</button>
+        <button class="tab" data-view="finder">Email finder</button>
+        <button class="tab" data-view="verify">Verifier</button>
+        <button class="tab" data-view="calendar">Calendar</button>
+        <button class="tab" data-view="pipeline">Outreach</button>
+        <button class="tab" data-view="profile">Profile</button>
+      </nav>
+      <button class="btn ghost" id="logout">Log out</button>
+    </header>
+
+    <main>
+      <!-- Matches -->
+      <section class="view" id="view-matches">
+        <div class="view-head">
+          <h2>People you have the most in common with</h2>
+          <p class="muted">Ranked from your resume: shared interests, school, career track and city.</p>
+        </div>
+        <div id="matches-empty" class="empty" hidden>
+          <p>Upload your resume to get personalised matches.</p>
+          <button class="btn primary" data-goto="profile">Upload resume</button>
+        </div>
+        <div id="matches-profile" class="chips"></div>
+        <div id="matches-list" class="cards"></div>
+      </section>
+
+      <!-- Search -->
+      <section class="view" id="view-search">
+        <div class="view-head"><h2>Directory</h2></div>
+        <form id="search-form" class="filters">
+          <input name="q" placeholder="Name, title, team, firm…">
+          <select name="company"><option value="">All firms</option></select>
+          <select name="industry"><option value="">All industries</option></select>
+          <input name="school" placeholder="School">
+          <input name="interest" placeholder="Interest">
+          <button class="btn primary">Search</button>
+        </form>
+        <p class="muted" id="search-count"></p>
+        <div id="search-list" class="cards"></div>
+      </section>
+
+      <!-- Finder -->
+      <section class="view" id="view-finder">
+        <div class="view-head">
+          <h2>Email finder</h2>
+          <p class="muted">Guesses an address from the firm's naming convention (learned from your database), then verifies each guess.</p>
+        </div>
+        <form id="finder-form" class="filters">
+          <input name="firstName" placeholder="First name" required>
+          <input name="lastName" placeholder="Last name" required>
+          <select name="companyId"><option value="">Firm in database…</option></select>
+          <input name="domain" placeholder="…or domain (firm.com)">
+          <button class="btn primary">Find email</button>
+        </form>
+        <div id="finder-result"></div>
+      </section>
+
+      <!-- Verifier -->
+      <section class="view" id="view-verify">
+        <div class="view-head">
+          <h2>Email verifier</h2>
+          <p class="muted">Syntax, domain, MX, SPF/DMARC, disposable/role detection, firm-pattern match and a live mailbox (SMTP) check, combined into a grade.</p>
+        </div>
+        <form id="verify-form" class="filters">
+          <input name="email" placeholder="name@firm.com" required>
+          <button class="btn primary">Verify</button>
+        </form>
+        <div id="verify-result"></div>
+        <details class="bulk">
+          <summary>Bulk verify (up to 50)</summary>
+          <form id="bulk-form">
+            <textarea name="emails" rows="6" placeholder="One email per line"></textarea>
+            <button class="btn">Verify all</button>
+          </form>
+          <div id="bulk-result"></div>
+        </details>
+      </section>
+
+      <!-- Calendar -->
+      <section class="view" id="view-calendar">
+        <div class="view-head row">
+          <div>
+            <h2>Calendar</h2>
+            <p class="muted">Coffee chats, follow-ups and thank-you reminders. Subscribe once and they sync to Google, Outlook or Apple Calendar.</p>
+          </div>
+          <div class="cal-nav">
+            <button class="btn ghost" id="cal-prev" aria-label="Previous month">‹</button>
+            <strong id="cal-title"></strong>
+            <button class="btn ghost" id="cal-next" aria-label="Next month">›</button>
+          </div>
+        </div>
+        <div class="feed-box">
+          <span>Calendar feed:</span> <code id="feed-url"></code>
+          <button class="btn small" id="copy-feed">Copy</button>
+          <a class="btn small" id="gcal-subscribe" target="_blank" rel="noopener">Add to Google Calendar</a>
+        </div>
+        <div id="cal-grid" class="cal-grid"></div>
+        <h3>Upcoming</h3>
+        <div id="cal-upcoming" class="list"></div>
+        <details class="bulk">
+          <summary>Add an event</summary>
+          <form id="event-form" class="filters">
+            <input name="title" placeholder="Title (e.g. Superday)" required>
+            <input name="startsAt" type="datetime-local" required>
+            <input name="durationMin" type="number" value="30" min="5" max="480" title="Minutes">
+            <select name="kind"><option value="meeting">Meeting</option><option value="deadline">Deadline</option><option value="follow_up">Follow-up</option></select>
+            <button class="btn primary">Add</button>
+          </form>
+        </details>
+      </section>
+
+      <!-- Pipeline -->
+      <section class="view" id="view-pipeline">
+        <div class="view-head"><h2>Outreach pipeline</h2><p class="muted">Marking someone as “emailed” schedules a follow-up reminder 5 business days later.</p></div>
+        <div id="pipeline" class="pipeline"></div>
+      </section>
+
+      <!-- Profile -->
+      <section class="view" id="view-profile">
+        <div class="view-head"><h2>Your profile</h2></div>
+        <div class="grid2">
+          <div class="panel">
+            <h3>Resume</h3>
+            <p class="muted" id="resume-name">No resume uploaded yet.</p>
+            <form id="resume-form">
+              <input type="file" name="resume" accept=".pdf,.docx,.txt" required>
+              <button class="btn primary">Upload &amp; analyse</button>
+            </form>
+            <details><summary>…or paste resume text</summary>
+              <form id="resume-text-form"><textarea name="text" rows="8"></textarea><button class="btn">Analyse text</button></form>
+            </details>
+          </div>
+          <div class="panel">
+            <h3>What we found</h3>
+            <form id="profile-form">
+              <label>Interests <small class="muted">(comma separated, edit freely)</small><textarea name="interests" rows="3"></textarea></label>
+              <label>Schools <input name="schools"></label>
+              <label>Career tracks <input name="careerTracks"></label>
+              <label>Skills <input name="skills"></label>
+              <label>City <input name="location"></label>
+              <button class="btn primary">Save</button>
+            </form>
+          </div>
+          <div class="panel">
+            <h3>Import contacts</h3>
+            <p class="muted">CSV with columns like <code>First Name, Last Name, Email, Company, Title, Department, School, Location, Interests, Domain, Industry</code>. Existing people are updated, not duplicated.</p>
+            <form id="import-form">
+              <input type="file" name="file" accept=".csv,text/csv" required>
+              <button class="btn">Import</button>
+            </form>
+            <p id="import-result" class="muted"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Contact drawer -->
+  <aside id="drawer" class="drawer" hidden>
+    <button class="close" id="drawer-close" aria-label="Close">×</button>
+    <div id="drawer-body"></div>
+  </aside>
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
