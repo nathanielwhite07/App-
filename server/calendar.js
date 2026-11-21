@@ -3,7 +3,7 @@
 // a subscribable feed URL, and one-click "add to Google Calendar" links.
 
 const icsDate = (d) => new Date(d).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-const esc = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+const esc = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
 
 // Lines longer than 75 octets must be folded (RFC 5545 §3.1).
 function fold(line) {
@@ -31,17 +31,17 @@ function vevent(e, { attendee } = {}) {
     `SUMMARY:${esc(e.title)}`,
     e.description && `DESCRIPTION:${esc(e.description)}`,
     e.location && `LOCATION:${esc(e.location)}`,
-    `CATEGORIES:${e.kind === 'follow_up' ? 'Follow-up' : e.kind === 'deadline' ? 'Deadline' : 'Networking'}`,
+    `CATEGORIES:${e.kind === 'reminder' ? 'Reminder' : e.kind === 'deadline' ? 'Deadline' : 'Recruiting'}`,
     attendee && `ATTENDEE;CN=${esc(attendee.name)};ROLE=REQ-PARTICIPANT:mailto:${attendee.email}`,
-    'BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${esc(e.title)}`, `TRIGGER:-PT${e.kind === 'follow_up' ? 0 : 15}M`, 'END:VALARM',
+    'BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${esc(e.title)}`, `TRIGGER:${{ meeting: '-PT15M', deadline: '-P1D' }[e.kind] || '-PT0M'}`, 'END:VALARM',
     'END:VEVENT',
   ];
   return lines.filter(Boolean).map(fold).join('\r\n');
 }
 
-function toIcs(events, { name = 'Networking' } = {}) {
+function toIcs(events, { name = 'Recruiting' } = {}) {
   return [
-    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//FirmConnect//Networking Calendar//EN', 'CALSCALE:GREGORIAN',
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//BBSA Career Hub//Recruiting Calendar//EN', 'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH', fold(`X-WR-CALNAME:${esc(name)}`),
     ...events.map((e) => vevent(e, { attendee: e.attendee })),
     'END:VCALENDAR', '',

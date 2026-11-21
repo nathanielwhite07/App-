@@ -63,13 +63,12 @@ const liveResolver = {
   smtpProbe,
 };
 
-/** Resolver backed by demo-dns.json so the fictional seed domains can be verified offline. */
-function demoResolver(table = require('../seed/demo-dns.json')) {
+/** Resolver backed by a static table (see test/fixtures/demo-dns.json), used by the tests. */
+function demoResolver(table) {
   const mailboxes = new Set(table.mailboxes.map((m) => m.toLowerCase()));
   const get = (d) => table.domains[d.toLowerCase()];
   return {
     name: 'demo',
-    handles: (domain) => domain.toLowerCase().endsWith('.example') || domain.toLowerCase().endsWith('.examp1e'),
     async resolveMx(domain) {
       const d = get(domain);
       return d ? d.mx.map((exchange, i) => ({ exchange, priority: (i + 1) * 10 })) : [];
@@ -93,18 +92,6 @@ function demoResolver(table = require('../seed/demo-dns.json')) {
   };
 }
 
-/** Route .example domains to the demo resolver and everything else to live DNS. */
-function defaultResolver() {
-  const demo = demoResolver();
-  const pick = (domain) => (demo.handles(domain) ? demo : liveResolver);
-  return {
-    name: 'auto',
-    for: (domain) => pick(domain).name,
-    resolveMx: (d) => pick(d).resolveMx(d),
-    resolveTxt: (n) => pick(n.replace(/^_dmarc\./, '')).resolveTxt(n),
-    resolveA: (d) => pick(d).resolveA(d),
-    smtpProbe: (mx, email) => pick(email.split('@')[1]).smtpProbe(mx, email),
-  };
-}
+const defaultResolver = () => liveResolver;
 
 module.exports = { liveResolver, demoResolver, defaultResolver, smtpProbe };

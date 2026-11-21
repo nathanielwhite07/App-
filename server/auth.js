@@ -3,6 +3,19 @@ const crypto = require('node:crypto');
 
 const SESSION_DAYS = 14;
 
+/** Only these email domains can sign up (default: vanderbilt.edu). */
+const allowedDomains = () => (process.env.ALLOWED_EMAIL_DOMAINS || 'vanderbilt.edu')
+  .split(',').map((d) => d.trim().toLowerCase()).filter(Boolean);
+
+function emailAllowed(email) {
+  const m = /^[^\s@]+@([^\s@]+)$/.exec(String(email || '').trim().toLowerCase());
+  return !!m && allowedDomains().includes(m[1]);
+}
+
+/** Officers who can edit content: a fixed list in ADMIN_EMAILS (comma separated). */
+const adminEmails = () => new Set((process.env.ADMIN_EMAILS || '').split(',').map((e) => e.trim().toLowerCase()).filter(Boolean));
+const isAdmin = (user) => !!user && adminEmails().has(user.email.toLowerCase());
+
 function hashPassword(password) {
   const salt = crypto.randomBytes(16);
   const hash = crypto.scryptSync(password, salt, 64);
@@ -44,4 +57,9 @@ function requireUser(db) {
   };
 }
 
-module.exports = { hashPassword, checkPassword, createSession, requireUser, readToken, SESSION_DAYS };
+/** Use after requireUser. */
+const requireAdmin = (req, res, next) => (isAdmin(req.user) ? next() : res.status(403).json({ error: 'Officers only.' }));
+
+module.exports = {
+  hashPassword, checkPassword, createSession, requireUser, requireAdmin, isAdmin, emailAllowed, allowedDomains, readToken, SESSION_DAYS,
+};

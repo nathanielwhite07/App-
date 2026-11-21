@@ -1,86 +1,77 @@
-# FirmConnect
+# BBSA Career Hub
 
-A model app for students networking into big firms. It has four parts:
+An internal recruiting tool for Vanderbilt's Black Business Student Association.
 
-1. **Email lookup.** Search your contact database by name, firm, industry, school or interest. If someone isn't in it, the email finder guesses their address.
-2. **Resume matching.** Students upload a resume (PDF, DOCX or TXT). The app pulls out their interests, schools, career tracks and skills, then ranks contacts by what they have in common and explains why each match was made.
-3. **Email verifier.** Works like RocketReach's grading. Each address gets a deliverability verdict, a 0–99 confidence score, a letter grade and a separate domain‑reputation rating.
-4. **Calendar integration.** Book coffee chats from a contact's page. Follow-up and thank-you reminders are created automatically. Events can be exported as `.ics`, opened as one-click Google/Outlook links, or synced through a private feed URL that Google, Outlook or Apple Calendar can subscribe to.
+**Phase 1 (this version):**
 
-## Quick start
+- **Recruiting timelines** for investment banking, consulting and tech/trading/AI, broken down by class year. Each industry also has a guide covering roles, interview prep and resources. Officers can add more industries from the admin page without code changes.
+- **Diversity & early-ID programs tracker** with program, firm, industry, eligible class years, deadline and link, filterable by industry, year and status.
+- **This month**: what a student should focus on now, based on their class year (worked out from their graduation year) and the industries they chose. It shows open milestones they can tick off, deadlines in the next 45 days, what starts next month, and programs to watch.
+- **Calendar** (kept from the original app): add program deadlines and milestone reminders, export `.ics`, use Google/Outlook links, or subscribe to a private feed.
+- **Email formats** (kept): how 100 large consulting and finance firms format addresses, with confidence levels and fallbacks. Click a firm to build an address from a name.
+
+Later phases are planned in [`docs/data-model.md`](docs/data-model.md) and not built yet.
+
+## Running it
 
 ```bash
 npm install
-npm start            # http://localhost:3000
+ADMIN_EMAILS=you@vanderbilt.edu npm start      # http://localhost:3000
 npm test
 ```
 
-Requires Node ≥ 22.13 (uses the built-in `node:sqlite`, so no database server is needed).
+Requires Node ≥ 22.13. The database is a single SQLite file at `data/bbsa.db`, created on first run and filled with the starter content in `server/content/`.
 
-On first run the app seeds **36 fictional contacts at 6 fictional firms** on `.example` domains so you can try every feature. Verification for those domains uses simulated DNS/SMTP answers (`server/seed/demo-dns.json`). All other domains use live lookups. To start without them, set `SEED=off`.
+### Settings (environment variables)
 
-Try it: sign up, upload `samples/sample-resume.txt` on the Profile tab, then open **For you**.
-
-## Bringing in your own email database
-
-Go to Profile → Import contacts and upload a CSV, or `POST /api/import`. Header names are flexible (`First Name`/`first_name`, `Company`/`Firm`, `Interests`/`Hobbies`, …). See `samples/contacts-template.csv`. People are matched on name + firm, so they are updated instead of duplicated. Each import retrains the per-firm email-pattern model.
-
-## How the verifier scores an email
-
-| Signal | Effect |
+| Variable | Purpose |
 |---|---|
-| Syntax (RFC 5322 subset) | Fail → invalid |
-| Typo of a popular domain (`gmial.com`) | −30, suggests a correction |
-| Disposable domain | Invalid, reputation 0 |
-| Role inbox (`info@`, `recruiting@`) | −15 |
-| Free webmail vs. the firm's domain | −10 / −15 when the firm's domain differs |
-| Matches the firm's learned naming pattern (`first.last@`) | up to +15; −15 if the firm clearly uses another pattern |
-| MX records | +15; none (and no A record) → invalid |
-| Enterprise mail host (Google Workspace, Microsoft 365, Proofpoint, Mimecast…) | +3 |
-| SPF / DMARC (enforced) | +3 / +4, plus a large share of the reputation score |
-| SMTP `RCPT TO` probe | 250 → **valid** (+30); 5xx → **invalid**; accepts a random address → **accept-all** (capped at 79) |
-| Record not re-verified for over a year | −5 |
+| `ADMIN_EMAILS` | Comma-separated officer emails who can use the Admin page. Edit this list to add or remove officers. |
+| `ALLOWED_EMAIL_DOMAINS` | Who can sign up. Default `vanderbilt.edu`. |
+| `SMTP_URL`, `MAIL_FROM` | Mail server for sign-up confirmation emails, e.g. `smtps://user:pass@smtp.example.com`. **Without it, confirmation links are printed to the server log** (fine for local testing). |
+| `APP_URL` | Public URL used in confirmation links, e.g. `https://bbsa.example.com`. |
+| `PORT`, `DB_FILE` | Port (default 3000) and database path. |
 
-Statuses: `valid`, `likely_valid` (strong DNS and data signals, but no SMTP confirmation), `accept_all`, `risky`, `invalid`. Grades: A+ ≥ 90, A ≥ 80, B ≥ 70, C ≥ 55, D ≥ 35, F below that.
+Sign-up requires a `@vanderbilt.edu` address, and the account only works after the confirmation link in that inbox is clicked.
 
-**SMTP probing note:** most cloud hosts and home ISPs block outbound port 25. When the probe can't connect, the result says so and the grade relies on the other signals. For production, run the probe from a host with port 25 open and a proper reverse DNS/HELO name (`SMTP_HELO_DOMAIN`), or plug a commercial verification API into `server/verifier/resolvers.js`. Set `SMTP_PROBE=off` to disable probing.
+## Editing content
+
+Everything students see is stored in the database and edited from **Admin** (visible only to `ADMIN_EMAILS`):
+
+- **Programs**: add each program's deadline, link and eligibility. Programs marked *needs review* show "details being confirmed" to students.
+- **Timelines**: milestones have class years (none = every year) and a month window. Windows can wrap past December (Dec–Feb).
+- **Industries**: add a new industry (e.g. Sales & Trading), then give it milestones and programs.
+- **Email formats**: edit firms one at a time, or **upload a spreadsheet** (.xlsx or .csv) with `Firm` and `Best Email Format` columns, plus optional `Confidence`, `Fallback / Notes`, `Category`, `Sites Agreeing` and `Sector`. Firms are matched by name, so re-uploading updates them. Columns listing real people's published addresses are never read.
+- **Backup**: download everything as one JSON file, or restore from one (for example, to hand over to next year's board).
+
+The starter content in `server/content/*.json` is only used to fill an empty database. To regenerate the firms list from spreadsheets: `node scripts/formats-to-json.js sheet1.xlsx sheet2.xlsx > server/content/firms.json`.
+
+### Where the starter content came from
+
+- Timelines and industry guides: the IB (10/14/2026), consulting (10/28/2026) and tech/trading/AI (11/1/2026) recruiting slides. Each milestone records its source.
+- Programs: the five early consulting programs named in the consulting slides (Bain BEL/CREW, BCG Embark/Advance, A&M CCDP). Their deadlines and links are blank and flagged for review. The slides didn't name specific IB or tech programs.
+- Email formats: *Top 50 Consulting Firms* (researched 10/10/2026) and *Top 50 Finance & IB Firms* (researched 10/12/2026) spreadsheets.
+- No junior- or senior-year milestones yet, because the slides focus on freshman and sophomore recruiting (except Big Tech, which recruits the summer before junior year).
+
+## Privacy
+
+- Resumes are not uploaded or stored in Phase 1. The Phase 2 resume checker is designed to process files in memory and keep only the results (see `docs/data-model.md`).
+- The email verifier from the original app is kept in `server/email/verifier/` for the Phase 2 networking tracker, but it isn't in the interface. Its SMTP mailbox probe is off unless `SMTP_PROBE=on`.
 
 ## Project layout
 
 ```
 server/
-  app.js              Express routes (auth, directory, matches, finder, verifier, import, pipeline, calendar)
-  db.js               SQLite schema + upserts + seeding
-  verifier/           Scoring engine, reference lists, live & demo DNS/SMTP resolvers
-  patterns.js         Learns each firm's email format and generates candidates
-  matcher/            Resume → profile extraction, interest taxonomy, match scoring, intro drafts
-  calendar.js         ICS generation, Google/Outlook links, business-day maths
-  resume.js, csv.js, auth.js
-public/               Single-page frontend (vanilla JS, no build step)
-test/                 node:test unit + API integration tests (run offline)
+  app.js              wires routes together; profile endpoints
+  routes/             auth (sign-up, confirmation), content (timelines, programs, this-month, formats), events, admin
+  content/            starter JSON, store (seed/export/import), validation, spreadsheet importer
+  db/                 schema.sql + SQLite connection
+  email/              patterns.js (formats → addresses), verifier/ (Phase 2)
+  academic.js         class year from graduation year; month windows
+  calendar.js         .ics, Google/Outlook links
+  auth.js, mailer.js, csv.js
+public/               single-page frontend (vanilla JS, no build step)
+scripts/              formats-to-json.js
+docs/data-model.md    Phase 2/3 data model
+test/                 node:test unit + API tests
 ```
-
-## Main API endpoints
-
-All `/api` routes except auth require a session cookie or `Authorization: Bearer <token>`.
-
-- `POST /api/auth/signup | login | logout`, `GET/PATCH /api/me`
-- `POST /api/me/resume` (multipart `resume`, or `{ text }`), `PUT /api/me/profile`
-- `GET /api/contacts?q=&company=&industry=&school=&interest=`, `GET /api/contacts/:id`
-- `GET /api/matches`, `GET /api/contacts/:id/intro`
-- `POST /api/finder { firstName, lastName, companyId | domain }`
-- `POST /api/verify { email }`, `POST /api/verify/bulk { emails }`, `POST /api/contacts/:id/verify`
-- `POST /api/import` (CSV file, `{ csv }` or `{ contacts }`)
-- `GET/PUT/DELETE /api/saved/:contactId` (outreach pipeline; setting `emailed` schedules a follow-up)
-- `GET/POST/DELETE /api/events`, `GET /api/events/:id.ics`, `GET /calendar/:token.ics` (subscribable feed)
-
-## Next steps toward production
-
-- Two-way Google Calendar sync through OAuth (Calendar API `events.insert`) and free/busy lookup for suggesting meeting times
-- Run verification as a background job queue with caching per domain
-- A maintained disposable-domain list and domain-age (WHOIS/RDAP) signals
-- Admin roles for who can import or export contacts
-
-## Compliance
-
-Use contact data you are allowed to use. Cold outreach must follow CAN-SPAM (US), GDPR/UK GDPR (EU/UK, which requires a lawful basis for processing personal data) and CASL (Canada). Honour opt-out requests and remove people from your database when they ask.

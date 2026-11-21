@@ -1,5 +1,5 @@
 {
-  "_note": "Simulated DNS/SMTP answers for the fictional .example seed domains so the verifier can be demoed offline. Real domains always use live lookups.",
+  "_note": "Simulated DNS/SMTP answers for verifier tests.",
   "domains": {
     "northbridgecapital.example": {
       "mx": [

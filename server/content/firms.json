@@ -1,0 +1,1425 @@
+[
+  {
+    "name": "McKinsey & Company",
+    "sector": "Consulting",
+    "category": "Strategy (MBB)",
+    "domain": "mckinsey.com",
+    "pattern": "first_last",
+    "confidence": "Confirmed",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "mckinsey.com"
+      }
+    ],
+    "notes": "Underscore, not a dot. Fallback: jane.doe@mckinsey.com (RocketReach 23%)",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Boston Consulting Group (BCG)",
+    "sector": "Consulting",
+    "category": "Strategy (MBB)",
+    "domain": "bcg.com",
+    "pattern": "last.first",
+    "confidence": "Confirmed",
+    "fallbacks": [],
+    "notes": "Last name FIRST. RocketReach and Prospeo are wrong here; BCG's own site settles it",
+    "sources_agree": "3 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "KPMG (US)",
+    "sector": "Consulting",
+    "category": "Big 4",
+    "domain": "kpmg.com",
+    "pattern": "flast",
+    "confidence": "Confirmed",
+    "fallbacks": [
+      {
+        "pattern": "firstlast",
+        "domain": "kpmg.com"
+      }
+    ],
+    "notes": "Fallback: janedoe@kpmg.com (RocketReach 38%). US only",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Roland Berger",
+    "sector": "Consulting",
+    "category": "Strategy",
+    "domain": "rolandberger.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "fallbacks": [],
+    "notes": "Umlauts are spelled out: ö→oe, ü→ue, ä→ae",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Analysis Group",
+    "sector": "Consulting",
+    "category": "Economic Consulting",
+    "domain": "analysisgroup.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "analysisgroup.com"
+      }
+    ],
+    "notes": "Fallback: jdoe@analysisgroup.com (RocketReach 14%)",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Bates White",
+    "sector": "Consulting",
+    "category": "Economic Consulting",
+    "domain": "bateswhite.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "fallbacks": [],
+    "notes": "Upgraded from Medium",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Huron Consulting Group",
+    "sector": "Consulting",
+    "category": "Healthcare / Education",
+    "domain": "hcg.com",
+    "pattern": "flast",
+    "confidence": "Confirmed",
+    "fallbacks": [],
+    "notes": "Sites list the domain huronconsultinggroup.com; Huron itself uses hcg.com. Both are Huron domains",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "The Brattle Group",
+    "sector": "Consulting",
+    "category": "Economic Consulting",
+    "domain": "brattle.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "fallbacks": [],
+    "notes": "Uses the name people go by (Dan, not Daniel). Upgraded from Medium",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Berkeley Research Group (BRG)",
+    "sector": "Consulting",
+    "category": "Disputes / Finance",
+    "domain": "thinkbrg.com",
+    "pattern": "flast",
+    "confidence": "Confirmed",
+    "fallbacks": [],
+    "notes": "Domain is thinkbrg.com",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Slalom",
+    "sector": "Consulting",
+    "category": "Business & Technology",
+    "domain": "slalom.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "fallbacks": [
+      {
+        "pattern": "firstl",
+        "domain": "slalom.com"
+      }
+    ],
+    "notes": "Fallback: janed@slalom.com (RocketReach 21%). Upgraded from Medium",
+    "sources_agree": "3 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Genpact",
+    "sector": "Consulting",
+    "category": "Technology & Operations",
+    "domain": "genpact.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "fallbacks": [],
+    "notes": "Upgraded from Medium",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Bain & Company",
+    "sector": "Consulting",
+    "category": "Strategy (MBB)",
+    "domain": "bain.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "PwC (US)",
+    "sector": "Consulting",
+    "category": "Big 4",
+    "domain": "pwc.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "US. Other countries use subdomains like uk.pwc.com",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "EY / EY-Parthenon",
+    "sector": "Consulting",
+    "category": "Big 4",
+    "domain": "ey.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "parthenon.ey.com"
+      }
+    ],
+    "notes": "EY-Parthenon staff often use jane.doe@parthenon.ey.com (RocketReach 97% for EY-Parthenon)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Accenture",
+    "sector": "Consulting",
+    "category": "Strategy & Technology",
+    "domain": "accenture.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Oliver Wyman",
+    "sector": "Consulting",
+    "category": "Strategy",
+    "domain": "oliverwyman.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Kearney",
+    "sector": "Consulting",
+    "category": "Strategy",
+    "domain": "kearney.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Older addresses used atkearney.com",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Booz Allen Hamilton",
+    "sector": "Consulting",
+    "category": "Strategy & Government",
+    "domain": "bah.com",
+    "pattern": "last_first",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "first_last",
+        "domain": "bah.com"
+      }
+    ],
+    "notes": "Last name first, underscore. Fallback: jane_doe@bah.com (RocketReach 11%)",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Strategy& (PwC)",
+    "sector": "Consulting",
+    "category": "Strategy",
+    "domain": "pwc.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Part of PwC, uses PwC email",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Alvarez & Marsal",
+    "sector": "Consulting",
+    "category": "Restructuring / Performance",
+    "domain": "alvarezandmarsal.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "alvarezandmarsal.com"
+      }
+    ],
+    "notes": "Fallback: jane.doe@alvarezandmarsal.com (RocketReach 11%)",
+    "sources_agree": "3 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Simon-Kucher",
+    "sector": "Consulting",
+    "category": "Pricing & Growth",
+    "domain": "simon-kucher.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Note the hyphen in the domain",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "FTI Consulting",
+    "sector": "Consulting",
+    "category": "Restructuring / Disputes",
+    "domain": "fticonsulting.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "AlixPartners",
+    "sector": "Consulting",
+    "category": "Restructuring / Performance",
+    "domain": "alixpartners.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Charles River Associates",
+    "sector": "Consulting",
+    "category": "Economic Consulting",
+    "domain": "crai.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Domain is crai.com",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Grant Thornton (US)",
+    "sector": "Consulting",
+    "category": "Accounting / Advisory",
+    "domain": "us.gt.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Includes Grant Thornton Stax",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Mercer",
+    "sector": "Consulting",
+    "category": "HR & Benefits",
+    "domain": "mercer.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Gartner",
+    "sector": "Consulting",
+    "category": "Research & Advisory",
+    "domain": "gartner.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "ZS Associates",
+    "sector": "Consulting",
+    "category": "Life Sciences / Sales",
+    "domain": "zs.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Capgemini (Invent)",
+    "sector": "Consulting",
+    "category": "Technology",
+    "domain": "capgemini.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "capgemini.com"
+      }
+    ],
+    "notes": "Fallback: jdoe@capgemini.com (RocketReach 14%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Cognizant",
+    "sector": "Consulting",
+    "category": "Technology",
+    "domain": "cognizant.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Protiviti",
+    "sector": "Consulting",
+    "category": "Risk / Internal Audit",
+    "domain": "protiviti.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "West Monroe",
+    "sector": "Consulting",
+    "category": "Business & Technology",
+    "domain": "westmonroe.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Older addresses used wmp.com or westmonroepartners.com",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "NERA Economic Consulting",
+    "sector": "Consulting",
+    "category": "Economic Consulting",
+    "domain": "nera.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "PA Consulting",
+    "sector": "Consulting",
+    "category": "Strategy & Innovation",
+    "domain": "paconsulting.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Capco",
+    "sector": "Consulting",
+    "category": "Financial Services",
+    "domain": "capco.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "WTW (Willis Towers Watson)",
+    "sector": "Consulting",
+    "category": "HR & Risk",
+    "domain": "wtwco.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Domain is wtwco.com",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Kroll",
+    "sector": "Consulting",
+    "category": "Risk & Financial Advisory",
+    "domain": "kroll.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "kroll.com"
+      }
+    ],
+    "notes": "Fallback: jdoe@kroll.com (LeadIQ 14%)",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Ankura",
+    "sector": "Consulting",
+    "category": "Disputes / Restructuring",
+    "domain": "ankura.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Upgraded from Medium",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Wipro",
+    "sector": "Consulting",
+    "category": "Technology",
+    "domain": "wipro.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "CGI",
+    "sector": "Consulting",
+    "category": "Technology",
+    "domain": "cgi.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "NTT DATA",
+    "sector": "Consulting",
+    "category": "Technology",
+    "domain": "nttdata.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "EPAM Systems",
+    "sector": "Consulting",
+    "category": "Technology",
+    "domain": "epam.com",
+    "pattern": "first_last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Underscore, not a dot",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "BDO USA",
+    "sector": "Consulting",
+    "category": "Accounting / Advisory",
+    "domain": "bdo.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "3 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Deloitte (US)",
+    "sector": "Consulting",
+    "category": "Big 4",
+    "domain": "deloitte.com",
+    "pattern": "flast",
+    "confidence": "High",
+    "fallbacks": [],
+    "notes": "Format is right, but name clashes are common. If jdoe bounces, add first-name letters: jadoe, then janedoe",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "L.E.K. Consulting",
+    "sector": "Consulting",
+    "category": "Strategy",
+    "domain": "lek.com",
+    "pattern": "f.last",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "lek.com"
+      }
+    ],
+    "notes": "First initial, DOT, last name. Fallback: jane.doe@lek.com (LeadIQ 11%)",
+    "sources_agree": "3 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Cornerstone Research",
+    "sector": "Consulting",
+    "category": "Economic Consulting",
+    "domain": "cornerstone.com",
+    "pattern": "flast",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "cornerstone.com"
+      }
+    ],
+    "notes": "Fallback: jane.doe@cornerstone.com (RocketReach 45%). Upgraded from Medium",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Arthur D. Little",
+    "sector": "Consulting",
+    "category": "Strategy",
+    "domain": "adlittle.com",
+    "pattern": "last.first",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "adlittle.com"
+      }
+    ],
+    "notes": "Sites split 4–3. Fallback: jane.doe@adlittle.com",
+    "sources_agree": "3 of 6",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Infosys (Consulting)",
+    "sector": "Consulting",
+    "category": "Technology",
+    "domain": "infosys.com",
+    "pattern": "first_last",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "infosys.com"
+      }
+    ],
+    "notes": "Underscore. Fallback: jane.doe@infosys.com (RocketReach 38%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Tata Consultancy Services (TCS)",
+    "sector": "Consulting",
+    "category": "Technology",
+    "domain": "tcs.com",
+    "pattern": "first.last",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "last.first",
+        "domain": "tcs.com"
+      },
+      {
+        "pattern": "first.l",
+        "domain": "tcs.com"
+      }
+    ],
+    "notes": "TCS mixes formats. Fallback: doe.jane@tcs.com, then jane.d@tcs.com",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Publicis Sapient",
+    "sector": "Consulting",
+    "category": "Digital Transformation",
+    "domain": "publicissapient.com",
+    "pattern": "first.last",
+    "confidence": "Medium",
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "sapient.com"
+      }
+    ],
+    "notes": "Newer staff use publicissapient.com; long-time staff may still be jdoe@sapient.com. Verify before sending",
+    "sources_agree": "3 of 5",
+    "researched_on": "2026-10-10"
+  },
+  {
+    "name": "Lazard",
+    "sector": "Finance",
+    "category": "Elite Boutique",
+    "domain": "lazard.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "fallbacks": [
+      {
+        "pattern": "lastf",
+        "domain": "lazard.com"
+      }
+    ],
+    "notes": "Fallback: doej@lazard.com (RocketReach 20%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Moelis & Company",
+    "sector": "Finance",
+    "category": "Elite Boutique",
+    "domain": "moelis.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "moelis.com"
+      }
+    ],
+    "notes": "Fallback: jdoe@moelis.com (RocketReach 16%)",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "William Blair",
+    "sector": "Finance",
+    "category": "Middle Market",
+    "domain": "williamblair.com",
+    "pattern": "flast",
+    "confidence": "Confirmed",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Blackstone",
+    "sector": "Finance",
+    "category": "Private Equity",
+    "domain": "blackstone.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "fallbacks": [
+      {
+        "pattern": "last",
+        "domain": "blackstone.com"
+      }
+    ],
+    "notes": "Some long-tenured senior people use last name only: doe@blackstone.com (RocketReach 11%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "The Carlyle Group",
+    "sector": "Finance",
+    "category": "Private Equity",
+    "domain": "carlyle.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Warburg Pincus",
+    "sector": "Finance",
+    "category": "Private Equity",
+    "domain": "warburgpincus.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "warburgpincus.com"
+      }
+    ],
+    "notes": "Fallback: jdoe@warburgpincus.com (RocketReach 8%)",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Ares Management",
+    "sector": "Finance",
+    "category": "Private Equity / Credit",
+    "domain": "aresmgmt.com",
+    "pattern": "flast",
+    "confidence": "Confirmed",
+    "fallbacks": [],
+    "notes": "Domain is aresmgmt.com, not ares.com",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Goldman Sachs",
+    "sector": "Finance",
+    "category": "Bulge Bracket",
+    "domain": "gs.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Domain is gs.com. Older addresses used goldmansachs.com",
+    "sources_agree": "5 of 6",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Morgan Stanley",
+    "sector": "Finance",
+    "category": "Bulge Bracket",
+    "domain": "morganstanley.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "firstl",
+        "domain": "morganstanley.com"
+      }
+    ],
+    "notes": "Fallback: janed@morganstanley.com (RocketReach 6%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Bank of America",
+    "sector": "Finance",
+    "category": "Bulge Bracket",
+    "domain": "bofa.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "bankofamerica.com"
+      }
+    ],
+    "notes": "Some staff use jane.doe@bankofamerica.com (LeadIQ 89% for that domain too)",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Citi",
+    "sector": "Finance",
+    "category": "Bulge Bracket",
+    "domain": "citi.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "firstlast",
+        "domain": "citi.com"
+      }
+    ],
+    "notes": "Older addresses used citigroup.com. Fallback: janedoe@citi.com (RocketReach 10%)",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Barclays",
+    "sector": "Finance",
+    "category": "Bulge Bracket",
+    "domain": "barclays.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Deutsche Bank",
+    "sector": "Finance",
+    "category": "Bulge Bracket",
+    "domain": "db.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Domain is db.com",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "UBS",
+    "sector": "Finance",
+    "category": "Bulge Bracket",
+    "domain": "ubs.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Wells Fargo",
+    "sector": "Finance",
+    "category": "Bulge Bracket",
+    "domain": "wellsfargo.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Evercore",
+    "sector": "Finance",
+    "category": "Elite Boutique",
+    "domain": "evercore.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "last",
+        "domain": "evercore.com"
+      }
+    ],
+    "notes": "Fallback: doe@evercore.com (RocketReach 7%)",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Guggenheim Securities",
+    "sector": "Finance",
+    "category": "Elite Boutique",
+    "domain": "guggenheimpartners.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Domain is guggenheimpartners.com. Clay's page uses guggenheiminvestments.com (the asset-management arm)",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Qatalyst Partners",
+    "sector": "Finance",
+    "category": "Elite Boutique",
+    "domain": "qatalyst.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Only 3 sites cover it, but all agree",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "LionTree",
+    "sector": "Finance",
+    "category": "Elite Boutique",
+    "domain": "liontree.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "liontree.com"
+      }
+    ],
+    "notes": "Fallback: jane.doe@liontree.com (LeadIQ 21%)",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Rothschild & Co",
+    "sector": "Finance",
+    "category": "Elite Boutique",
+    "domain": "rothschildandco.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Current domain is rothschildandco.com; older addresses used rothschild.com",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Ducera Partners",
+    "sector": "Finance",
+    "category": "Elite Boutique",
+    "domain": "ducerapartners.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "ducerapartners.com"
+      }
+    ],
+    "notes": "Fallback: jane.doe@ducerapartners.com (RocketReach 14%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Jefferies",
+    "sector": "Finance",
+    "category": "Upper Middle Market",
+    "domain": "jefferies.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "jefferies.com"
+      }
+    ],
+    "notes": "Older addresses used jefco.com. Fallback: jane.doe@jefferies.com (RocketReach 12%)",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "RBC Capital Markets",
+    "sector": "Finance",
+    "category": "Upper Middle Market",
+    "domain": "rbccm.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Domain is rbccm.com. Staff of the parent bank use rbc.com",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Mizuho",
+    "sector": "Finance",
+    "category": "Upper Middle Market",
+    "domain": "mizuhogroup.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Older addresses used mizuhoamericas.com or mizuhosecurities.com",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Nomura",
+    "sector": "Finance",
+    "category": "Upper Middle Market",
+    "domain": "nomura.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "BMO Capital Markets",
+    "sector": "Finance",
+    "category": "Upper Middle Market",
+    "domain": "bmo.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Domain is bmo.com",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Truist Securities",
+    "sector": "Finance",
+    "category": "Upper Middle Market",
+    "domain": "truist.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "truist.com"
+      }
+    ],
+    "notes": "Fallback: jdoe@truist.com (RocketReach 7%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Harris Williams",
+    "sector": "Finance",
+    "category": "Middle Market",
+    "domain": "harriswilliams.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Baird",
+    "sector": "Finance",
+    "category": "Middle Market",
+    "domain": "rwbaird.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Domain is rwbaird.com",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Raymond James",
+    "sector": "Finance",
+    "category": "Middle Market",
+    "domain": "raymondjames.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Stifel",
+    "sector": "Finance",
+    "category": "Middle Market",
+    "domain": "stifel.com",
+    "pattern": "lastf",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "stifel.com"
+      }
+    ],
+    "notes": "Last name, then first initial: doej@stifel.com. Fallback: jane.doe@stifel.com (RocketReach 18%)",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "KKR",
+    "sector": "Finance",
+    "category": "Private Equity",
+    "domain": "kkr.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "lastf",
+        "domain": "kkr.com"
+      }
+    ],
+    "notes": "Fallback: doej@kkr.com (RocketReach 9%)",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Apollo Global Management",
+    "sector": "Finance",
+    "category": "Private Equity",
+    "domain": "apollo.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Older addresses used agm.com or apollolp.com. Name clashes add letters: jadoe@apollo.com (RocketReach 7%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "TPG",
+    "sector": "Finance",
+    "category": "Private Equity",
+    "domain": "tpg.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "firstlast",
+        "domain": "tpg.com"
+      }
+    ],
+    "notes": "Fallback: janedoe@tpg.com (RocketReach 11%)",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Bain Capital",
+    "sector": "Finance",
+    "category": "Private Equity",
+    "domain": "baincapital.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Not Bain & Company (first.last@bain.com). Name clashes: jadoe@baincapital.com (RocketReach 5%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "BlackRock",
+    "sector": "Finance",
+    "category": "Asset Management",
+    "domain": "blackrock.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "blackrock.com"
+      }
+    ],
+    "notes": "Fallback: jdoe@blackrock.com (RocketReach 12%)",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Fidelity Investments",
+    "sector": "Finance",
+    "category": "Asset Management",
+    "domain": "fidelity.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "fmr.com"
+      }
+    ],
+    "notes": "Many staff also use jane.doe@fmr.com (FMR is Fidelity's parent; LeadIQ 97%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Vanguard",
+    "sector": "Finance",
+    "category": "Asset Management",
+    "domain": "vanguard.com",
+    "pattern": "first_last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Underscore, not a dot",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Citadel",
+    "sector": "Finance",
+    "category": "Hedge Fund",
+    "domain": "citadel.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "citadel.com"
+      }
+    ],
+    "notes": "A large minority use jdoe@citadel.com (RocketReach 22%, LeadIQ 24%). Try that next",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Bridgewater Associates",
+    "sector": "Finance",
+    "category": "Hedge Fund",
+    "domain": "bwater.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [],
+    "notes": "Domain is bwater.com, not bridgewater.com",
+    "sources_agree": "3 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Two Sigma",
+    "sector": "Finance",
+    "category": "Hedge Fund",
+    "domain": "twosigma.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "fallbacks": [
+      {
+        "pattern": "first",
+        "domain": "twosigma.com"
+      }
+    ],
+    "notes": "Fallback: jane@twosigma.com (RocketReach 10%)",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "JPMorgan Chase",
+    "sector": "Finance",
+    "category": "Bulge Bracket",
+    "domain": "jpmchase.com",
+    "pattern": "first.last",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "jpmorgan.com"
+      }
+    ],
+    "notes": "Format is settled; the domain is not. Investment-bank staff often use jane.doe@jpmorgan.com. Try jpmchase.com, then jpmorgan.com",
+    "sources_agree": "4 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Centerview Partners",
+    "sector": "Finance",
+    "category": "Elite Boutique",
+    "domain": "centerview.com",
+    "pattern": "flast",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "centerviewpartners.com"
+      }
+    ],
+    "notes": "Format is settled; sites split on domain. Fallback: jdoe@centerviewpartners.com",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "PJT Partners",
+    "sector": "Finance",
+    "category": "Elite Boutique",
+    "domain": "pjtpartners.com",
+    "pattern": "first.last",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "last",
+        "domain": "pjtpartners.com"
+      }
+    ],
+    "notes": "PJT mixes formats: many use last name only (doe@pjtpartners.com, RocketReach 32%). Try that if first.last bounces",
+    "sources_agree": "3 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Perella Weinberg Partners",
+    "sector": "Finance",
+    "category": "Elite Boutique",
+    "domain": "pwpartners.com",
+    "pattern": "flast",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "pwpartners.com"
+      }
+    ],
+    "notes": "Sites split 3–2. Fallback: jane.doe@pwpartners.com (RocketReach 19%)",
+    "sources_agree": "3 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Houlihan Lokey",
+    "sector": "Finance",
+    "category": "Upper Middle Market",
+    "domain": "hl.com",
+    "pattern": "flast",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "hl.com"
+      }
+    ],
+    "notes": "Sites split 3–2. Fallback: jane.doe@hl.com",
+    "sources_agree": "3 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Lincoln International",
+    "sector": "Finance",
+    "category": "Middle Market",
+    "domain": "lincolninternational.com",
+    "pattern": "flast",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "firstlast",
+        "domain": "lincolninternational.com"
+      }
+    ],
+    "notes": "The two largest datasets (RocketReach, LeadIQ) agree strongly. Fallback: janedoe@lincolninternational.com",
+    "sources_agree": "3 of 5",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Piper Sandler",
+    "sector": "Finance",
+    "category": "Middle Market",
+    "domain": "psc.com",
+    "pattern": "first.last",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "f.last",
+        "domain": "psc.com"
+      }
+    ],
+    "notes": "Domain is psc.com. Disagreeing sites reflect pre-merger Piper Jaffray addresses. Fallback: j.doe@psc.com",
+    "sources_agree": "2 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "D. E. Shaw",
+    "sector": "Finance",
+    "category": "Hedge Fund",
+    "domain": "deshaw.com",
+    "pattern": "first.last",
+    "confidence": "High",
+    "fallbacks": [
+      {
+        "pattern": "lfirst",
+        "domain": "deshaw.com"
+      },
+      {
+        "pattern": "first-last",
+        "domain": "deshaw.com"
+      }
+    ],
+    "notes": "Firm mixes formats. Fallbacks: djane@deshaw.com (LeadIQ 39%), then jane-doe@deshaw.com (RocketReach 16%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-10-12"
+  },
+  {
+    "name": "KeyBanc Capital Markets",
+    "sector": "Finance",
+    "category": "Upper Middle Market",
+    "domain": "key.com",
+    "pattern": "first.last",
+    "confidence": "Medium",
+    "fallbacks": [
+      {
+        "pattern": "first_last",
+        "domain": "keybank.com"
+      }
+    ],
+    "notes": "Not settled. Corporate staff use first_last@keybank.com (sometimes with middle initial). Try jane.doe@key.com, then jane_doe@keybank.com. Verify before sending",
+    "sources_agree": "3 of 5",
+    "researched_on": "2026-10-12"
+  }
+]

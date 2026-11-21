@@ -2,7 +2,12 @@
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const state = { user: null, companies: [], calMonth: new Date(), events: [] };
+const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const ACADEMIC_MONTHS = [8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7];
+const YEAR_NAMES = { 1: 'Freshman', 2: 'Sophomore', 3: 'Junior', 4: 'Senior' };
+const CATEGORY_LABEL = { explore: 'Explore', prepare: 'Prepare', network: 'Network', apply: 'Apply', interview: 'Interview' };
+const STATUS_LABEL = { open: 'Open', upcoming: 'Opening soon', tba: 'Deadline TBA', rolling: 'Rolling', closed: 'Closed' };
+const state = { user: null, industries: [], monthOffset: 0, calMonth: new Date(), events: [], tl: { industry: null, year: null }, adminTab: 'programs' };
 
 async function api(method, url, body) {
   const opts = { method, headers: {} };
@@ -11,225 +16,277 @@ async function api(method, url, body) {
   const res = await fetch(url, opts);
   const data = res.headers.get('content-type')?.includes('json') ? await res.json() : await res.text();
   if (res.status === 401 && !url.startsWith('/api/auth')) { showAuth(); throw new Error('Please log in.'); }
-  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+  if (!res.ok) throw Object.assign(new Error(data.error || `Request failed (${res.status})`), { data });
   return data;
 }
 function toast(msg) {
   const t = $('#toast'); t.textContent = msg; t.hidden = false;
-  clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 2600);
+  clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 2800);
 }
 async function busy(btn, fn) {
   const label = btn?.textContent; if (btn) { btn.disabled = true; btn.textContent = 'Working…'; }
   try { return await fn(); } catch (e) { toast(e.message); } finally { if (btn) { btn.disabled = false; btn.textContent = label; } }
 }
-const STATUS_TEXT = { valid: 'Valid', likely_valid: 'Likely valid', accept_all: 'Accept-all', risky: 'Risky', invalid: 'Invalid', unknown: 'Unknown' };
-const statusBadge = (v) => v ? `<span class="badge ${v.status}" title="Score ${v.score}/99">${STATUS_TEXT[v.status] || v.status} · ${v.grade}</span>` : '<span class="badge unknown">Not verified</span>';
-const fmtDate = (iso) => new Date(iso).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+const fmtDate = (ymd) => new Date(`${ymd}T12:00:00`).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+const fmtDateTime = (iso) => new Date(iso).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+const industryName = (slug) => state.industries.find((i) => i.slug === slug)?.name || slug;
+const yearsLabel = (ys) => (!ys.length ? 'All years' : ys.map((y) => YEAR_NAMES[y]).join(', '));
+const ymd = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
 // ---------------- auth ----------------
 let authMode = 'login';
 function showAuth() { $('#app').hidden = true; $('#auth').hidden = false; }
-$$('[data-auth]').forEach((b) => b.addEventListener('click', () => {
-  authMode = b.dataset.auth;
-  $$('[data-auth]').forEach((x) => x.classList.toggle('active', x === b));
-  $('#auth').classList.toggle('signup', authMode === 'signup');
-  $('#auth-form [name=name]').required = authMode === 'signup';
-}));
+function setAuthMode(mode) {
+  authMode = mode;
+  $$('[data-auth]').forEach((x) => x.classList.toggle('active', x.dataset.auth === mode));
+  $('#auth').classList.toggle('signup', mode === 'signup');
+  $('#auth-form [name=name]').required = mode === 'signup';
+  $('#auth-form').hidden = false; $('#auth-check').hidden = true;
+}
+$$('[data-auth]').forEach((b) => b.addEventListener('click', () => setAuthMode(b.dataset.auth)));
 $('#auth-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   $('#auth-error').textContent = '';
+  const body = Object.fromEntries(new FormData(e.target));
   try {
-    const { user } = await api('POST', `/api/auth/${authMode}`, Object.fromEntries(new FormData(e.target)));
+    if (authMode === 'signup') {
+      const r = await api('POST', '/api/auth/signup', body);
+      $('#auth-check-email').textContent = r.email;
+      $('#auth-form').hidden = true; $('#auth-check').hidden = false;
+      return;
+    }
+    const { user } = await api('POST', '/api/auth/login', body);
     state.user = user; start();
-  } catch (err) { $('#auth-error').textContent = err.message; }
+  } catch (err) {
+    $('#auth-error').textContent = err.message;
+    if (err.data?.needsVerification) { $('#auth-check-email').textContent = body.email; $('#auth-check').hidden = false; }
+  }
 });
-$('#logout').addEventListener('click', async () => { await api('POST', '/api/auth/logout').catch(() => {}); location.reload(); });
+$('#resend').addEventListener('click', async () => {
+  await api('POST', '/api/auth/resend', { email: $('#auth-check-email').textContent }).catch(() => {});
+  toast('If that account needs confirming, a new link is on its way.');
+});
+$('#logout').addEventListener('click', async () => { await api('POST', '/api/auth/logout').catch(() => {}); location.hash = ''; location.reload(); });
 
 // ---------------- navigation ----------------
-const loaders = { matches: loadMatches, search: loadSearch, finder: () => {}, verify: () => {}, calendar: loadCalendar, pipeline: loadPipeline, profile: loadProfile };
+const loaders = { month: loadMonth, timelines: loadTimelines, programs: loadPrograms, formats: loadFormats, calendar: loadCalendar, profile: loadProfile, admin: loadAdmin };
 function go(view) {
+  if (view === 'admin' && !state.user.isAdmin) view = 'month';
   $$('#nav .tab').forEach((t) => t.classList.toggle('active', t.dataset.view === view));
   $$('.view').forEach((v) => v.classList.toggle('active', v.id === `view-${view}`));
   history.replaceState(null, '', `#${view}`);
   loaders[view]?.();
 }
 $$('#nav .tab').forEach((t) => t.addEventListener('click', () => go(t.dataset.view)));
-document.addEventListener('click', (e) => { const g = e.target.closest('[data-goto]'); if (g) go(g.dataset.goto); });
+document.addEventListener('click', (e) => { const g = e.target.closest('[data-goto]'); if (g) { e.preventDefault(); go(g.dataset.goto); } });
 
 async function start() {
   $('#auth').hidden = true; $('#app').hidden = false;
-  state.companies = await api('GET', '/api/companies');
-  const coOpts = state.companies.map((c) => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
-  $('#search-form [name=company]').insertAdjacentHTML('beforeend', coOpts);
-  $('#finder-form [name=companyId]').insertAdjacentHTML('beforeend', coOpts);
-  const industries = [...new Set(state.companies.map((c) => c.industry).filter(Boolean))].sort();
-  $('#search-form [name=industry]').insertAdjacentHTML('beforeend', industries.map((i) => `<option>${esc(i)}</option>`).join(''));
-  const initial = location.hash.slice(1);
-  go(loaders[initial] ? initial : state.user.profile ? 'matches' : 'profile');
+  $('#nav-admin').hidden = !state.user.isAdmin;
+  state.industries = await api('GET', '/api/industries');
+  const opts = state.industries.map((i) => `<option value="${esc(i.slug)}">${esc(i.name)}</option>`).join('');
+  $('#prog-filters [name=industry]').insertAdjacentHTML('beforeend', opts);
+  const [view, query] = location.hash.slice(1).split('?');
+  if (query?.includes('welcome')) $('#welcome').hidden = false;
+  const needsSetup = !state.user.gradYear;
+  go(loaders[view] && !query?.includes('verify') ? view : needsSetup ? 'profile' : 'month');
 }
 
-// ---------------- contact cards ----------------
-function contactCard(c, { compact = false } = {}) {
-  const m = c.match || { score: 0, reasons: [] };
-  return `<article class="card" data-contact="${c.id}">
-    <div class="top">
-      <div><div class="name">${esc(c.name)}</div><div class="role">${esc(c.title || '')}${c.department ? ' · ' + esc(c.department) : ''}<br>${esc(c.company)}</div></div>
-      <div class="score" style="--p:${m.score}" title="Match score"><span>${m.score}</span></div>
-    </div>
-    ${compact ? '' : `<div class="email">${esc(c.email || 'No email on file')}</div>
-    <div>${statusBadge(c.verification)}</div>
-    ${m.reasons.length ? `<ul class="reasons">${m.reasons.map((r) => `<li>${esc(r.text)}</li>`).join('')}</ul>` : ''}`}
-  </article>`;
-}
-document.addEventListener('click', (e) => {
-  const card = e.target.closest('[data-contact]');
-  if (card) openContact(card.dataset.contact);
-});
-
-async function openContact(id) {
-  const c = await api('GET', `/api/contacts/${id}`);
-  const shared = new Set(c.match.sharedInterests);
-  $('#drawer-body').innerHTML = `
-    <h2>${esc(c.name)}</h2>
-    <p class="muted">${esc(c.title || '')} · ${esc(c.department || '')}<br><strong>${esc(c.company)}</strong> · ${esc(c.industry || '')}</p>
-    <div class="report-head"><div class="score" style="--p:${c.match.score}"><span>${c.match.score}</span></div>
-      <div>${c.match.reasons.map((r) => `<div>• ${esc(r.text)}</div>`).join('') || '<span class="muted">Upload your resume to see what you have in common.</span>'}</div></div>
-    <h3>Details</h3>
-    <dl class="kv">
-      <dt>Email</dt><dd><code>${esc(c.email || '—')}</code> ${statusBadge(c.verification)}</dd>
-      <dt>Location</dt><dd>${esc(c.location || '—')}</dd>
-      <dt>School</dt><dd>${esc(c.school || '—')}</dd>
-      <dt>Interests</dt><dd class="chips">${c.interests.map((i) => `<span class="chip ${[...shared].some((s) => i.includes(s)) ? 'hl' : ''}">${esc(i)}</span>`).join('')}</dd>
-      <dt>Firm format</dt><dd>${c.emailPattern.dominant ? `${esc(c.emailPattern.dominant)}@${esc(c.domain)} <span class="muted">(${Math.round(c.emailPattern.confidence * 100)}% of ${c.emailPattern.sample} known)</span>` : '—'}</dd>
-      ${c.linkedin ? `<dt>LinkedIn</dt><dd><a href="${esc(c.linkedin)}" target="_blank" rel="noopener">Profile</a></dd>` : ''}
-    </dl>
-    ${c.bio ? `<p>${esc(c.bio)}</p>` : ''}
-    <div class="actions">
-      ${c.email ? '<button class="btn primary" id="d-verify">Verify email</button>' : `<button class="btn primary" id="d-find">Find email</button>`}
-      <button class="btn" id="d-intro">Draft intro email</button>
-      <select id="d-status" style="width:auto">${['', 'saved', 'emailed', 'replied', 'meeting', 'closed'].map((s) => `<option value="${s}" ${c.saved?.status === s ? 'selected' : ''}>${s ? 'Status: ' + s : 'Add to outreach…'}</option>`).join('')}</select>
-    </div>
-    <div id="d-verify-out">${c.verification ? renderReport(c.verification) : ''}</div>
-    <div id="d-intro-out"></div>
-    <h3>Schedule a coffee chat</h3>
-    <form id="d-schedule" class="filters">
-      <input type="datetime-local" name="startsAt" required>
-      <input type="number" name="durationMin" value="30" min="5" max="240" title="Minutes">
-      <input name="location" placeholder="Zoom link / place">
-      <button class="btn primary">Add to calendar</button>
-    </form>
-    <div id="d-schedule-out"></div>`;
-  $('#drawer').hidden = false;
-
-  $('#d-verify')?.addEventListener('click', (e) => busy(e.target, async () => {
-    const v = await api('POST', `/api/contacts/${id}/verify`);
-    $('#d-verify-out').innerHTML = renderReport(v);
-  }));
-  $('#d-find')?.addEventListener('click', () => {
-    $('#drawer').hidden = true; go('finder');
-    const f = $('#finder-form'); f.firstName.value = c.firstName; f.lastName.value = c.lastName; f.companyId.value = c.companyId;
-  });
-  $('#d-intro').addEventListener('click', async () => {
-    const d = await api('GET', `/api/contacts/${id}/intro`);
-    const mailto = `mailto:${encodeURIComponent(c.email || '')}?subject=${encodeURIComponent(d.subject)}&body=${encodeURIComponent(d.body)}`;
-    $('#d-intro-out').innerHTML = `<h3>Draft</h3><p><strong>Subject:</strong> ${esc(d.subject)}</p><pre>${esc(d.body)}</pre>
-      <div class="actions"><a class="btn primary" href="${mailto}">Open in email app</a><button class="btn" id="d-copy">Copy</button></div>`;
-    $('#d-copy').onclick = () => navigator.clipboard.writeText(d.body).then(() => toast('Copied'));
-  });
-  $('#d-status').addEventListener('change', async (e) => {
-    if (!e.target.value) { await api('DELETE', `/api/saved/${id}`); return toast('Removed from outreach'); }
-    const r = await api('PUT', `/api/saved/${id}`, { status: e.target.value });
-    toast(r.followUp ? `Saved. Follow-up reminder set for ${fmtDate(r.followUp.startsAt)}` : 'Saved');
-  });
-  $('#d-schedule').addEventListener('submit', (e) => {
-    e.preventDefault();
-    busy(e.submitter, async () => {
-      const f = Object.fromEntries(new FormData(e.target));
-      const r = await api('POST', '/api/events', { contactId: Number(id), startsAt: new Date(f.startsAt).toISOString(), durationMin: Number(f.durationMin), location: f.location });
-      $('#d-schedule-out').innerHTML = `<p>Added <strong>${esc(r.event.title)}</strong> on ${fmtDate(r.event.startsAt)}${r.followUp ? ', plus a thank-you reminder' : ''}.</p>
-        <div class="actions">${eventLinks(r.event)}</div>`;
-    });
-  });
-}
-$('#drawer-close').addEventListener('click', () => ($('#drawer').hidden = true));
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('#drawer').hidden = true; });
-
-// ---------------- verification report ----------------
-function renderReport(v) {
-  const icon = { pass: '✓', warn: '!', fail: '✕', info: 'i', skip: '–' };
-  return `<div class="report">
-    <div class="report-head">
-      <div class="grade g-${v.grade.replace('+', 'p')}">${esc(v.grade)}</div>
-      <div>
-        <div><code>${esc(v.email)}</code></div>
-        <div style="margin:6px 0">${statusBadge(v)} <span class="muted">Confidence ${v.score}/99</span></div>
-        <div class="muted" style="font-size:.85rem">Domain reputation: <strong>${esc(v.reputation.label)}</strong> (${v.reputation.score}/100)</div>
-        <div class="meter" title="Domain reputation"><i style="width:${v.reputation.score}%"></i></div>
+// ---------------- shared pieces ----------------
+function milestoneCard(m, { checkable = false } = {}) {
+  return `<article class="ms ${m.done ? 'done' : ''}">
+    ${checkable ? `<input type="checkbox" data-done="${m.id}" ${m.done ? 'checked' : ''} aria-label="Mark done">` : '<span></span>'}
+    <div>
+      <div class="ms-title">${esc(m.title)}</div>
+      <div class="ms-meta">
+        <span class="badge ${m.category}">${CATEGORY_LABEL[m.category]}</span>
+        ${m.priority === 1 ? '<span class="badge high">High priority</span>' : ''}
+        <span>${esc(industryName(m.industry))}${m.track ? ' · ' + esc(m.track) : ''}</span>
+        <span>· ${esc(m.when)}</span>
       </div>
     </div>
-    ${v.suggestion ? `<p>Did you mean <strong>${esc(v.suggestion)}</strong>?</p>` : ''}
-    <table class="checks">${v.checks.map((c) => `<tr><td><span class="badge ${c.status}">${icon[c.status]}</span></td><td>${esc(c.label)}</td><td>${esc(c.detail)}</td><td class="pts">${c.points ? (c.points > 0 ? '+' : '') + c.points : ''}</td></tr>`).join('')}</table>
-    ${v.resolver === 'demo' ? '<p class="muted" style="font-size:.8rem">Demo domain: DNS and mailbox answers are simulated.</p>' : ''}
-  </div>`;
+    <div class="ms-actions">
+      ${m.link ? `<a class="btn small" href="${esc(m.link)}" target="_blank" rel="noopener">Link</a>` : ''}
+      <button class="btn small" data-remind="${m.id}" title="Add a reminder to your calendar">Remind me</button>
+    </div>
+    ${m.details ? `<p class="ms-details">${esc(m.details)}</p>` : ''}
+  </article>`;
 }
 
-// ---------------- views ----------------
-async function loadMatches() {
-  const m = await api('GET', '/api/matches');
-  $('#matches-empty').hidden = !m.needsResume;
-  $('#matches-profile').innerHTML = m.profile ? [...m.profile.interests.map((i) => `<span class="chip hl">${esc(i)}</span>`), ...m.profile.schools.map((s) => `<span class="chip">🎓 ${esc(s)}</span>`), ...m.profile.careerTracks.map((t) => `<span class="chip">💼 ${esc(t)}</span>`)].join('') : '';
-  $('#matches-list').innerHTML = m.results.map((c) => contactCard(c)).join('');
+function programRow(p) {
+  const urgent = p.daysLeft != null && p.daysLeft <= 7;
+  const when = p.status === 'open' ? `<strong>${fmtDate(p.deadline)}</strong><span class="days ${urgent ? 'urgent' : ''}">${p.daysLeft === 0 ? 'Due today' : `${p.daysLeft} day${p.daysLeft === 1 ? '' : 's'} left`}</span>`
+    : p.status === 'upcoming' ? `<strong>Opens ${fmtDate(p.opensOn)}</strong>${p.deadline ? `<span class="days">Due ${fmtDate(p.deadline)}</span>` : ''}`
+      : p.status === 'closed' ? `<strong>Closed</strong><span class="days">${fmtDate(p.deadline)}</span>`
+        : p.status === 'rolling' ? '<strong>Rolling</strong><span class="days">Apply early</span>'
+          : '<strong>Deadline TBA</strong><span class="days">Check back</span>';
+  return `<article class="prog">
+    <div>
+      <div class="ms-title">${esc(p.name)}</div>
+      <div class="ms-meta"><span>${esc(p.firm)}</span><span>· ${esc(industryName(p.industry))}</span><span>· ${esc(yearsLabel(p.eligibleYears))}</span>
+        <span class="badge ${p.status}">${STATUS_LABEL[p.status]}</span>${p.needsReview ? '<span class="badge tba" title="An officer is confirming the details">Details being confirmed</span>' : ''}</div>
+      ${p.description ? `<p class="ms-details" style="margin-top:6px">${esc(p.description)}</p>` : ''}
+    </div>
+    <div class="when">${when}
+      <div class="ms-actions" style="justify-content:flex-end;margin-top:6px">
+        ${p.link ? `<a class="btn small" href="${esc(p.link)}" target="_blank" rel="noopener">Apply</a>` : ''}
+        ${p.deadline && p.status !== 'closed' ? `<button class="btn small" data-deadline="${p.id}" data-date="${p.deadline}">Add to calendar</button>` : ''}
+      </div>
+    </div>
+  </article>`;
 }
 
-async function loadSearch(e) {
-  e?.preventDefault?.();
-  const params = new URLSearchParams([...new FormData($('#search-form'))].filter(([, v]) => v));
-  const r = await api('GET', `/api/contacts?${params}`);
-  $('#search-count').textContent = `${r.total} ${r.total === 1 ? 'person' : 'people'}`;
-  $('#search-list').innerHTML = r.results.map((c) => contactCard(c)).join('');
-}
-$('#search-form').addEventListener('submit', loadSearch);
-
-$('#finder-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  busy(e.submitter, async () => {
-    const f = Object.fromEntries(new FormData(e.target));
-    const r = await api('POST', '/api/finder', { ...f, companyId: f.companyId ? Number(f.companyId) : undefined });
-    $('#finder-result').innerHTML = `
-      ${r.knownContact ? `<p>✅ ${esc(r.knownContact.name)} is already in your database: <code>${esc(r.knownContact.email || 'no email')}</code> <button class="btn small" data-contact="${r.knownContact.id}">Open</button></p>` : ''}
-      <p class="muted">${r.emailPattern?.dominant ? `${esc(r.company)} mostly uses <strong>${esc(r.emailPattern.dominant)}@${esc(r.domain)}</strong> (${Math.round(r.emailPattern.confidence * 100)}% of ${r.emailPattern.sample} known addresses).` : `No known addresses at ${esc(r.domain)}; trying common formats.`}</p>
-      ${r.best ? `<h3>Best guess</h3>${renderReport(r.best.verification)}` : ''}
-      <h3>All checked candidates</h3>
-      <table class="table"><tr><th>Email</th><th>Pattern</th><th>Result</th><th>Score</th></tr>
-        ${r.candidates.map((c) => `<tr><td><code>${esc(c.email)}</code></td><td>${esc(c.pattern)}</td><td>${statusBadge(c.verification)}</td><td>${c.verification.score}</td></tr>`).join('')}
-        ${r.untested.slice(0, 4).map((c) => `<tr><td><code>${esc(c.email)}</code></td><td>${esc(c.pattern)}</td><td><span class="badge unknown">Not checked</span></td><td></td></tr>`).join('')}
-      </table>`;
-  });
+document.addEventListener('change', async (e) => {
+  const cb = e.target.closest('[data-done]');
+  if (!cb) return;
+  try {
+    await api('PUT', `/api/milestones/${cb.dataset.done}/progress${asOfQuery()}`, { done: cb.checked });
+    cb.closest('.ms').classList.toggle('done', cb.checked);
+  } catch (err) { cb.checked = !cb.checked; toast(err.message); }
+});
+document.addEventListener('click', async (e) => {
+  const remind = e.target.closest('[data-remind]');
+  if (remind) {
+    const when = prompt('Remind me on (YYYY-MM-DD):', ymd(new Date(Date.now() + 2 * 864e5)));
+    if (!when || !/^\d{4}-\d{2}-\d{2}$/.test(when)) return;
+    await busy(remind, async () => {
+      await api('POST', '/api/events', { milestoneId: Number(remind.dataset.remind), startsAt: new Date(`${when}T09:00`).toISOString(), durationMin: 30 });
+      toast('Reminder added to your calendar');
+    });
+  }
+  const dl = e.target.closest('[data-deadline]');
+  if (dl) {
+    await busy(dl, async () => {
+      await api('POST', '/api/events', { programId: Number(dl.dataset.deadline), startsAt: new Date(`${dl.dataset.date}T09:00`).toISOString(), durationMin: 30 });
+      toast('Deadline added. Your calendar will remind you the day before.');
+    });
+  }
 });
 
-$('#verify-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  busy(e.submitter, async () => {
-    const r = await api('POST', '/api/verify', { email: e.target.email.value });
-    $('#verify-result').innerHTML = (r.contact ? `<p>Matched <a href="#" data-contact="${r.contact.id}">${esc(r.contact.name)}</a> at ${esc(r.contact.company)} in your database.</p>` : '') + renderReport(r);
+// ---------------- this month ----------------
+function asOfQuery() {
+  if (!state.monthOffset) return '';
+  const d = new Date(); d.setDate(15); d.setMonth(d.getMonth() + state.monthOffset);
+  return `?asOf=${ymd(d)}`;
+}
+async function loadMonth() {
+  const r = await api('GET', `/api/this-month${asOfQuery()}`);
+  const d = new Date(`${r.date}T12:00:00`);
+  $('#month-title').textContent = `${d.toLocaleString(undefined, { month: 'long', year: 'numeric' })}${state.monthOffset ? ' (preview)' : ''}`;
+  $('#month-sub').textContent = r.classYearName
+    ? `${r.classYearName} · ${r.usingAllIndustries ? 'All industries' : r.industries.map((i) => i.name).join(', ')} · ${r.academicYear} academic year`
+    : '';
+  if (r.needsProfile) {
+    $('#month-body').innerHTML = '<div class="empty"><p>Add your graduation year so we can show what to focus on.</p><button class="btn primary" data-goto="profile">Set up profile</button></div>';
+    return;
+  }
+  if (r.outOfRange) {
+    $('#month-body').innerHTML = `<div class="empty"><p>${r.classYear === 0 ? "You haven't started freshman year yet in this month." : 'Your class has graduated by this month.'} Check your graduation year on your profile.</p><button class="btn" data-goto="profile">Profile</button></div>`;
+    return;
+  }
+  const section = (title, count, body, empty) => `<div class="section"><h3>${title} <span class="count">${count}</span></h3>${count ? body : `<p class="empty-sm">${empty}</p>`}</div>`;
+  const left = r.now.filter((m) => !m.done).length;
+  $('#month-body').innerHTML =
+    (r.usingAllIndustries ? '<p class="notice">Showing every industry. <a href="#" data-goto="profile">Pick the industries you\'re recruiting for</a> to focus this list.</p>' : '') +
+    section('Focus this month', `${left} to do`, `<div class="list">${r.now.map((m) => milestoneCard(m, { checkable: true })).join('')}</div>`, 'Nothing on the timeline for this month. A good time to get ahead on next month.') +
+    section('Deadlines in the next 45 days', r.deadlines.length, `<div class="list">${r.deadlines.map(programRow).join('')}</div>`, 'No program deadlines coming up for your year and industries.') +
+    section('Coming up next month', r.next.length, `<div class="list">${r.next.map((m) => milestoneCard(m)).join('')}</div>`, 'Nothing new starts next month.') +
+    section('Programs to watch', r.toWatch.length, `<div class="list">${r.toWatch.map(programRow).join('')}</div>`, 'No other programs for your year right now.') +
+    section('On your calendar this month', r.events.length, `<div class="list">${r.events.map((ev) => `<div class="list-item"><div><span class="badge ${ev.kind === 'deadline' ? 'apply' : ev.kind === 'reminder' ? 'prepare' : 'network'}">${ev.kind}</span> <strong>${esc(ev.title)}</strong><br><span class="muted">${fmtDateTime(ev.startsAt)}</span></div></div>`).join('')}</div>`, 'Nothing scheduled. Add deadlines and reminders from the lists above.');
+}
+$('#month-prev').onclick = () => { state.monthOffset--; loadMonth(); };
+$('#month-next').onclick = () => { state.monthOffset++; loadMonth(); };
+$('#month-today').onclick = () => { state.monthOffset = 0; loadMonth(); };
+
+// ---------------- timelines ----------------
+function seg(el, items, current, onPick) {
+  el.innerHTML = items.map(([v, label]) => `<button type="button" data-v="${esc(v)}" class="${String(v) === String(current) ? 'active' : ''}">${esc(label)}</button>`).join('');
+  el.onclick = (e) => { const b = e.target.closest('button'); if (b) onPick(b.dataset.v); };
+}
+async function loadTimelines() {
+  const t = state.tl;
+  if (!t.industry) t.industry = state.user.industries[0] || state.industries[0]?.slug;
+  if (t.year === null) t.year = state.user.classYear >= 1 && state.user.classYear <= 4 ? state.user.classYear : 0;
+  seg($('#tl-industry'), state.industries.map((i) => [i.slug, i.name]), t.industry, (v) => { t.industry = v; loadTimelines(); });
+  seg($('#tl-year'), [[0, 'All years'], [1, 'Freshman'], [2, 'Sophomore'], [3, 'Junior'], [4, 'Senior']], t.year, (v) => { t.year = Number(v); loadTimelines(); });
+  const rows = await api('GET', `/api/timelines?industry=${encodeURIComponent(t.industry)}${t.year ? `&year=${t.year}` : ''}`);
+  const thisMonth = new Date().getMonth() + 1;
+  const strip = (m) => ACADEMIC_MONTHS.map((mo) => {
+    const on = m.startMonth <= m.endMonth ? mo >= m.startMonth && mo <= m.endMonth : mo >= m.startMonth || mo <= m.endMonth;
+    return `<span class="${on ? 'on' : ''} ${mo === thisMonth ? 'now' : ''}" title="${MONTHS[mo]}">${MONTHS[mo][0]}</span>`;
+  }).join('');
+  const groups = t.year ? [[t.year, rows]] : [1, 2, 3, 4].map((y) => [y, rows.filter((m) => !m.classYears.length || m.classYears.includes(y))]);
+  $('#tl-summary').textContent = `${rows.length} milestone${rows.length === 1 ? '' : 's'}. The orange outline marks the current month.`;
+  $('#tl-body').innerHTML = groups.map(([y, ms]) => `<div class="tl-year"><h3>${YEAR_NAMES[y]} year</h3>
+    ${ms.length ? `<div class="tl-row" style="background:transparent;border:0;padding:0 12px"><span></span><div class="strip strip-head">${ACADEMIC_MONTHS.map((mo) => `<span>${MONTHS[mo]}</span>`).join('')}</div></div>
+      ${ms.map((m) => `<div class="tl-row"><details><summary>${esc(m.title)} <span class="badge ${m.category}">${CATEGORY_LABEL[m.category]}</span>${m.track ? ` <span class="muted">· ${esc(m.track)}</span>` : ''}</summary>
+        <p>${esc(m.details || '')}</p><p><em>${esc(m.when)}${m.source ? ` · Source: ${esc(m.source)}` : ''}</em></p></details>
+        <div class="strip">${strip(m)}</div></div>`).join('')}`
+    : '<p class="empty-sm">No milestones for this year yet.</p>'}</div>`).join('');
+  const ind = state.industries.find((i) => i.slug === t.industry);
+  $('#tl-guide').innerHTML = ind ? `<p class="muted">${esc(ind.summary || '')}</p><div class="guide">${ind.guide.map((s) => `<details><summary>${esc(s.heading)}</summary><ul>${s.items.map((it) => `<li>${esc(it)}</li>`).join('')}</ul></details>`).join('')}</div>` : '';
+}
+
+// ---------------- programs ----------------
+async function loadPrograms() {
+  const f = $('#prog-filters');
+  if (!loadPrograms.init) {
+    loadPrograms.init = true;
+    if (state.user.classYear >= 1 && state.user.classYear <= 4) f.year.value = state.user.classYear;
+    f.addEventListener('input', () => loadPrograms());
+    f.addEventListener('submit', (e) => e.preventDefault());
+  }
+  const params = new URLSearchParams([...new FormData(f)].filter(([, v]) => v));
+  const rows = await api('GET', `/api/programs?${params}`);
+  $('#prog-list').innerHTML = rows.length ? rows.map(programRow).join('') : '<p class="empty-sm">No programs match these filters.</p>';
+}
+
+// ---------------- email formats ----------------
+async function loadFormats() {
+  const f = $('#fmt-filters');
+  const r = await api('GET', `/api/formats?${new URLSearchParams([...new FormData(f)].filter(([, v]) => v))}`);
+  if (!loadFormats.init) {
+    loadFormats.init = true;
+    f.sector.insertAdjacentHTML('beforeend', r.sectors.map((s) => `<option>${esc(s)}</option>`).join(''));
+    f.addEventListener('input', () => loadFormats());
+    f.addEventListener('submit', (e) => e.preventDefault());
+  }
+  $('#fmt-count').textContent = `${r.results.length} firm${r.results.length === 1 ? '' : 's'}. Click a firm to build an address from a name.`;
+  $('#fmt-table').innerHTML = `<tr><th>Firm</th><th>Format</th><th>Example</th><th>Confidence</th><th>Notes</th></tr>` +
+    r.results.map((x) => `<tr class="clickable" data-firm="${x.id}"><td><strong>${esc(x.name)}</strong><br><span class="muted">${esc([x.sector, x.category].filter(Boolean).join(' · '))}</span></td>
+      <td><code>${esc(x.format)}</code>${x.fallbacks.length ? `<br><span class="muted">then ${x.fallbacks.map((fb) => `<code>${esc(fb.format)}</code>`).join(', ')}</span>` : ''}</td>
+      <td><code>${esc(x.example)}</code></td><td><span class="conf ${esc((x.confidence || '').replace(' ', '-'))}">${esc(x.confidence || '—')}</span></td>
+      <td class="muted">${esc(x.notes || '')}</td></tr>`).join('');
+}
+$('#fmt-table').addEventListener('click', (e) => {
+  const tr = e.target.closest('[data-firm]');
+  if (!tr) return;
+  const name = tr.querySelector('strong').textContent;
+  openDialog(`<h3>Build an address at ${esc(name)}</h3>
+    <div class="row2"><label>First name <input name="first" required autofocus></label><label>Last name <input name="last" required></label></div>
+    <p class="hint">Use the name the person goes by (e.g. Dan, not Daniel). Hyphens, apostrophes and accents are removed.</p>
+    <div id="addr-out"></div>
+    <div class="actions"><button class="btn" value="cancel" formnovalidate>Close</button><button class="btn primary" value="go">Build</button></div>`,
+  async (form, action) => {
+    if (action !== 'go') return true;
+    const r = await api('GET', `/api/formats/${tr.dataset.firm}/address?first=${encodeURIComponent(form.first.value)}&last=${encodeURIComponent(form.last.value)}`);
+    $('#addr-out').innerHTML = `<p><strong>Most likely:</strong> ${r.primary.map((a) => `<code>${esc(a)}</code>`).join(' or ')}
+      <button type="button" class="btn small" data-copy="${esc(r.primary[0])}">Copy</button></p>
+      ${r.fallbacks.length ? `<p><strong>If that bounces, try:</strong> ${r.fallbacks.map((a) => `<code>${esc(a)}</code>`).join(', ')}</p>` : ''}
+      ${r.notes ? `<p class="hint">${esc(r.notes)}</p>` : ''}
+      <p class="hint">Confidence: ${esc(r.confidence || 'unknown')}. A format is the rule, not a guarantee: duplicate names, nicknames and old accounts break it.</p>`;
+    return false;
   });
 });
-$('#bulk-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  busy(e.submitter, async () => {
-    const emails = e.target.emails.value.split(/[\s,;]+/).filter(Boolean);
-    const r = await api('POST', '/api/verify/bulk', { emails });
-    $('#bulk-result').innerHTML = `<p>${Object.entries(r.summary).map(([k, n]) => `<span class="badge ${k}">${STATUS_TEXT[k] || k}: ${n}</span>`).join(' ')}</p>
-      <table class="table"><tr><th>Email</th><th>Result</th><th>Score</th><th>Reputation</th></tr>
-      ${r.results.map((v) => `<tr><td><code>${esc(v.email)}</code></td><td>${statusBadge(v)}</td><td>${v.score}</td><td>${esc(v.reputation.label)}</td></tr>`).join('')}</table>`;
-  });
+document.addEventListener('click', (e) => {
+  const c = e.target.closest('[data-copy]');
+  if (c) navigator.clipboard.writeText(c.dataset.copy).then(() => toast('Copied'));
 });
 
 // ---------------- calendar ----------------
 const eventLinks = (ev) => `<a class="btn small" href="${esc(ev.links.google)}" target="_blank" rel="noopener">Google</a>
   <a class="btn small" href="${esc(ev.links.outlook)}" target="_blank" rel="noopener">Outlook</a>
   <a class="btn small" href="${esc(ev.links.ics)}">.ics</a>`;
-
 async function loadCalendar() {
   const feed = location.origin + state.user.calendarFeed;
   $('#feed-url').textContent = feed;
@@ -238,10 +295,10 @@ async function loadCalendar() {
   renderMonth();
   const upcoming = state.events.filter((e) => Date.parse(e.startsAt) > Date.now() - 36e5);
   $('#cal-upcoming').innerHTML = upcoming.length ? upcoming.map((ev) => `<div class="list-item">
-      <div><span class="badge ${ev.kind === 'meeting' ? 'pass' : ev.kind === 'deadline' ? 'fail' : 'warn'}">${ev.kind.replace('_', '-')}</span>
-        <strong>${esc(ev.title)}</strong><br><span class="muted">${fmtDate(ev.startsAt)} · ${ev.durationMin} min${ev.location ? ' · ' + esc(ev.location) : ''}</span></div>
-      <div class="actions">${eventLinks(ev)} <button class="btn small" data-del-event="${ev.id}">Delete</button></div></div>`).join('')
-    : '<p class="muted">Nothing scheduled. Open a contact to book a coffee chat.</p>';
+      <div><span class="badge ${ev.kind === 'deadline' ? 'apply' : ev.kind === 'reminder' ? 'prepare' : 'network'}">${ev.kind}</span>
+        <strong>${esc(ev.title)}</strong><br><span class="muted">${fmtDateTime(ev.startsAt)} · ${ev.durationMin} min${ev.location ? ' · ' + esc(ev.location) : ''}</span></div>
+      <div class="ms-actions">${eventLinks(ev)} <button class="btn small" data-del-event="${ev.id}">Delete</button></div></div>`).join('')
+    : '<p class="empty-sm">Nothing scheduled. Add program deadlines from <a href="#" data-goto="programs">Programs</a> or reminders from <a href="#" data-goto="month">This month</a>.</p>';
 }
 function renderMonth() {
   const m = state.calMonth, y = m.getFullYear(), mo = m.getMonth();
@@ -253,7 +310,7 @@ function renderMonth() {
     const d = new Date(startDay); d.setDate(startDay.getDate() + i);
     const evs = state.events.filter((e) => new Date(e.startsAt).toDateString() === d.toDateString());
     html += `<div class="day ${d.getMonth() !== mo ? 'other' : ''} ${d.toDateString() === today ? 'today' : ''}"><span class="num">${d.getDate()}</span>
-      ${evs.map((e) => `<span class="ev ${e.kind}" title="${esc(e.title)}" ${e.contact ? `data-contact="${e.contact.id}"` : ''}>${new Date(e.startsAt).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })} ${esc(e.title)}</span>`).join('')}</div>`;
+      ${evs.map((e) => `<span class="ev ${e.kind === 'deadline' ? 'deadline' : e.kind === 'reminder' ? 'follow_up' : ''}" title="${esc(e.title)}">${esc(e.title)}</span>`).join('')}</div>`;
   }
   $('#cal-grid').innerHTML = html;
 }
@@ -267,46 +324,203 @@ document.addEventListener('click', async (e) => {
 $('#event-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const f = Object.fromEntries(new FormData(e.target));
-  await api('POST', '/api/events', { ...f, startsAt: new Date(f.startsAt).toISOString(), durationMin: Number(f.durationMin) });
-  e.target.reset(); toast('Event added'); loadCalendar();
+  await busy(e.submitter, async () => {
+    await api('POST', '/api/events', { ...f, startsAt: new Date(f.startsAt).toISOString(), durationMin: Number(f.durationMin) });
+    e.target.reset(); toast('Event added'); loadCalendar();
+  });
 });
 
-// ---------------- pipeline ----------------
-async function loadPipeline() {
-  const saved = await api('GET', '/api/saved');
-  $('#pipeline').innerHTML = ['saved', 'emailed', 'replied', 'meeting', 'closed'].map((s) => `<div class="col"><h3>${s} (${saved.filter((c) => c.status === s).length})</h3>
-    ${saved.filter((c) => c.status === s).map((c) => contactCard(c, { compact: true })).join('')}</div>`).join('');
-}
-
 // ---------------- profile ----------------
-function fillProfile() {
-  const u = state.user, p = u.profile || { interests: [], schools: [], careerTracks: [], skills: [] };
-  $('#resume-name').textContent = u.resumeFilename ? `Current: ${u.resumeFilename}` : 'No resume uploaded yet.';
-  const f = $('#profile-form');
-  f.interests.value = p.interests.join(', '); f.schools.value = p.schools.join(', ');
-  f.careerTracks.value = p.careerTracks.join(', '); f.skills.value = p.skills.join(', '); f.location.value = u.location || '';
+function loadProfile() {
+  const u = state.user, f = $('#profile-form');
+  f.name.value = u.name; f.gradYear.value = u.gradYear || '';
+  $('#profile-year').textContent = u.classYearName ? `You're a ${u.classYearName.toLowerCase()} this academic year.` : '';
+  $('#profile-industries').innerHTML = state.industries.map((i) => `<label><input type="checkbox" name="industries" value="${esc(i.slug)}" ${u.industries.includes(i.slug) ? 'checked' : ''}> ${esc(i.name)}</label>`).join('');
 }
-async function loadProfile() { state.user = await api('GET', '/api/me'); fillProfile(); }
-const afterResume = (u) => { state.user = u; fillProfile(); toast(`Found ${u.profile.interests.length} interests, ${u.profile.schools.length} school(s)`); };
-$('#resume-form').addEventListener('submit', (e) => { e.preventDefault(); busy(e.submitter, async () => afterResume(await api('POST', '/api/me/resume', new FormData(e.target)))); });
-$('#resume-text-form').addEventListener('submit', (e) => { e.preventDefault(); busy(e.submitter, async () => afterResume(await api('POST', '/api/me/resume', { text: e.target.text.value }))); });
 $('#profile-form').addEventListener('submit', (e) => {
   e.preventDefault();
   busy(e.submitter, async () => {
-    const f = e.target, split = (s) => s.split(',').map((x) => x.trim()).filter(Boolean);
-    await api('PATCH', '/api/me', { location: f.location.value || null });
-    state.user = await api('PUT', '/api/me/profile', { interests: split(f.interests.value), schools: split(f.schools.value), careerTracks: split(f.careerTracks.value), skills: split(f.skills.value) });
-    fillProfile(); toast('Profile saved');
-  });
-});
-$('#import-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  busy(e.submitter, async () => {
-    const r = await api('POST', '/api/import', new FormData(e.target));
-    $('#import-result').textContent = `Imported ${r.created} new, updated ${r.updated}.${r.errors.length ? ` ${r.errors.length} row(s) skipped: ${r.errors.slice(0, 3).join(' ')}` : ''}`;
-    state.companies = await api('GET', '/api/companies');
+    const f = e.target;
+    state.user = await api('PATCH', '/api/me', { name: f.name.value, gradYear: f.gradYear.value || null, industries: $$('input[name=industries]:checked', f).map((x) => x.value) });
+    loadProfile(); $('#welcome').hidden = true; toast('Profile saved');
   });
 });
 
+// ---------------- dialog helper ----------------
+/** onSubmit(form, action) returns true to close. */
+function openDialog(html, onSubmit) {
+  const dlg = $('#dialog'), form = $('#dialog-form');
+  form.innerHTML = html;
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    const action = e.submitter?.value;
+    if (action === 'cancel') return dlg.close();
+    try { if (await onSubmit(form, action)) dlg.close(); } catch (err) { toast(err.message); }
+  };
+  dlg.showModal();
+}
+
+// ---------------- admin ----------------
+const monthOpts = ACADEMIC_MONTHS.map((m) => [m, MONTHS[m]]);
+const SCHEMAS = {
+  programs: {
+    label: 'program', list: '/api/admin/programs', path: '/api/admin/programs',
+    columns: [['name', 'Program'], ['firm', 'Firm'], ['industry', 'Industry'], ['deadline', 'Deadline'], ['needs_review', 'Needs review']],
+    fields: () => [
+      ['name', 'Program name', 'text', { required: true }], ['firm', 'Firm', 'text', { required: true }],
+      ['industry', 'Industry', 'select', { options: state.adminIndustries.map((i) => [i.slug, i.name]) }],
+      ['eligible_years', 'Eligible class years', 'years'], ['cycle', 'Cycle', 'text', { placeholder: '2026-27' }],
+      ['opens_on', 'Opens on', 'date'], ['deadline', 'Deadline', 'date'], ['rolling', 'Rolling admissions', 'bool'],
+      ['link', 'Application link', 'url'], ['description', 'Description', 'textarea'],
+      ['needs_review', 'Needs review (shows "details being confirmed")', 'bool'], ['active', 'Visible to members', 'bool', { default: true }],
+    ],
+  },
+  milestones: {
+    label: 'milestone', list: '/api/admin/milestones', path: '/api/admin/milestones',
+    columns: [['title', 'Milestone'], ['industry', 'Industry'], ['class_years', 'Years'], ['start_month', 'From'], ['end_month', 'To']],
+    fields: () => [
+      ['industry', 'Industry', 'select', { options: state.adminIndustries.map((i) => [i.slug, i.name]) }], ['track', 'Track (optional)', 'text', { placeholder: 'e.g. Quant' }],
+      ['class_years', 'Class years (none = every year)', 'years'],
+      ['start_month', 'From month', 'select', { options: monthOpts }], ['end_month', 'To month', 'select', { options: monthOpts, hint: 'Windows can wrap past December, e.g. Dec to Feb.' }],
+      ['title', 'Title', 'text', { required: true }], ['details', 'Details', 'textarea'],
+      ['category', 'Category', 'select', { options: Object.entries(CATEGORY_LABEL) }],
+      ['priority', 'Priority', 'select', { options: [[1, 'High'], [2, 'Normal'], [3, 'Low']], default: 2 }],
+      ['link', 'Link', 'url'], ['sort_order', 'Sort order', 'number', { default: 0 }], ['source', 'Source', 'text', { placeholder: 'e.g. Consulting slides, 10/28/2026' }],
+    ],
+  },
+  industries: {
+    label: 'industry', list: '/api/admin/industries', path: '/api/admin/industries',
+    columns: [['name', 'Industry'], ['slug', 'Slug'], ['sort_order', 'Order'], ['active', 'Active']],
+    fields: () => [
+      ['name', 'Name', 'text', { required: true }], ['slug', 'Slug', 'text', { required: true, hint: 'Lowercase, hyphens: e.g. sales-trading' }],
+      ['summary', 'Summary', 'textarea'], ['sort_order', 'Sort order', 'number', { default: 0 }], ['active', 'Active', 'bool', { default: true }],
+      ['guide', 'Guide sections (JSON)', 'code', { default: '[\n  { "heading": "Overview", "items": ["..."] }\n]' }],
+    ],
+  },
+  firms: {
+    label: 'firm', list: '/api/admin/firms', path: '/api/admin/firms',
+    columns: [['name', 'Firm'], ['sector', 'Sector'], ['format', 'Format'], ['confidence', 'Confidence'], ['researched_on', 'Researched']],
+    fields: () => [
+      ['name', 'Firm', 'text', { required: true }], ['sector', 'Sector', 'text', { placeholder: 'Consulting, Finance, Tech…' }], ['category', 'Category', 'text'],
+      ['format', 'Email format', 'text', { required: true, placeholder: 'first.last@firm.com', hint: 'first.last, first_last, flast, f.last, last.first, last_first, lastf, firstl, first…' }],
+      ['fallbacks', 'Fallback formats', 'text', { placeholder: 'flast@firm.com, first@firm.com' }],
+      ['confidence', 'Confidence', 'select', { options: [['Confirmed', 'Confirmed'], ['Very High', 'Very High'], ['High', 'High'], ['Medium', 'Medium']] }],
+      ['notes', 'Notes', 'textarea'], ['sources_agree', 'Sources agreeing', 'text', { placeholder: '4 of 5' }], ['researched_on', 'Researched on', 'date'],
+    ],
+  },
+};
+
+function fieldHtml([name, label, type, o = {}], value) {
+  const v = value ?? o.default ?? '';
+  const hint = o.hint ? `<span class="hint">${esc(o.hint)}</span>` : '';
+  if (type === 'bool') return `<div class="checks-row"><label><input type="checkbox" name="${name}" ${v ? 'checked' : ''}> ${esc(label)}</label></div>`;
+  if (type === 'years') return `<fieldset><legend>${esc(label)}</legend><div class="checks-row">${[1, 2, 3, 4].map((y) => `<label><input type="checkbox" name="${name}" value="${y}" ${(v || []).includes(y) ? 'checked' : ''}> ${YEAR_NAMES[y]}</label>`).join('')}</div></fieldset>`;
+  if (type === 'select') return `<label>${esc(label)} ${hint}<select name="${name}">${o.options.map(([ov, ol]) => `<option value="${esc(ov)}" ${String(ov) === String(v) ? 'selected' : ''}>${esc(ol)}</option>`).join('')}</select></label>`;
+  if (type === 'textarea' || type === 'code') return `<label>${esc(label)} ${hint}<textarea name="${name}" rows="${type === 'code' ? 12 : 3}" class="${type}">${esc(v)}</textarea></label>`;
+  return `<label>${esc(label)} ${hint}<input name="${name}" type="${type}" value="${esc(v)}" ${o.required ? 'required' : ''} placeholder="${esc(o.placeholder || '')}"></label>`;
+}
+function readFields(form, fields) {
+  const out = {};
+  for (const [name, , type] of fields) {
+    if (type === 'bool') out[name] = form.elements[name].checked;
+    else if (type === 'years') out[name] = $$(`input[name=${name}]:checked`, form).map((x) => Number(x.value));
+    else out[name] = form.elements[name].value;
+  }
+  return out;
+}
+
+async function loadAdmin() {
+  if (!state.user.isAdmin) return;
+  $$('#admin-tabs button').forEach((b) => b.classList.toggle('active', b.dataset.admin === state.adminTab));
+  state.adminIndustries = await api('GET', '/api/admin/industries');
+  if (state.adminTab === 'backup') return renderBackup();
+  const s = SCHEMAS[state.adminTab];
+  const rows = await api('GET', s.list);
+  const cell = (row, key) => {
+    const v = row[key];
+    if (key === 'class_years') return v.length ? v.map((y) => YEAR_NAMES[y].slice(0, 2)).join(', ') : 'All';
+    if (key === 'start_month' || key === 'end_month') return MONTHS[v];
+    if (key === 'industry') return industryName(v);
+    if (typeof v === 'boolean') return v ? 'Yes' : '';
+    if (key === 'format') return `<code>${esc(v)}</code>`;
+    return esc(v ?? '—');
+  };
+  $('#admin-body').innerHTML = `<div class="admin-bar">
+      <input id="admin-search" placeholder="Filter ${s.label}s…">
+      <button class="btn primary" id="admin-add">Add ${s.label}</button>
+      ${state.adminTab === 'firms' ? '<button class="btn" id="admin-upload">Upload spreadsheet</button>' : ''}
+    </div>
+    <div class="table-wrap"><table class="table"><tr>${s.columns.map(([, l]) => `<th>${l}</th>`).join('')}<th>Last edited</th></tr>
+    ${rows.map((row) => `<tr class="clickable" data-row="${row.id}">${s.columns.map(([k]) => `<td>${cell(row, k)}</td>`).join('')}<td class="muted">${esc(row.updated_by || '')}<br>${esc((row.updated_at || '').slice(0, 10))}</td></tr>`).join('')}
+    </table></div>`;
+  $('#admin-search').oninput = (e) => {
+    const q = e.target.value.toLowerCase();
+    $$('#admin-body tr[data-row]').forEach((tr) => { tr.hidden = q && !tr.textContent.toLowerCase().includes(q); });
+  };
+  $('#admin-add').onclick = () => editRow(s, null);
+  $('#admin-body table').onclick = (e) => {
+    const tr = e.target.closest('[data-row]');
+    if (tr) editRow(s, rows.find((r) => String(r.id) === tr.dataset.row));
+  };
+  $('#admin-upload')?.addEventListener('click', uploadFormats);
+}
+$('#admin-tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-admin]'); if (b) { state.adminTab = b.dataset.admin; loadAdmin(); } });
+
+function editRow(s, row) {
+  const fields = s.fields();
+  openDialog(`<h3>${row ? 'Edit' : 'Add'} ${s.label}</h3>${fields.map((f) => fieldHtml(f, row?.[f[0]])).join('')}
+    <div class="actions">${row ? '<button class="btn" value="delete" formnovalidate style="margin-right:auto;color:var(--bad)">Delete</button>' : ''}
+      <button class="btn" value="cancel" formnovalidate>Cancel</button><button class="btn primary" value="save">Save</button></div>`,
+  async (form, action) => {
+    if (action === 'delete') {
+      if (!confirm(`Delete this ${s.label}? This can't be undone.`)) return false;
+      await api('DELETE', `${s.path}/${row.id}`);
+    } else {
+      const body = readFields(form, fields);
+      await (row ? api('PUT', `${s.path}/${row.id}`, body) : api('POST', s.path, body));
+    }
+    toast('Saved');
+    if (s === SCHEMAS.industries) state.industries = await api('GET', '/api/industries');
+    loadAdmin();
+    return true;
+  });
+}
+
+function uploadFormats() {
+  openDialog(`<h3>Upload email formats</h3>
+    <p class="hint">An .xlsx or .csv with columns <strong>Firm</strong> and <strong>Best Email Format</strong> (e.g. first.last@gs.com). Optional: Confidence, Fallback / Notes, Category, Sites Agreeing, Sector. Firms already in the list are updated by name.</p>
+    <label>File <input type="file" name="file" accept=".xlsx,.csv" required></label>
+    <label>Sector for these firms <span class="hint">(if the sheet has no Sector column)</span><input name="sector" placeholder="e.g. Tech"></label>
+    <div id="upload-out"></div>
+    <div class="actions"><button class="btn" value="cancel" formnovalidate>Close</button><button class="btn primary" value="go">Upload</button></div>`,
+  async (form, action) => {
+    if (action !== 'go') return true;
+    const fd = new FormData(); fd.append('file', form.file.files[0]); if (form.sector.value) fd.append('sector', form.sector.value);
+    const r = await api('POST', '/api/admin/firms/import', fd);
+    $('#upload-out').innerHTML = `<p class="notice">Added ${r.created}, updated ${r.updated}.${r.errors.length ? `<br>${r.errors.length} row(s) skipped:<br>${r.errors.slice(0, 8).map(esc).join('<br>')}` : ''}</p>`;
+    loadAdmin();
+    return false;
+  });
+}
+
+function renderBackup() {
+  $('#admin-body').innerHTML = `<div class="grid2">
+    <div class="panel"><h3>Download everything</h3><p class="muted">Industries, timelines, programs and email formats as one JSON file. Keep a copy before big edits, and hand it to next year's officers.</p>
+      <a class="btn primary" href="/api/admin/content">Download backup</a></div>
+    <div class="panel"><h3>Restore from a backup</h3><p class="muted"><strong>Replaces</strong> all industries, timelines and programs with the file's contents (email formats are merged by firm name). Students' "done" checkmarks are cleared.</p>
+      <form id="restore-form"><input type="file" accept=".json,application/json" name="file" required><button class="btn">Restore</button></form></div></div>`;
+  $('#restore-form').onsubmit = (e) => {
+    e.preventDefault();
+    if (!confirm('Replace all timelines and programs with this file?')) return;
+    busy(e.submitter, async () => {
+      const bundle = JSON.parse(await e.target.file.files[0].text());
+      const r = await api('POST', '/api/admin/content', bundle);
+      state.industries = await api('GET', '/api/industries');
+      toast(`Restored ${r.industries} industries, ${r.milestones} milestones, ${r.programs} programs`);
+    });
+  };
+}
+
 // ---------------- boot ----------------
+if (location.hash.includes('verify=invalid')) setTimeout(() => ($('#auth-error').textContent = 'That confirmation link is invalid or was already used. Try logging in.'), 0);
 api('GET', '/api/me').then((u) => { state.user = u; start(); }).catch(showAuth);

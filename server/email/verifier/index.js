@@ -1,4 +1,7 @@
 'use strict';
+// Not exposed in the UI yet: the networking tracker (Phase 2) will use this to check
+// addresses students build from a firm's email format.
+//
 // Email verification + reputation scoring, modelled on how tools like RocketReach grade
 // addresses: a deliverability verdict (valid / accept-all / risky / invalid / unknown),
 // a 0-99 confidence score with a letter grade, and a separate domain-reputation rating.
@@ -25,13 +28,14 @@ function mxProvider(hosts) {
  * @param {string} rawEmail
  * @param {object} [opts]
  * @param {object} [opts.resolver]   DNS/SMTP backend (see resolvers.js)
- * @param {boolean} [opts.smtp]      attempt a live SMTP RCPT probe (needs outbound port 25)
+ * @param {boolean} [opts.smtp]      attempt a live SMTP RCPT probe (off unless SMTP_PROBE=on;
+ *                                   probing firms' mail servers can get the sender flagged)
  * @param {object} [opts.context]    what we know from the database:
  *   { firstName, lastName, companyDomain, companyPattern: {dominant, confidence, sample}, lastVerifiedAt }
  */
 async function verifyEmail(rawEmail, opts = {}) {
   const resolver = opts.resolver || defaultResolver();
-  const smtp = opts.smtp ?? process.env.SMTP_PROBE !== 'off';
+  const smtp = opts.smtp ?? process.env.SMTP_PROBE === 'on';
   const ctx = opts.context || {};
   const email = String(rawEmail || '').trim().toLowerCase();
   const checks = [];

@@ -1,0 +1,12 @@
+[
+  { "name": "Bain BEL", "firm": "Bain & Company", "industry": "consulting", "eligible_years": [1, 2], "cycle": "2026-27",
+    "description": "Early program named in the consulting recruiting slides (10/28/2026). Add the deadline, link and exact eligibility.", "needs_review": true },
+  { "name": "Bain CREW", "firm": "Bain & Company", "industry": "consulting", "eligible_years": [1, 2], "cycle": "2026-27",
+    "description": "Early program named in the consulting recruiting slides (10/28/2026). Add the deadline, link and exact eligibility.", "needs_review": true },
+  { "name": "BCG Embark", "firm": "Boston Consulting Group (BCG)", "industry": "consulting", "eligible_years": [1, 2], "cycle": "2026-27",
+    "description": "Early program named in the consulting recruiting slides (10/28/2026). Add the deadline, link and exact eligibility.", "needs_review": true },
+  { "name": "BCG Advance", "firm": "Boston Consulting Group (BCG)", "industry": "consulting", "eligible_years": [1, 2], "cycle": "2026-27",
+    "description": "Early program named in the consulting recruiting slides (10/28/2026). Add the deadline, link and exact eligibility.", "needs_review": true },
+  { "name": "A&M CCDP", "firm": "Alvarez & Marsal", "industry": "consulting", "eligible_years": [1, 2], "cycle": "2026-27",
+    "description": "Early program named in the consulting recruiting slides (10/28/2026). Add the deadline, link and exact eligibility.", "needs_review": true }
+]

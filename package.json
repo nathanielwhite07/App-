@@ -1,7 +1,7 @@
 {
-  "name": "firm-connect",
+  "name": "bbsa-career-hub",
   "version": "0.1.0",
-  "description": "Email lookup, resume-based interest matching, email verification and calendar scheduling for students networking with big firms.",
+  "description": "Recruiting timelines, early-ID programs, monthly to-dos, calendar and firm email formats for Vanderbilt BBSA.",
   "main": "server/index.js",
   "scripts": {
     "start": "node --no-warnings=ExperimentalWarning server/index.js",
@@ -14,9 +14,9 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "exceljs": "^4.4.0",
     "express": "^4.21.2",
-    "mammoth": "^1.8.0",
     "multer": "^2.0.2",
-    "pdf-parse": "^1.1.1"
+    "nodemailer": "^6.9.16"
   }
 }

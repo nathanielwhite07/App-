@@ -1,81 +1,95 @@
 'use strict';
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { verifyEmail } = require('../server/verifier');
-const { demoResolver } = require('../server/verifier/resolvers');
-const { detectPattern, learnCompanyPattern, generateCandidates } = require('../server/patterns');
-const { buildProfile, scoreContact } = require('../server/matcher');
+const path = require('node:path');
+const fs = require('node:fs');
+const { verifyEmail } = require('../server/email/verifier');
+const { demoResolver } = require('../server/email/verifier/resolvers');
+const { detectPattern, parseFormat, fallbacksFromNotes, buildAddress } = require('../server/email/patterns');
+const { classYear, academicYearStart, inWindow, windowLabel } = require('../server/academic');
+const { rowsToFirms } = require('../server/content/formats-import');
+const validate = require('../server/content/validate');
 const { parseCsv } = require('../server/csv');
 const { toIcs, addBusinessDays } = require('../server/calendar');
+const { emailAllowed } = require('../server/auth');
 
-const resolver = demoResolver();
+const resolver = demoResolver(JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'demo-dns.json'), 'utf8')));
 const v = (email, opts = {}) => verifyEmail(email, { resolver, smtp: true, ...opts });
 
-test('verifier: confirmed mailbox grades A', async () => {
-  const r = await v('ava.chen@northbridgecapital.example');
-  assert.equal(r.status, 'valid');
-  assert.ok(r.score >= 80);
-  assert.equal(r.reputation.label, 'High');
+test('academic calendar: class year rolls over in August', () => {
+  assert.equal(academicYearStart(new Date(2026, 7, 1)), 2026);
+  assert.equal(academicYearStart(new Date(2027, 6, 31)), 2026);
+  assert.equal(classYear(2029, new Date(2026, 10, 21)), 2); // Class of 2029: sophomore in Nov 2026
+  assert.equal(classYear(2029, new Date(2027, 6, 1)), 2);   // still a sophomore in July (rising junior)
+  assert.equal(classYear(2029, new Date(2027, 7, 1)), 3);
+  assert.equal(classYear(2031, new Date(2026, 10, 1)), 0);
+  assert.equal(classYear(2026, new Date(2026, 10, 1)), 5);
+  assert.equal(classYear(null), null);
 });
 
-test('verifier: rejected mailbox, bad syntax, missing domain are invalid', async () => {
-  for (const e of ['ghost.person@northbridgecapital.example', 'not-an-email', 'a..b@x.com', 'x@vantagetech.examp1e']) {
-    const r = await v(e);
-    assert.equal(r.status, 'invalid', e);
-    assert.ok(r.score <= 10, e);
-  }
+test('academic calendar: month windows wrap past December', () => {
+  assert.ok(inWindow(1, 12, 2) && inWindow(12, 12, 2) && !inWindow(3, 12, 2));
+  assert.ok(inWindow(4, 4, 4) && !inWindow(5, 4, 4));
+  assert.ok([1, 6, 8, 12].every((m) => inWindow(m, 8, 7)));
+  assert.equal(windowLabel(8, 7), 'All year');
+  assert.equal(windowLabel(12, 2), 'Dec–Feb');
+  assert.equal(windowLabel(4, 4), 'Apr');
 });
 
-test('verifier: catch-all domain is capped and flagged', async () => {
-  const r = await v('anyone@meridianam.example');
-  assert.equal(r.status, 'accept_all');
-  assert.ok(r.score < 80);
+test('auth: only exact allowed domains', () => {
+  assert.ok(emailAllowed('jane.doe@vanderbilt.edu'));
+  assert.ok(emailAllowed('Jane.Doe@VANDERBILT.EDU'));
+  assert.ok(!emailAllowed('jane@gmail.com'));
+  assert.ok(!emailAllowed('jane@vanderbilt.edu.evil.com'));
+  assert.ok(!emailAllowed('jane@sub.vanderbilt.edu'));
 });
 
-test('verifier: role inbox and off-pattern addresses lose points', async () => {
-  const ctx = { firstName: 'Liam', lastName: 'Patel', companyDomain: 'northbridgecapital.example', companyPattern: { dominant: 'first.last', confidence: 1, sample: 5 } };
-  const good = await v('ava.chen@northbridgecapital.example', { smtp: false, context: { ...ctx, firstName: 'Ava', lastName: 'Chen' } });
-  const role = await v('recruiting@northbridgecapital.example', { smtp: false });
-  const off = await v('lpatel@northbridgecapital.example', { smtp: false, context: ctx });
-  assert.equal(good.status, 'likely_valid');
-  assert.ok(role.score < good.score);
-  assert.ok(off.score < good.score);
-  assert.equal(off.checks.find((c) => c.id === 'pattern').status, 'warn');
-});
-
-test('verifier: disposable and typo domains', async () => {
-  const d = await v('kid@mailinator.com', { smtp: false });
-  assert.equal(d.status, 'invalid');
-  assert.equal(d.reputation.label, 'Low');
-  const t = await v('bob@gmial.com', { smtp: false });
-  assert.equal(t.suggestion, 'bob@gmail.com');
-});
-
-test('patterns: detect, learn, generate', () => {
-  assert.equal(detectPattern('j.smith@x.com', 'John', 'Smith'), 'f.last');
-  assert.equal(detectPattern('jsmith@x.com', 'John', 'Smith'), 'flast');
-  assert.equal(detectPattern('josé.núñez@x.com', 'José', 'Núñez'), null); // local parts are ASCII-normalised
-  const learned = learnCompanyPattern([
-    { first_name: 'A', last_name: 'B', email: 'ab@x.com' },
-    { first_name: 'Cara', last_name: 'Dee', email: 'cdee@x.com' },
-    { first_name: 'Eve', last_name: 'Fox', email: 'efox@x.com' },
-    { first_name: 'Gus', last_name: 'Ho', email: 'gus.ho@x.com' },
+test('patterns: parse formats, fallbacks and build addresses', () => {
+  assert.deepEqual(parseFormat('first_last@mckinsey.com'), { pattern: 'first_last', domain: 'mckinsey.com' });
+  assert.deepEqual(parseFormat('lastf@stifel.com'), { pattern: 'lastf', domain: 'stifel.com' });
+  assert.equal(parseFormat('whatever@x.com'), null);
+  assert.deepEqual(fallbacksFromNotes('Fallbacks: djane@deshaw.com (LeadIQ 39%), then jane-doe@deshaw.com'), [
+    { pattern: 'lfirst', domain: 'deshaw.com' }, { pattern: 'first-last', domain: 'deshaw.com' },
   ]);
-  assert.equal(learned.dominant, 'flast');
-  const c = generateCandidates('José', "O'Brien", 'Firm.com', learned);
-  assert.equal(c[0].email, 'jobrien@firm.com');
-  assert.ok(c.some((x) => x.email === 'jose.obrien@firm.com'));
+  assert.equal(buildAddress("D'Andre", 'Smith-Jones', { pattern: 'first.last', domain: 'gs.com' }), 'dandre.smithjones@gs.com');
+  assert.equal(buildAddress('Jane', 'Doe', { pattern: 'last_first', domain: 'bah.com' }), 'doe_jane@bah.com');
+  assert.equal(detectPattern('doej@stifel.com', 'Jane', 'Doe'), 'lastf');
 });
 
-test('matcher: synonyms, school and career track', () => {
-  const p = buildProfile('Cornell University 2026. Mergers & acquisitions intern; financial modeling. Hobbies: hoops, bouldering, poker');
-  assert.deepEqual(p.interests.sort(), ['basketball', 'poker', 'rock climbing']);
-  assert.ok(p.schools.includes('Cornell University'));
-  assert.equal(p.careerTracks[0], 'Investment Banking');
-  const strong = scoreContact(p, { interests: 'basketball, poker', school: 'Cornell University', industry: 'Investment Banking' });
-  const weak = scoreContact(p, { interests: 'golf', school: 'Howard University', industry: 'Law' });
-  assert.ok(strong.score > 60);
-  assert.equal(weak.score, 3); // golf is related (sports) to basketball
+test('formats import: header detection, notes and bad rows', () => {
+  const rows = [
+    ['Top firms'],
+    ['Rank', 'Firm', 'Confidence', 'Best Email Format', 'Fallback / Notes', 'Category', "Firm's Own Published Address"],
+    ['1', 'Alpha', 'Confirmed', 'flast@alpha.com', 'Fallback: jane.doe@alpha.com (RocketReach 20%)', 'Strategy', 'real.person@alpha.com'],
+    ['2', 'Beta', 'High', 'first.last@beta.com', '—', '', ''],
+    ['3', 'Gamma', 'High', 'not a format', '', '', ''],
+  ];
+  const { firms, errors } = rowsToFirms(rows, { sector: 'Consulting', researched_on: '2026-10-10' });
+  assert.equal(firms.length, 2);
+  assert.equal(errors.length, 1);
+  assert.deepEqual(firms[0].fallbacks, [{ pattern: 'first.last', domain: 'alpha.com' }]);
+  assert.equal(firms[1].notes, null);
+  assert.ok(!JSON.stringify(firms).includes('real.person'));
+});
+
+test('validate: milestones and programs', () => {
+  const m = validate.milestone({ industry: 'tech', class_years: '2, 1', start_month: '12', end_month: '2', title: ' Network ' });
+  assert.deepEqual(m.class_years, [1, 2]);
+  assert.deepEqual(m.months, [12, 2]);
+  assert.equal(m.title, 'Network');
+  assert.throws(() => validate.milestone({ industry: 'tech', start_month: 1, end_month: 2, title: 'x', class_years: [5] }), /1–4/);
+  assert.throws(() => validate.program({ name: 'x', firm: 'y', industry: 'z', opens_on: '2027-03-01', deadline: '2027-02-01' }), /after the deadline/);
+  assert.throws(() => validate.program({ name: 'x', firm: 'y', industry: 'z', deadline: '03/01/2027' }), /YYYY-MM-DD/);
+});
+
+test('verifier (kept for Phase 2): confirmed, rejected, catch-all, disposable', async () => {
+  assert.equal((await v('ava.chen@northbridgecapital.example')).status, 'valid');
+  assert.equal((await v('ghost.person@northbridgecapital.example')).status, 'invalid');
+  assert.equal((await v('anyone@meridianam.example')).status, 'accept_all');
+  assert.equal((await v('kid@mailinator.com', { smtp: false })).status, 'invalid');
+  assert.equal((await v('bob@gmial.com', { smtp: false })).suggestion, 'bob@gmail.com');
+  const noProbe = await verifyEmail('ava.chen@northbridgecapital.example', { resolver });
+  assert.equal(noProbe.checks.find((c) => c.id === 'smtp').status, 'skip'); // probing is opt-in
 });
 
 test('csv: quoted fields and CRLF', () => {
@@ -83,9 +97,9 @@ test('csv: quoted fields and CRLF', () => {
 });
 
 test('calendar: ics escaping/folding and business days', () => {
-  const ics = toIcs([{ uid: 'u1', title: 'Chat; with, Ava', description: 'x'.repeat(200), starts_at: '2030-01-01T10:00:00Z', duration_min: 45 }]);
-  assert.match(ics, /SUMMARY:Chat\; with\\, Ava/);
+  const ics = toIcs([{ uid: 'u1', kind: 'deadline', title: 'Chat; with, Ava', description: 'x'.repeat(200), starts_at: '2030-01-01T10:00:00Z', duration_min: 45 }]);
+  assert.match(ics, /SUMMARY:Chat\\; with\\, Ava/);
   assert.match(ics, /DTEND:20300101T104500Z/);
   assert.ok(ics.split('\r\n').every((l) => Buffer.byteLength(l) <= 75));
-  assert.equal(addBusinessDays(new Date('2030-01-04T12:00:00Z'), 1).toISOString().slice(0, 10), '2030-01-07'); // Fri -> Mon
+  assert.equal(addBusinessDays(new Date('2030-01-04T12:00:00Z'), 1).toISOString().slice(0, 10), '2030-01-07');
 });

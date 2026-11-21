@@ -1,0 +1,136 @@
+[
+  {
+    "slug": "investment-banking",
+    "name": "Investment Banking",
+    "summary": "Banks advise companies, governments and investors on mergers and acquisitions and help them raise money by issuing debt and equity. They earn fees for finding investors and structuring deals.",
+    "sort_order": 1,
+    "guide": [
+      { "heading": "How a bank is organised", "items": [
+        "Main divisions: Investment Banking (IBD), Sales & Trading, and Research. IBD is walled off from the rest of the firm (\"the Wall\").",
+        "Industry (coverage) groups: Consumer/Retail, Tech/Media/Telecom (TMT), Industrials, Natural Resources, Financial Institutions (FIG), Healthcare, Real Estate, Gaming & Lodging (REGL), and more.",
+        "Product groups: M&A, Equity Capital Markets (IPOs, secondary offerings), Debt Capital Markets (refinancing, restructuring, acquisition debt), Leveraged Finance (high-yield debt).",
+        "Life of a deal: pitching (industry groups with product support; pitch books, modeling and valuation), then execution (industry and product groups together), then follow-ups.",
+        "Hierarchy: Analyst (2–3 years), Associate, Vice President (where the job shifts to clients), Director, Managing Director."
+      ]},
+      { "heading": "Types of banks", "items": [
+        "Bulge bracket: Goldman Sachs, Morgan Stanley, JP Morgan, Bank of America, Citi, Barclays, UBS, Wells Fargo.",
+        "Middle market: Jefferies, Raymond James, Harris Williams, HSBC, BNP Paribas, Houlihan Lokey.",
+        "Elite boutiques: Evercore, Greenhill, Lazard, Moelis, Perella Weinberg, Centerview."
+      ]},
+      { "heading": "The analyst role", "items": [
+        "Financial modeling in Excel, building pitch books, presenting ideas to senior bankers, and working with clients and executives.",
+        "Long hours, especially on live deals; a typical day runs from about 9 a.m. to midnight.",
+        "Why IB: a strong foundation in modeling and valuation, deals with tangible results, C-suite exposure, a strong network, and exits to private equity, venture capital, hedge funds, development finance, corporate finance, or promotion to Associate."
+      ]},
+      { "heading": "How to get the job", "items": [
+        "Network: cold calls, coffee chats and info sessions.",
+        "Interviews: HireVue, then a first round (phone or on campus), then a Superday of 3–5 back-to-back interviews.",
+        "Know every common behavioral question. For technicals, the M&I 400 guide covers most topics."
+      ]},
+      { "heading": "Technical questions to know", "items": [
+        "The 3 main ways to value a company, and which gives the highest and lowest values. Other valuation methods.",
+        "What is investment banking? How do product and coverage groups work together?",
+        "Walk through how a change in one balance-sheet account flows through the statements. What is working capital?",
+        "Walk me through a DCF (WACC, CAPM). What is Beta?",
+        "What is EBITDA and why is it used? What is an LBO?",
+        "Enterprise value vs. equity value, and how to calculate each. Debt vs. equity."
+      ]},
+      { "heading": "IB vs. Sales & Trading", "items": [
+        "Hours: banking about 9 a.m.–1 a.m. with weekend work; trading about 7 a.m.–6 p.m. with weekends off.",
+        "Culture: in banking, reputation is built on endurance; in trading, on results.",
+        "Work: banking is project-based and quiet; trading is continuous (you manage your book), loud and fast."
+      ]}
+    ]
+  },
+  {
+    "slug": "consulting",
+    "name": "Consulting",
+    "summary": "Consultants give expert advice to organizations to improve performance and make hard decisions, creating value through revenue growth, cost savings, M&A and other advisory work.",
+    "sort_order": 2,
+    "guide": [
+      { "heading": "What the work looks like", "items": [
+        "Firms advise most blue-chip companies across industries. Many management consultancies are industry-agnostic; boutiques specialize by industry, function or region.",
+        "Projects (cases) usually last 3–6 months and are renewed monthly; long-term clients may sign multi-year contracts. Work happens at the client site or in the office.",
+        "Expect 50–60 hour weeks, with weekends protected.",
+        "Types of work: management, strategy, M&A, operations, HR, tech/IT, risk & compliance, supply chain, sustainability, and more.",
+        "Example roles on a case: the Partner wins the work and sets the approach; the Manager runs client meetings, the timeline and sub-teams; the Analyst gathers and analyzes data, builds clear visuals and brings recommendations to the manager."
+      ]},
+      { "heading": "Major firms", "items": [
+        "MBB (\"Big Three\"): McKinsey, BCG and Bain, the most prestigious management consulting firms.",
+        "Big Four: Deloitte, PwC, EY and KPMG, best known for tax and audit, with large consulting arms.",
+        "Specialized boutiques: industry- or service-specific firms."
+      ]},
+      { "heading": "Why consulting", "items": [
+        "Exposure to many industries and frequent C-suite interaction; travel perks at global firms.",
+        "Real responsibility as a junior analyst; builds speaking, Excel modeling and strategy skills.",
+        "Funded graduate school, a lifelong network and strong exits: corporate strategy, senior management, MBA/law school, PE/VC/hedge funds, entrepreneurship, tech, international development, non-profits.",
+        "These jobs are very hard to get: firms hire fewer than 1% of applicants."
+      ]},
+      { "heading": "What firms look for", "items": [
+        "Coachability, a hard-working attitude, and meaningful experiences with clear personal impact.",
+        "Clear communication and public speaking; teamwork, leadership and initiative.",
+        "Structured problem solving and quantitative reasoning; intellectual curiosity.",
+        "Personability and the ability to build trust (the \"airport test\")."
+      ]},
+      { "heading": "Online assessments", "items": [
+        "McKinsey Solve: game-based problems testing analytical reasoning, decisions and adaptability; evaluated alongside the application.",
+        "Bain TestGorilla: timed questions on analysis, problem solving and communication; one data point and a smaller factor.",
+        "BCG Casey: a chatbot-led case testing quantitative reasoning, exhibit analysis and recommendations; an evaluative stage.",
+        "Aim for the 9th or 10th decile on Solve and Casey; lower scores make it harder to progress."
+      ]},
+      { "heading": "Case interviews", "items": [
+        "Tests how you think, communicate and solve problems; typically 20–40 minutes. Format and length vary by firm.",
+        "Main types: profitability, market sizing, market entry, M&A.",
+        "New formats: digital cases (BCG Casey) and AI-assisted interviews where you work with an AI tool. Independent reasoning, checking outputs and explaining your recommendation still matter.",
+        "McKinsey is piloting a simulated client conversation: handle ambiguity and pushback, ask useful questions, and show empathy. It was non-evaluative in the 2026 cycle, with wider use expected."
+      ]},
+      { "heading": "Resources", "items": [
+        "CaseCoach (free through Vanderbilt), Management Consulted, PrepLounge, CaseInterview.com, Crafting Cases, RocketBlocks, and firms' own prep pages.",
+        "MBA case books for practice cases.",
+        "Vanderbilt Career Center / Handshake; levels.fyi for salaries; Fishbowl for industry forums."
+      ]},
+      { "heading": "Entry-level base pay (figures from the Oct 2026 slides)", "items": [
+        "MBB: McKinsey $125k, BCG $125k, Bain $120k.",
+        "Big Four: Deloitte $84–95k, KPMG $78–94k, EY up to $90k, PwC up to $90k.",
+        "Others: Oliver Wyman $110k, Alvarez & Marsal up to $112k, Accenture Strategy $105k, EY-Parthenon $100k, L.E.K. $95k."
+      ]}
+    ]
+  },
+  {
+    "slug": "tech",
+    "name": "Tech, Trading & Frontier AI",
+    "summary": "Big Tech builds software, hardware and digital infrastructure at scale; quantitative trading firms use math, statistics and code to trade systematically; frontier AI labs push the state of the art in AI research.",
+    "sort_order": 3,
+    "guide": [
+      { "heading": "Roles", "items": [
+        "Tech: Software Engineer (designs, builds and maintains systems; not programming all day), Product Manager (sets strategy and priorities across engineering, design and business), UI/UX Designer (research, interface design, prototyping, usability testing).",
+        "Trading: Quant Trader (runs strategies, manages risk and inventory), Quant Researcher (finds predictive signals with statistics and ML), Quant Developer (builds research and trading systems), Trading Systems Engineer (low-latency infrastructure).",
+        "Frontier AI labs: Member of Technical Staff (MTS), a broad role on 10–14 week projects whose priorities shift quickly; high-risk, high-reward."
+      ]},
+      { "heading": "Hours, pay and location (figures from the Nov 2026 slides)", "items": [
+        "Tech: 30–45 hours a week, usually hybrid, weekends protected; entry-level total compensation $150k–$250k (base + stock); mostly California.",
+        "Trading: 45–50 hours a week on desk, weekends protected; entry-level TC $350k–$1.1M (base + bonus); mostly Chicago and NYC.",
+        "AI labs: 50–60 hours a week, usually on desk; entry-level TC $200k–$600k (base, equity and stock); mostly California.",
+        "Generally excellent benefits across all three. For pay: Quant > Frontier AI > Big Tech."
+      ]},
+      { "heading": "How recruiting works", "items": [
+        "Big Tech recruits starting late summer going into junior year: typically 2–3 technical rounds and 1–2 behavioral, including a superday.",
+        "Quant recruits starting late spring at the end of sophomore year: up to 8 technical rounds, usually at most 1 behavioral, with an in-person superday.",
+        "AI labs and startups recruit at any time; processes vary widely.",
+        "Most people apply with just a resume and a referral; cover letters are rare. A referral helps you get the first interview, and after that only your ability matters."
+      ]},
+      { "heading": "How to get good", "items": [
+        "It takes time, and lots of it.",
+        "Technical interviews test two things: getting the answer right, and how you think: approaching problems sensibly, explaining your reasoning and showing you're coachable.",
+        "Behavioral interviews are where you stand out: be reasonable, rational and sociable.",
+        "Example: given a dataset and an LLM, explore the data, form ideas and use the LLM to build models quickly.",
+        "Example: a fair coin is flipped 1000 times (+$1 heads, −$1 tails) and you can stop any time. How do you maximize profit? What is the chance you're ever at +$3? What if the coin is biased, or the bias is unknown?"
+      ]},
+      { "heading": "Resources", "items": [
+        "Levels.fyi (salaries), LeetCode (coding interviews), Quantable (quant interviews), APMList.com (product roles).",
+        "Reddit: r/csMajors and r/quantfinance.",
+        "Internship trackers: github.com/SimplifyJobs (Summer internships) and github.com/northwesternfintech (quant internships)."
+      ]}
+    ]
+  }
+]
