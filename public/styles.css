@@ -214,3 +214,20 @@ dialog::backdrop { background: rgba(0,0,0,.35); }
   .prog .when { grid-column: 2; }
   .cal-menu .menu { right: auto; left: 0; }
 }
+
+/* ---- internships ---- */
+.badge.int-open { background: var(--good-soft); color: var(--good); }
+.badge.int-soon { background: var(--warn-soft); color: var(--warn); }
+.badge.int-expected { background: var(--accent-soft); color: var(--accent); }
+.badge.int-unknown { background: var(--info-soft); color: var(--info); }
+.badge.int-closed { background: var(--surface-2); color: var(--muted); }
+.asof { font-size: .76rem; color: var(--muted); margin: 8px 0 0; }
+.email-line { font-size: .84rem; margin: 6px 0 0; }
+.no-link { font-size: .8rem; color: var(--muted); max-width: 170px; text-align: right; }
+.attn-bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 10px; font-size: .9rem; }
+.chip-btn { border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 4px 12px; font: inherit; font-size: .85rem; cursor: pointer; color: var(--text); }
+.chip-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.chip-btn .count { color: var(--muted); margin-left: 2px; }
+@media (max-width: 720px) { .no-link { text-align: left; } }
+.table td.nowrap { white-space: nowrap; }
+.attn-tags .badge { margin: 1px 0; white-space: nowrap; }

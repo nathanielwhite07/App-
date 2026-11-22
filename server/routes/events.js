@@ -2,6 +2,7 @@
 const crypto = require('node:crypto');
 const express = require('express');
 const { toIcs, calendarLinks } = require('../calendar');
+const { starredDeadlineEvents, eventViewOf } = require('./internships');
 
 const KINDS = ['meeting', 'deadline', 'reminder'];
 
@@ -28,8 +29,11 @@ function eventRoutes(db) {
   r.get('/', (req, res) => {
     const from = req.query.from ? new Date(req.query.from).toISOString() : '0000';
     const to = req.query.to ? new Date(req.query.to).toISOString() : '9999';
-    res.json(db.prepare('SELECT * FROM events WHERE user_id = ? AND starts_at >= ? AND starts_at < ? ORDER BY starts_at')
-      .all(req.user.id, from, to).map(eventView));
+    const own = db.prepare('SELECT * FROM events WHERE user_id = ? AND starts_at >= ? AND starts_at < ? ORDER BY starts_at')
+      .all(req.user.id, from, to).map(eventView);
+    // Starred internships' deadlines, always in sync with the officers' latest dates.
+    const starred = starredDeadlineEvents(db, req.user.id).filter((e) => e.starts_at >= from && e.starts_at < to).map(eventViewOf);
+    res.json([...own, ...starred].sort((a, b) => a.startsAt.localeCompare(b.startsAt)));
   });
 
   // Create a personal event, or a reminder for a milestone. (Program reminders: POST /api/programs/:id/reminders.)
@@ -81,7 +85,7 @@ function feed(db) {
     const u = db.prepare('SELECT * FROM users WHERE calendar_token = ?').get(req.params.token);
     if (!u) return res.status(404).send('Not found');
     const rows = db.prepare('SELECT * FROM events WHERE user_id = ? ORDER BY starts_at').all(u.id);
-    res.type('text/calendar').send(toIcs(rows, { name: 'BBSA Recruiting' }));
+    res.type('text/calendar').send(toIcs([...rows, ...starredDeadlineEvents(db, u.id)], { name: 'BBSA Recruiting' }));
   };
 }
 

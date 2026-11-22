@@ -14,6 +14,7 @@ delete process.env.APP_URL;
 const { openDb } = require('../server/db');
 const { syncContent, CONTENT_VERSION } = require('../server/content/store');
 const { createApp } = require('../server/app');
+const { seedInternships } = require('../server/content/internships');
 
 let server, base, db;
 const tokens = {};
@@ -45,6 +46,7 @@ const log = console.log;
 before(async () => {
   db = openDb(':memory:');
   syncContent(db);
+  seedInternships(db);
   console.log = () => {}; // the dev mailer prints verification emails
   server = createApp(db).listen(0);
   await new Promise((r) => server.once('listening', r));
@@ -291,4 +293,133 @@ test('upgrading a database from the previous version', () => {
   assert.deepEqual(syncContent(up, { backupDir: dir }), {}); // second start does nothing
   up.close();
   fs.rmSync(dir, { recursive: true });
+});
+
+test('internships: seed is idempotent and keeps officer edits', async () => {
+  const n = () => db.prepare('SELECT COUNT(*) AS n FROM internships').get().n;
+  assert.equal(n(), 165);
+  assert.deepEqual(seedInternships(db), { unchanged: true }); // same file -> nothing to do
+  const again = seedInternships(db, { force: true });
+  assert.equal(again.created, 0);
+  assert.equal(again.updated, 165);
+  assert.equal(n(), 165);
+
+  // An officer edits one row and deletes another; a changed seed file keeps both decisions.
+  const row = (await api('GET', '/api/admin/internships', null, 'officer')).body.results.find((x) => x.company === 'Lazard');
+  await api('PUT', `/api/admin/internships/${row.id}`, { ...row, notes: 'Officer note', as_of: '2026-11-22' }, 'officer');
+  await api('DELETE', '/api/admin/internships/23', null, 'officer');
+  const seedFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bbsa-seed-')), 'internships.json');
+  const seed = require('../server/content/internships.json').map((x) => (x.id === 1 ? { ...x, notes: 'Changed in the seed' } : x));
+  fs.writeFileSync(seedFile, JSON.stringify(seed));
+  const r = seedInternships(db, { file: seedFile });
+  assert.deepEqual(r.skipped.map((x) => x.id).sort((a, b) => a - b), [row.id, 23].sort((a, b) => a - b));
+  assert.equal(db.prepare('SELECT notes FROM internships WHERE id = ?').get(row.id).notes, 'Officer note');
+  assert.equal(db.prepare('SELECT notes FROM internships WHERE id = 1').get().notes, 'Changed in the seed');
+  assert.equal(db.prepare('SELECT 1 FROM internships WHERE id = 23').get(), undefined);
+  // --force restores everything from the file.
+  seedInternships(db, { file: seedFile, force: true });
+  assert.equal(n(), 165);
+  assert.notEqual(db.prepare('SELECT notes FROM internships WHERE id = ?').get(row.id).notes, 'Officer note');
+});
+
+test('internships page: default order, computed status, filters, labels and email formats', async () => {
+  const r = (await api('GET', '/api/internships?asOf=2026-11-22', null, 'student')).body;
+  assert.equal(r.total, 165);
+  const list = r.results;
+  // Future deadline dates first, soonest first.
+  assert.deepEqual(list.slice(0, 3).map((x) => [x.company, x.deadlineDate]), [
+    ['Perella Weinberg Partners', '2026-12-01'], ['Moelis & Company', '2026-12-14'], ['Houlihan Lokey', '2026-12-18'],
+  ]);
+  assert.equal(list[0].daysLeft, 9);
+  const groups = list.map((x) => x.statusGroup);
+  assert.deepEqual(groups, [...groups].sort((a, b) => a - b));
+  assert.equal(list.at(-1).statusGroup, 5);
+  // Status follows the calendar: Lazard closes once Jan 15 passes.
+  const feb = (await api('GET', '/api/internships?asOf=2027-02-01&q=lazard', null, 'student')).body.results[0];
+  assert.equal(feb.status, 'Closed');
+  assert.equal(feb.storedStatus, 'Open');
+  // Labels and email format.
+  const gs = list.find((x) => x.company === 'Goldman Sachs');
+  assert.equal(gs.linkLabel, 'Careers page');
+  assert.equal(gs.emailFormat.format, 'first.last@gs.com');
+  assert.equal(list.find((x) => x.company === 'Lazard').linkLabel, 'Apply');
+  assert.equal(list.find((x) => x.company === 'Barclays').linkLabel, 'Tracker guide');
+  const ducera = list.find((x) => x.company === 'Ducera Partners');
+  assert.equal(ducera.linkLabel, null);
+  assert.equal(list.find((x) => x.company === 'Roblox').emailFormat, null);
+  assert.ok(list.every((x) => x.asOf && x.source));
+  // Filters.
+  const f = (await api('GET', `/api/internships?industry=Consulting&category=${encodeURIComponent('Strategy (MBB)')}`, null, 'student')).body;
+  assert.deepEqual(f.results.map((x) => x.company).sort(), ['Bain & Company', 'Boston Consulting Group (BCG)', 'McKinsey & Company']);
+  assert.ok(f.facets.categories.every((c) => !['Bulge Bracket', 'Big Tech'].includes(c)));
+  const soph = (await api('GET', `/api/internships?for=${encodeURIComponent('Sophomores (Class of 2029)')}`, null, 'student')).body;
+  assert.equal(soph.results.length, 47);
+  assert.deepEqual((await api('GET', '/api/internships?q=houlihan', null, 'student')).body.results.map((x) => x.company), ['Houlihan Lokey', 'Houlihan Lokey']);
+});
+
+test('internships: My list is private and starred deadlines reach the calendar', async () => {
+  await signUpAndLogin('other', 'other@vanderbilt.edu', { gradYear: 2028 });
+  const lazard = (await api('GET', '/api/internships?q=lazard', null, 'student')).body.results[0];
+  const goldman = (await api('GET', '/api/internships?q=goldman', null, 'student')).body.results[0];
+  await api('PUT', `/api/internships/${lazard.id}/star`, { starred: true }, 'student');
+  await api('PUT', `/api/internships/${goldman.id}/star`, { starred: true }, 'student'); // no deadline date
+  const mine = (await api('GET', '/api/internships?starred=1', null, 'student')).body.results;
+  assert.deepEqual(mine.map((x) => x.company).sort(), ['Goldman Sachs', 'Lazard']);
+  assert.equal((await api('GET', '/api/internships?starred=1', null, 'other')).body.results.length, 0);
+  // Nothing in the admin view reveals who starred what.
+  const adminRow = (await api('GET', '/api/admin/internships', null, 'officer')).body.results.find((x) => x.id === lazard.id);
+  assert.doesNotMatch(JSON.stringify(adminRow), /star/i);
+
+  // Calendar list, feed and .ics include the dated one as an all-day deadline.
+  const events = (await api('GET', '/api/events', null, 'student')).body;
+  const ev = events.find((e) => e.internshipId === lazard.id);
+  assert.equal(ev.allDay, true);
+  assert.equal(ev.date, '2027-01-15');
+  assert.match(ev.links.outlook, /allday=true/);
+  assert.ok(!events.some((e) => e.internshipId === goldman.id));
+  const me = (await api('GET', '/api/me', null, 'student')).body;
+  const feed = await api('GET', me.calendarFeed);
+  assert.match(feed.body, /SUMMARY:Deadline: Lazard/);
+  assert.match(feed.body, /DTSTART;VALUE=DATE:20270115/);
+  assert.match((await api('GET', `/api/internships/${lazard.id}.ics`, null, 'student')).body, /DTEND;VALUE=DATE:20270116/);
+  // An officer moving the deadline moves it on everyone's calendar.
+  const row = (await api('GET', '/api/admin/internships', null, 'officer')).body.results.find((x) => x.id === lazard.id);
+  await api('PUT', `/api/admin/internships/${row.id}`, { ...row, deadline_date: '2027-01-20' }, 'officer');
+  assert.match((await api('GET', me.calendarFeed)).body, /DTSTART;VALUE=DATE:20270120/);
+  // This month shows starred internships due in the next 45 days.
+  const tm = (await api('GET', '/api/this-month?asOf=2026-12-15', null, 'student')).body;
+  assert.deepEqual(tm.starredInternships.map((x) => x.id), [lazard.id]);
+  await api('PUT', `/api/internships/${lazard.id}/star`, { starred: false }, 'student');
+  assert.doesNotMatch((await api('GET', me.calendarFeed)).body, /Lazard/);
+});
+
+test('internships admin: needs attention, CSV export and import', async () => {
+  assert.equal((await api('GET', '/api/admin/internships', null, 'student')).status, 403);
+  const all = (await api('GET', '/api/admin/internships', null, 'officer')).body;
+  assert.equal(all.staleDays, 30);
+  assert.ok(all.counts.no_link > 0 && all.counts.status > 0 && all.counts.any <= all.total);
+  const noLink = (await api('GET', '/api/admin/internships?attention=no_link', null, 'officer')).body.results;
+  assert.equal(noLink.length, all.counts.no_link);
+  assert.ok(noLink.every((x) => !x.link));
+
+  const csv = (await api('GET', '/api/admin/internships.csv', null, 'officer')).body;
+  const lines = csv.trim().split(/\r\n/);
+  assert.equal(lines[0], 'id,company,industry,category,program,for_students,internship_summer,status,opens,deadline,deadline_date,link,link_type,next_cycle,notes,source,as_of');
+  // Edit the export like a spreadsheet: change one row, add a new one, include a bad row.
+  const header = lines[0];
+  const edited = lines.find((l) => l.startsWith('22,')).replace(',Not tracked,', ',Open,').replace(/,,None found[^,]*,/, ',https://www.liontree.com/careers,Careers page,');
+  const body = [header, edited, ',New Firm,Tech,Startup,SWE Intern,Juniors (Class of 2028),2027,Open,,,,https://example.com/jobs,Posting,,,Officer,2026-11-22', ',Bad Row,Space,,X'].join('\n');
+  const fd = new FormData();
+  fd.append('file', new Blob([body], { type: 'text/csv' }), 'internships.csv');
+  const imp = await fetch(`${base}/api/admin/internships/import`, { method: 'POST', headers: { authorization: `Bearer ${tokens.officer}` }, body: fd }).then((x) => x.json());
+  assert.equal(imp.updated, 1);
+  assert.equal(imp.created, 1);
+  assert.equal(imp.errors.length, 1);
+  const lt = db.prepare('SELECT * FROM internships WHERE id = 22').get();
+  assert.equal(lt.status, 'Open');
+  assert.equal(lt.link, 'https://www.liontree.com/careers');
+  assert.equal(lt.updated_by, 'officer@vanderbilt.edu');
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM internships').get().n, 166);
+  const bad = await api('POST', '/api/admin/internships', { company: 'X', industry: 'Finance', program: 'Y', link: 'ftp://nope' }, 'officer');
+  assert.equal(bad.status, 400);
 });

@@ -3,6 +3,7 @@ const express = require('express');
 const { YEAR_NAMES, academicYearStart, classYear, inWindow, academicIndex, windowLabel } = require('../academic');
 const { buildAddress, PATTERNS } = require('../email/patterns');
 const { createEvent } = require('./events');
+const { internshipView, formatsByName } = require('./internships');
 
 const DAY = 864e5;
 const isoDate = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -152,7 +153,7 @@ module.exports = function contentRoutes(db) {
       usingAllIndustries: !chosen.length,
     };
     if (cy == null || cy < 1 || cy > 4) {
-      return res.json({ ...base, needsProfile: cy == null, outOfRange: cy != null, now: [], next: [], deadlines: [], toWatch: [], pinned: [], events: [] });
+      return res.json({ ...base, needsProfile: cy == null, outOfRange: cy != null, now: [], next: [], deadlines: [], toWatch: [], pinned: [], starredInternships: [], events: [] });
     }
     const slugById = v.slugMap();
     const month = today.getMonth() + 1, nextMonth = (month % 12) + 1;
@@ -180,13 +181,17 @@ module.exports = function contentRoutes(db) {
       .sort((a, b) => (a.expectedMonth || thisMonth).localeCompare(b.expectedMonth || thisMonth));
     // Pinned programs show regardless of industry filters; closed ones drop off.
     const pinned = programs.filter((p) => p.pinned && !['closed', 'not_running'].includes(p.status));
+    // Starred internships whose deadline is in the next 45 days.
+    const starredInternships = db.prepare(`SELECT i.* FROM internship_stars s JOIN internships i ON i.id = s.internship_id
+      WHERE s.user_id = ? AND i.deadline_date >= ? AND i.deadline_date <= ? ORDER BY i.deadline_date`).all(req.user.id, isoDate(today), horizon)
+      .map((r) => internshipView(r, { today: isoDate(today), starred: new Set([r.id]), formats: formatsByName(db) }));
 
     const monthStart = new Date(today.getFullYear(), today.getMonth(), 1).toISOString();
     const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 1).toISOString();
     const events = db.prepare('SELECT id, kind, title, starts_at, duration_min, location FROM events WHERE user_id = ? AND starts_at >= ? AND starts_at < ? ORDER BY starts_at')
       .all(req.user.id, monthStart, monthEnd).map((e) => ({ id: e.id, kind: e.kind, title: e.title, startsAt: e.starts_at, durationMin: e.duration_min, location: e.location }));
 
-    res.json({ ...base, academicYear: `${ay}-${String(ay + 1).slice(2)}`, now, next, pinned, deadlines, toWatch, events });
+    res.json({ ...base, academicYear: `${ay}-${String(ay + 1).slice(2)}`, now, next, pinned, starredInternships, deadlines, toWatch, events });
   });
 
   r.put('/milestones/:id/progress', (req, res) => {

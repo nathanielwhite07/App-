@@ -3,6 +3,10 @@
 // a subscribable feed URL, and one-click "add to Google Calendar" links.
 
 const icsDate = (d) => new Date(d).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+// All-day events (e.all_day + e.date 'YYYY-MM-DD') use DATE values, so a deadline lands on
+// the right day in every time zone.
+const compactDate = (ymd) => ymd.replace(/-/g, '');
+const nextDay = (ymd) => { const d = new Date(`${ymd}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10); };
 const esc = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
 
 // Lines longer than 75 octets must be folded (RFC 5545 §3.1).
@@ -24,10 +28,11 @@ function vevent(e, { attendee } = {}) {
   const end = new Date(start.getTime() + (e.duration_min || 30) * 60000);
   const lines = [
     'BEGIN:VEVENT',
+    e.url && `URL:${e.url}`,
     `UID:${e.uid}`,
     `DTSTAMP:${icsDate(e.created_at ? e.created_at.replace(' ', 'T') + 'Z' : Date.now())}`,
-    `DTSTART:${icsDate(start)}`,
-    `DTEND:${icsDate(end)}`,
+    ...(e.all_day ? [`DTSTART;VALUE=DATE:${compactDate(e.date)}`, `DTEND;VALUE=DATE:${compactDate(nextDay(e.date))}`]
+      : [`DTSTART:${icsDate(start)}`, `DTEND:${icsDate(end)}`]),
     `SUMMARY:${esc(e.title)}`,
     e.description && `DESCRIPTION:${esc(e.description)}`,
     e.location && `LOCATION:${esc(e.location)}`,
@@ -54,7 +59,7 @@ function googleCalendarLink(e) {
   const p = new URLSearchParams({
     action: 'TEMPLATE',
     text: e.title,
-    dates: `${icsDate(start)}/${icsDate(end)}`,
+    dates: e.all_day ? `${compactDate(e.date)}/${compactDate(nextDay(e.date))}` : `${icsDate(start)}/${icsDate(end)}`,
     details: e.description || '',
     location: e.location || '',
   });
@@ -71,8 +76,10 @@ function outlookCalendarLink(e, host = 'outlook.office.com') {
   const end = new Date(start.getTime() + (e.duration_min || 30) * 60000);
   const p = new URLSearchParams({
     path: '/calendar/action/compose', rru: 'addevent', subject: e.title,
-    startdt: start.toISOString(), enddt: end.toISOString(), body: e.description || '', location: e.location || '',
+    startdt: e.all_day ? e.date : start.toISOString(), enddt: e.all_day ? nextDay(e.date) : end.toISOString(),
+    body: e.description || '', location: e.location || '',
   });
+  if (e.all_day) p.set('allday', 'true');
   return `https://${host}/calendar/0/deeplink/compose?${p}`;
 }
 

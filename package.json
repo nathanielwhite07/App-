@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node --no-warnings=ExperimentalWarning server/index.js",
     "dev": "node --watch --no-warnings=ExperimentalWarning server/index.js",
-    "test": "node --no-warnings=ExperimentalWarning --test test/*.test.js"
+    "test": "node --no-warnings=ExperimentalWarning --test test/*.test.js",
+    "seed:internships": "node --no-warnings=ExperimentalWarning scripts/seed-internships.js"
   },
   "engines": {
     "node": ">=22.13"

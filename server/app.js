@@ -10,6 +10,7 @@ const authRoutes = require('./routes/auth');
 const contentRoutes = require('./routes/content');
 const eventRoutes = require('./routes/events');
 const adminRoutes = require('./routes/admin');
+const internshipRoutes = require('./routes/internships');
 
 function createApp(db) {
   const app = express();
@@ -69,6 +70,7 @@ function createApp(db) {
 
   app.use('/api', auth, contentRoutes(db));
   app.use('/api/events', auth, eventRoutes(db));
+  app.use('/api/internships', auth, internshipRoutes(db));
   app.use('/api/admin', auth, requireAdmin, adminRoutes(db));
   app.get('/calendar/:token.ics', eventRoutes.feed(db));
 

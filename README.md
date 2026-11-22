@@ -7,6 +7,7 @@ An internal recruiting tool for Vanderbilt's Black Business Student Association.
 - **Recruiting timelines** for investment banking, consulting, software engineering, product management and sales & trading, broken down by class year. Each industry also has a guide covering roles, interview prep and resources. Officers can add more industries from the admin page without code changes.
 - **Diversity & early-ID programs tracker**: 84 programs and pipeline organizations with firm, industries, who it's for, eligibility, format, timing, deadline and link. Filterable by industry, class year, status and type. Students can **pin** programs and set **reminders** for when applications open, a "start your application" nudge, and the deadline.
 - **This month**: what a student should focus on now, based on their class year (worked out from their graduation year) and the industries they chose. It shows open milestones they can tick off, deadlines in the next 45 days, what starts next month, and programs to watch.
+- **Internships**: the main junior and sophomore summer internships at about 165 consulting, finance and tech firms, with application links, deadlines, a countdown, the firm's email format, and an "info as of / source" line on every card. Students star internships into **My list**, and starred deadlines appear on their calendar and feed automatically.
 - **Calendar**: every reminder can be added to **Google Calendar, Outlook (Vanderbilt / Microsoft 365), Outlook.com or Apple Calendar (.ics)**, and students can subscribe to a private feed so new reminders sync automatically. Each student can save a preferred calendar.
 - **Email formats**: how 150 large consulting, finance and tech firms format addresses, with confidence levels and fallbacks. Click a firm to build an address from a name.
 
@@ -53,10 +54,30 @@ node scripts/formats-to-json.js consulting.xlsx finance.xlsx tech.xlsx > server/
 node scripts/programs-to-json.js programs.xlsx 2026-27 > server/content/programs.json
 ```
 
+### Refreshing internships each cycle
+
+Internship data comes only from `server/content/internships.json` and officer edits. Nothing is scraped from job sites or LinkedIn.
+
+**Day to day (Admin → Internships):**
+- Edit a row to change its status, dates or link. **Save as checked today** also sets *Info as of* to today, which students see on the card.
+- **Needs attention** lists rows with no link, a status of *Not tracked*, *Check site* or *Unconfirmed*, or *Info as of* older than **30 days**. Each reason has its own count and filter. Work through it a few times a month during recruiting season.
+- Only put a date in **Deadline date** when the firm has confirmed it. Once that date passes, students automatically see *Closed*, whatever the status says. Estimates such as "~Jan 2027" belong in the free-text **Deadline** field.
+- To show a firm's email format on its cards, the company name must match the firm's name on the Email formats tab exactly.
+
+**Once a cycle (in a spreadsheet):**
+1. Admin → Internships → **Export CSV**.
+2. Update it in Excel or Google Sheets. Keep the header row and the `id` column. Rows are matched by `id`, so students keep their stars. Leave `id` empty for new rows, and change `internship_summer`, `for_students`, `next_cycle` and `as_of` for the new cycle.
+3. Admin → Internships → **Import CSV**. Rows with errors (bad dates, unknown industry, links not starting with http) are skipped and listed, and everything else is saved.
+
+**Shipping a new seed file (developers):** replace `server/content/internships.json` (same fields as the CSV) and restart. The seed reloads only when the file has changed. Rows matched by `id` are updated, never duplicated. Rows an officer has edited or deleted since are left alone and listed in the server log. `npm run seed:internships -- --force` overwrites everything from the file.
+
+Stars are stored per student and are never shown to officers or other students.
+
 ### Where the starter content came from
 
 - Timelines and industry guides: BBSA's recruiting materials, rewritten for BBSA members.
 - Programs: the *BBSA Affinity Programs 2026-27* sheet (compiled Nov 21, 2026).
+- Internships: the BBSA internships list (165 firms; each row records its own source and "as of" date).
 - Email formats: the *Top 50 Consulting*, *Top 50 Finance & IB* and *Top 50 Tech Firms* email-format sheets.
 
 ## Calendar notes

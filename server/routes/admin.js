@@ -6,6 +6,7 @@ const store = require('../content/store');
 const validate = require('../content/validate');
 const { readFormatsFile } = require('../content/formats-import');
 const { readProgramsFile } = require('../content/programs-import');
+const I = require('../content/internships');
 
 // Officers only (mounted behind requireUser + requireAdmin).
 module.exports = function adminRoutes(db) {
@@ -140,6 +141,47 @@ module.exports = function adminRoutes(db) {
     } catch (err) {
       next(Object.assign(err, { status: err.status || 400, message: err.status ? err.message : `Couldn't read that file: ${err.message}` }));
     }
+  });
+
+  // ----- internships -----
+  const ATTENTION = ['no_link', 'status', 'stale'];
+  r.get('/internships', (req, res) => {
+    const today = I.ymd(new Date());
+    const rows = db.prepare('SELECT * FROM internships ORDER BY id').all().map((x) => ({
+      ...x, computed_status: I.computeStatus(x, today).status, attention: I.attentionReasons(x, today),
+    }));
+    const counts = Object.fromEntries(ATTENTION.map((a) => [a, rows.filter((x) => x.attention.includes(a)).length]));
+    counts.any = rows.filter((x) => x.attention.length).length;
+    const want = req.query.attention;
+    const list = !want ? rows : rows.filter((x) => (want === 'any' ? x.attention.length : x.attention.includes(want)));
+    res.json({ staleDays: I.STALE_DAYS, counts, total: rows.length, results: list });
+  });
+  r.get('/internships.csv', (req, res) => {
+    res.type('text/csv').attachment(`bbsa-internships-${I.ymd(new Date())}.csv`).send(I.toCsv(db.prepare('SELECT * FROM internships ORDER BY id').all()));
+  });
+  r.post('/internships', (req, res) => {
+    const row = I.normalize({ ...req.body, id: '' });
+    res.status(201).json({ ok: true, id: I.upsert(db, row, by(req)).id });
+  });
+  r.put('/internships/:id', (req, res) => {
+    if (!db.prepare('SELECT 1 FROM internships WHERE id = ?').get(req.params.id)) return notFound(res, 'Internship');
+    I.upsert(db, I.normalize({ ...req.body, id: req.params.id }), by(req));
+    res.json({ ok: true });
+  });
+  r.delete('/internships/:id', (req, res) => {
+    const info = db.prepare('DELETE FROM internships WHERE id = ?').run(req.params.id);
+    if (!info.changes) return notFound(res, 'Internship');
+    I.rememberDeleted(db, req.params.id); // so a later seed doesn't bring it back
+    res.json({ ok: true });
+  });
+  // CSV with the same columns as the export. Rows match by id; rows without an id are added.
+  r.post('/internships/import', upload.single('file'), (req, res) => {
+    const text = req.file ? req.file.buffer.toString('utf8') : typeof req.body?.csv === 'string' ? req.body.csv : null;
+    if (!text) return res.status(400).json({ error: 'Choose a .csv file.' });
+    const { rows, errors } = I.fromCsv(text);
+    let created = 0, updated = 0;
+    tx(db, () => { for (const row of rows) (I.upsert(db, row, by(req)).created ? created++ : updated++); });
+    res.json({ created, updated, errors: errors.slice(0, 50) });
   });
 
   // ----- email formats -----

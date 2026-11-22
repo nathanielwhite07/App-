@@ -125,3 +125,63 @@ test('programs import: eligibility, industry mapping and expected month', () => 
   assert.equal(expectedMonth('Applications open late Mar–early Apr 2027', now), '2027-03');
   assert.equal(expectedMonth('No summer 2027 posting as of Oct 8, 2026', now), null);
 });
+
+test('internships: status is computed from the deadline date, not trusted', () => {
+  const I = require('../server/content/internships');
+  const today = '2026-11-22';
+  // A past deadline means Closed, whatever was stored.
+  assert.equal(I.computeStatus({ status: 'Open', deadline_date: '2026-11-21' }, today).status, 'Closed');
+  assert.equal(I.computeStatus({ status: 'Expected', deadline_date: '2026-01-01' }, today).group, 5);
+  // Today and future deadlines stay as entered, with a countdown.
+  const due = I.computeStatus({ status: 'Open', deadline_date: '2026-12-04' }, today);
+  assert.equal(due.status, 'Open');
+  assert.equal(due.daysLeft, 12);
+  assert.equal(due.tone, 'soon');
+  assert.equal(I.computeStatus({ status: 'Open', deadline_date: today }, today).daysLeft, 0);
+  assert.equal(I.computeStatus({ status: 'Open', deadline_date: '2027-03-01' }, today).tone, 'open');
+  // No date: stored status decides the group.
+  assert.equal(I.computeStatus({ status: 'Rolling' }, today).group, 2);
+  assert.equal(I.computeStatus({ status: 'Closing soon' }, today).group, 2);
+  assert.equal(I.computeStatus({ status: 'Expected' }, today).group, 3);
+  assert.equal(I.computeStatus({ status: 'Not tracked' }, today).group, 4);
+  assert.equal(I.computeStatus({ status: 'Mostly closed' }, today).group, 5);
+  assert.equal(I.computeStatus({ status: 'Likely closed' }, today).status, 'Likely closed');
+});
+
+test('internships: default sort order', () => {
+  const I = require('../server/content/internships');
+  const today = '2026-11-22';
+  const rows = [
+    { id: 1, company: 'Zeta', status: 'Closed', deadline_date: '' },
+    { id: 2, company: 'Alpha', status: 'Expected', deadline_date: '' },
+    { id: 3, company: 'Beta', status: 'Open', deadline_date: '2027-01-15' },
+    { id: 4, company: 'Gamma', status: 'Not tracked', deadline_date: '' },
+    { id: 5, company: 'Delta', status: 'Rolling', deadline_date: '' },
+    { id: 6, company: 'Eps', status: 'Open', deadline_date: '2026-12-01' },
+    { id: 7, company: 'Aardvark', status: 'Open', deadline_date: '2026-11-01' }, // passed -> closed
+    { id: 8, company: 'Kappa', status: 'Open', deadline_date: '' },
+    { id: 9, company: 'Mostly', status: 'Mostly closed', deadline_date: '' },
+  ];
+  assert.deepEqual(I.sortInternships(rows, today).map((r) => r.id), [6, 3, 5, 8, 2, 4, 7, 9, 1]);
+});
+
+test('internships: link labels, needs attention, CSV round trip', () => {
+  const I = require('../server/content/internships');
+  assert.equal(I.linkLabel({ link: 'https://x', link_type: 'Posting' }), 'Apply');
+  assert.equal(I.linkLabel({ link: 'https://x', link_type: 'Posting (interest form)' }), 'Apply (interest form)');
+  assert.equal(I.linkLabel({ link: 'https://x', link_type: 'Careers page' }), 'Careers page');
+  assert.equal(I.linkLabel({ link: 'https://x', link_type: 'Careers board' }), 'Careers page');
+  assert.equal(I.linkLabel({ link: 'https://x', link_type: 'Tracker guide (Extern)' }), 'Tracker guide');
+  assert.equal(I.linkLabel({ link: '', link_type: 'Posting' }), null);
+  const today = '2026-11-22';
+  assert.deepEqual(I.attentionReasons({ link: '', status: 'Check site', as_of: '2026-10-09' }, today), ['no_link', 'status', 'stale']);
+  assert.deepEqual(I.attentionReasons({ link: 'https://x', status: 'Open', as_of: '2026-10-23' }, today), []); // exactly 30 days is fine
+  assert.deepEqual(I.attentionReasons({ link: 'https://x', status: 'Open', as_of: '2026-10-22' }, today), ['stale']);
+  const row = { id: 9, company: 'A, "B"', industry: 'finance', program: 'Analyst', notes: 'line1\nline2', deadline_date: '2027-01-15', as_of: today };
+  const back = I.fromCsv(I.toCsv([I.normalize(row)]));
+  assert.deepEqual(back.errors, []);
+  assert.equal(back.rows[0].company, 'A, "B"');
+  assert.equal(back.rows[0].industry, 'Finance');
+  assert.equal(back.rows[0].notes, 'line1\nline2');
+  assert.match(I.fromCsv('company,industry,program,deadline_date\nX,Finance,Y,15/01/2027\n').errors[0], /date like/);
+});

@@ -135,3 +135,35 @@ CREATE TABLE IF NOT EXISTS meta (
   key TEXT PRIMARY KEY,
   value TEXT
 );
+
+-- Main junior/sophomore summer internships at large firms. `id` comes from the officers'
+-- spreadsheet so re-imports update rows instead of duplicating them.
+CREATE TABLE IF NOT EXISTS internships (
+  id INTEGER PRIMARY KEY,
+  company TEXT NOT NULL,
+  industry TEXT NOT NULL,                  -- Consulting | Finance | Tech
+  category TEXT,                           -- e.g. Bulge Bracket, Strategy (MBB), Big Tech
+  program TEXT NOT NULL,
+  for_students TEXT,                       -- e.g. "Sophomores (Class of 2029)"
+  internship_summer TEXT,                  -- e.g. "2028"
+  status TEXT,                             -- as entered; the app computes "Closed" once deadline_date passes
+  opens TEXT,                              -- free text, e.g. "Jan 2027 (opened Jan 1 last cycle)"
+  deadline TEXT,                           -- free text
+  deadline_date TEXT,                      -- YYYY-MM-DD when a firm date is known
+  link TEXT,
+  link_type TEXT,                          -- Posting | Careers page | Tracker guide (Extern) | ...
+  next_cycle TEXT,
+  notes TEXT,
+  source TEXT,
+  as_of TEXT,                              -- YYYY-MM-DD the row was last checked
+  updated_by TEXT,                         -- 'seed' until an officer edits it
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- A student's own starred internships ("My list"). Never exposed to anyone else.
+CREATE TABLE IF NOT EXISTS internship_stars (
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  internship_id INTEGER NOT NULL REFERENCES internships(id) ON DELETE CASCADE,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (user_id, internship_id)
+);

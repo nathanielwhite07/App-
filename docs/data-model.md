@@ -139,3 +139,12 @@ CREATE TABLE invites (
 
 Directory access: signed-in members only; contact details shown only for fields the person
 chose to share; profile hidden immediately when `visible` is turned off.
+
+## Internships (built)
+
+| Table | Purpose |
+|---|---|
+| `internships` | One row per firm program: the 17 spreadsheet columns, keyed by the spreadsheet's `id`, plus `updated_by` (`seed` until an officer edits it). The status students see is computed: a past `deadline_date` always shows "Closed". |
+| `internship_stars` | A student's own "My list". Only read for that student; starred deadlines are turned into all-day calendar events when the calendar or feed is requested, so they follow officer edits. |
+
+`meta.internships_seed_hash` records which seed file was last loaded, and `meta.internships_deleted` records rows officers deleted, so reloading the seed doesn't bring them back.

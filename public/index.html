@@ -39,6 +39,7 @@
         <button class="tab" data-view="month">This month</button>
         <button class="tab" data-view="timelines">Timelines</button>
         <button class="tab" data-view="programs">Programs</button>
+        <button class="tab" data-view="internships">Internships</button>
         <button class="tab" data-view="formats">Email formats</button>
         <button class="tab" data-view="calendar">Calendar</button>
         <button class="tab" data-view="profile">Profile</button>
@@ -90,6 +91,21 @@
         </form>
         <p class="muted" id="prog-count"></p>
         <div id="prog-list" class="list"></div>
+      </section>
+
+      <!-- Internships -->
+      <section class="view" id="view-internships">
+        <div class="view-head"><h2>Summer internships</h2><p class="muted">The main junior and sophomore summer internships at large consulting, finance and tech firms. Many dates are estimates from recruiting trackers, so check each card's "info as of" date and confirm on the firm's site. Tap ☆ to add one to My list; starred deadlines go on your calendar.</p></div>
+        <form id="int-filters" class="filters">
+          <input name="q" placeholder="Search company">
+          <select name="industry"><option value="">All industries</option></select>
+          <select name="category"><option value="">All categories</option></select>
+          <select name="for"><option value="">Anyone</option></select>
+          <select name="status"><option value="">Any status</option></select>
+          <label class="pin-filter"><input type="checkbox" name="starred" value="1"> ★ My list</label>
+        </form>
+        <p class="muted" id="int-count"></p>
+        <div id="int-list" class="list"></div>
       </section>
 
       <!-- Email formats -->
@@ -173,6 +189,7 @@
           <button data-admin="programs" class="active">Programs</button>
           <button data-admin="milestones">Timelines</button>
           <button data-admin="industries">Industries</button>
+          <button data-admin="internships">Internships</button>
           <button data-admin="firms">Email formats</button>
           <button data-admin="backup">Backup</button>
         </div>

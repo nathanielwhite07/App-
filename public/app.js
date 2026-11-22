@@ -13,6 +13,7 @@ const PROVIDERS = {
   outlookcom: { label: 'Outlook.com (personal)', short: 'Outlook.com' },
   ics: { label: 'Apple Calendar / other (.ics file)', short: '.ics' },
 };
+const fmtDay = (ymdStr) => new Date(`${ymdStr}T12:00:00`).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 const fmtMonth = (ym) => new Date(`${ym}-15T12:00:00`).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
 const state = { user: null, industries: [], monthOffset: 0, calMonth: new Date(), events: [], tl: { industry: null, year: null }, adminTab: 'programs' };
 
@@ -76,7 +77,7 @@ $('#resend').addEventListener('click', async () => {
 $('#logout').addEventListener('click', async () => { await api('POST', '/api/auth/logout').catch(() => {}); location.hash = ''; location.reload(); });
 
 // ---------------- navigation ----------------
-const loaders = { month: loadMonth, timelines: loadTimelines, programs: loadPrograms, formats: loadFormats, calendar: loadCalendar, profile: loadProfile, admin: loadAdmin };
+const loaders = { month: loadMonth, timelines: loadTimelines, programs: loadPrograms, internships: loadInternships, formats: loadFormats, calendar: loadCalendar, profile: loadProfile, admin: loadAdmin };
 function go(view) {
   if (view === 'admin' && !state.user.isAdmin) view = 'month';
   $$('#nav .tab').forEach((t) => t.classList.toggle('active', t.dataset.view === view));
@@ -302,6 +303,7 @@ async function loadMonth() {
     (r.usingAllIndustries ? '<p class="notice">Showing every industry. <a href="#" data-goto="profile">Pick the industries you\'re recruiting for</a> to focus this list.</p>' : '') +
     section('Focus this month', `${left} to do`, `<div class="list">${r.now.map((m) => milestoneCard(m, { checkable: true })).join('')}</div>`, 'Nothing on the timeline for this month. A good time to get ahead on next month.') +
     (r.pinned.length ? section('Your pinned programs', r.pinned.length, `<div class="list">${r.pinned.map(programRow).join('')}</div>`, '') : '') +
+    (r.starredInternships.length ? section('Starred internships due soon', r.starredInternships.length, `<div class="list">${r.starredInternships.map(internshipCard).join('')}</div>`, '') : '') +
     section('Deadlines in the next 45 days', r.deadlines.length, `<div class="list">${r.deadlines.map(programRow).join('')}</div>`, 'No program deadlines coming up for your year and industries.') +
     section('Coming up next month', r.next.length, `<div class="list">${r.next.map((m) => milestoneCard(m)).join('')}</div>`, 'Nothing new starts next month.') +
     section('Check now or opening soon', r.toWatch.length, `<div class="list">${r.toWatch.map(programRow).join('')}</div>`, 'Nothing else expected to open in the next month for your year. Browse the <a href="#" data-goto="programs">Programs</a> tab.') +
@@ -361,6 +363,74 @@ function cachePrograms(rows) {
   state.programCache = state.programCache || {};
   rows.forEach((p) => { state.programCache[p.id] = p; });
 }
+
+// ---------------- internships ----------------
+function internshipCard(x) {
+  const urgent = x.daysLeft != null && x.daysLeft <= 7;
+  const when = x.daysLeft != null
+    ? `<strong>Due ${fmtDate(x.deadlineDate)}</strong><span class="days ${urgent ? 'urgent' : ''}">${x.daysLeft === 0 ? 'Due today' : `${x.daysLeft} day${x.daysLeft === 1 ? '' : 's'} left`}</span>`
+    : x.status === 'Closed' && x.deadlineDate ? `<strong>Closed</strong><span class="days">${fmtDate(x.deadlineDate)}</span>`
+      : '';
+  const facts = [['Opens', x.opens], ['Deadline', x.deadline], ['For', x.forStudents && `${x.forStudents}${x.internshipSummer ? ` · summer ${x.internshipSummer}` : ''}`],
+    ['Next cycle', x.nextCycle]].filter(([, v]) => v);
+  return `<article class="prog ${x.starred ? 'pinned' : ''}">
+    <button class="pin ${x.starred ? 'on' : ''}" data-star="${x.id}" aria-pressed="${x.starred}" title="${x.starred ? 'Remove from My list' : 'Add to My list'}">${x.starred ? '★' : '☆'}</button>
+    <div class="prog-main">
+      <div class="ms-title">${esc(x.company)}</div>
+      <div class="ms-meta"><span>${esc(x.program)}</span>
+        <span class="badge int-${x.statusTone}" ${x.storedStatus && x.storedStatus !== x.status ? `title="Listed as ${esc(x.storedStatus)}, but the deadline has passed"` : ''}>${esc(x.status)}</span>
+        <span>· ${esc(x.industry)}${x.category ? ` · ${esc(x.category)}` : ''}</span></div>
+      ${facts.length ? `<dl class="facts">${facts.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>` : ''}
+      ${x.notes ? `<p class="ms-details" style="margin-top:6px">${esc(x.notes)}</p>` : ''}
+      ${x.emailFormat ? `<p class="email-line">Email format: <code>${esc(x.emailFormat.format)}</code> <span class="muted">e.g. ${esc(x.emailFormat.example)}${x.emailFormat.confidence ? ` · ${esc(x.emailFormat.confidence)} confidence` : ''}</span></p>` : ''}
+      <p class="asof">Info as of ${esc(x.asOf ? fmtDate(x.asOf) : 'unknown')} · Source: ${esc(x.source || 'unknown')}</p>
+    </div>
+    <div class="when">${when}
+      <div class="ms-actions" style="justify-content:flex-end;margin-top:6px">
+        ${x.linkLabel ? `<a class="btn small ${x.linkLabel.startsWith('Apply') ? 'primary' : ''}" href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.linkLabel)}</a>`
+          : '<span class="no-link">No link yet – check the firm\'s careers site</span>'}
+      </div>
+    </div>
+  </article>`;
+}
+
+async function loadInternships() {
+  const f = $('#int-filters');
+  if (!loadInternships.init) {
+    loadInternships.init = true;
+    f.addEventListener('input', (e) => { if (e.target.name === 'industry') f.category.value = ''; loadInternships(); });
+    f.addEventListener('submit', (e) => e.preventDefault());
+  }
+  const params = new URLSearchParams([...new FormData(f)].filter(([, v]) => v));
+  const r = await api('GET', `/api/internships?${params}`);
+  const fill = (sel, values, label) => {
+    const cur = sel.value;
+    sel.innerHTML = `<option value="">${label}</option>${values.map((v) => `<option ${v === cur ? 'selected' : ''}>${esc(v)}</option>`).join('')}`;
+  };
+  fill(f.industry, r.facets.industries, 'All industries');
+  fill(f.category, r.facets.categories, 'All categories');
+  fill(f.for, r.facets.forStudents, 'Anyone');
+  fill(f.status, r.facets.statuses, 'Any status');
+  const starred = r.results.filter((x) => x.starred).length;
+  $('#int-count').textContent = `${r.results.length} of ${r.total} internships${starred ? ` · ${starred} on My list` : ''}`;
+  $('#int-list').innerHTML = r.results.length ? r.results.map(internshipCard).join('')
+    : `<p class="empty-sm">${f.starred.checked ? 'Nothing on My list yet. Tap ☆ on an internship to add it.' : 'No internships match these filters.'}</p>`;
+}
+
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('[data-star]');
+  if (!b) return;
+  const on = b.dataset.unstarRefresh ? false : !b.classList.contains('on');
+  try {
+    await api('PUT', `/api/internships/${b.dataset.star}/star`, { starred: on });
+    if (b.dataset.unstarRefresh) { toast('Removed from My list'); return loadCalendar(); }
+    $$(`[data-star="${b.dataset.star}"]`).forEach((x) => {
+      x.classList.toggle('on', on); x.textContent = on ? '★' : '☆'; x.setAttribute('aria-pressed', on);
+      x.closest('.prog')?.classList.toggle('pinned', on);
+    });
+    toast(on ? 'Added to My list. Its deadline is now on your calendar.' : 'Removed from My list');
+  } catch (err) { toast(err.message); }
+});
 
 // ---------------- email formats ----------------
 async function loadFormats() {
@@ -429,11 +499,11 @@ async function loadCalendar() {
   renderFeed();
   state.events = await api('GET', '/api/events');
   renderMonth();
-  const upcoming = state.events.filter((e) => Date.parse(e.startsAt) > Date.now() - 36e5);
+  const upcoming = state.events.filter((e) => (e.allDay ? e.date >= ymd(new Date()) : Date.parse(e.startsAt) > Date.now() - 36e5));
   $('#cal-upcoming').innerHTML = upcoming.length ? upcoming.map((ev) => `<div class="list-item">
       <div><span class="badge ${ev.kind === 'deadline' ? 'apply' : ev.kind === 'reminder' ? 'prepare' : 'network'}">${ev.kind}</span>
-        <strong>${esc(ev.title)}</strong><br><span class="muted">${fmtDateTime(ev.startsAt)} · ${ev.durationMin} min${ev.location ? ' · ' + esc(ev.location) : ''}</span></div>
-      <div class="ms-actions">${addToButtons(ev, { compact: true })} <button class="btn small" data-del-event="${ev.id}">Delete</button></div></div>`).join('')
+        <strong>${esc(ev.title)}</strong><br><span class="muted">${ev.allDay ? `${fmtDay(ev.date)} · all day · from your starred internships` : `${fmtDateTime(ev.startsAt)} · ${ev.durationMin} min`}${ev.location ? ' · ' + esc(ev.location) : ''}</span></div>
+      <div class="ms-actions">${addToButtons(ev, { compact: true })} ${ev.internshipId ? `<button class="btn small" data-star="${ev.internshipId}" data-unstar-refresh="1">Unstar</button>` : `<button class="btn small" data-del-event="${ev.id}">Delete</button>`}</div></div>`).join('')
     : '<p class="empty-sm">Nothing scheduled. Use "Remind me" on <a href="#" data-goto="programs">Programs</a> or <a href="#" data-goto="month">This month</a>.</p>';
 }
 function renderMonth() {
@@ -444,7 +514,7 @@ function renderMonth() {
   let html = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => `<div class="dow">${d}</div>`).join('');
   for (let i = 0; i < 42; i++) {
     const d = new Date(startDay); d.setDate(startDay.getDate() + i);
-    const evs = state.events.filter((e) => new Date(e.startsAt).toDateString() === d.toDateString());
+    const evs = state.events.filter((e) => (e.allDay ? e.date === ymd(d) : new Date(e.startsAt).toDateString() === d.toDateString()));
     html += `<div class="day ${d.getMonth() !== mo ? 'other' : ''} ${d.toDateString() === today ? 'today' : ''}"><span class="num">${d.getDate()}</span>
       ${evs.map((e) => `<span class="ev ${e.kind === 'deadline' ? 'deadline' : e.kind === 'reminder' ? 'follow_up' : ''}" title="${esc(e.title)}">${esc(e.title)}</span>`).join('')}</div>`;
   }
@@ -560,6 +630,10 @@ function fieldHtml([name, label, type, o = {}], value) {
   const hint = o.hint ? `<span class="hint">${esc(o.hint)}</span>` : '';
   if (type === 'bool') return `<div class="checks-row"><label><input type="checkbox" name="${name}" ${v ? 'checked' : ''}> ${esc(label)}</label></div>`;
   if (type === 'years') return `<fieldset><legend>${esc(label)}</legend><div class="checks-row">${[1, 2, 3, 4].map((y) => `<label><input type="checkbox" name="${name}" value="${y}" ${(v || []).includes(y) ? 'checked' : ''}> ${YEAR_NAMES[y]}</label>`).join('')}</div></fieldset>`;
+  if (type === 'list') {
+    const id = `dl-${name}`;
+    return `<label>${esc(label)} ${hint}<input name="${name}" list="${id}" value="${esc(v)}"><datalist id="${id}">${o.options.map((x) => `<option value="${esc(x)}">`).join('')}</datalist></label>`;
+  }
   if (type === 'multi') return `<fieldset><legend>${esc(label)}</legend><div class="checks-row">${o.options.map(([ov, ol]) => `<label><input type="checkbox" name="${name}" value="${esc(ov)}" ${(v || []).includes(ov) ? 'checked' : ''}> ${esc(ol)}</label>`).join('')}</div></fieldset>`;
   if (type === 'select') return `<label>${esc(label)} ${hint}<select name="${name}">${o.options.map(([ov, ol]) => `<option value="${esc(ov)}" ${String(ov) === String(v) ? 'selected' : ''}>${esc(ol)}</option>`).join('')}</select></label>`;
   if (type === 'textarea' || type === 'code') return `<label>${esc(label)} ${hint}<textarea name="${name}" rows="${type === 'code' ? 12 : 3}" class="${type}">${esc(v)}</textarea></label>`;
@@ -581,6 +655,7 @@ async function loadAdmin() {
   $$('#admin-tabs button').forEach((b) => b.classList.toggle('active', b.dataset.admin === state.adminTab));
   state.adminIndustries = await api('GET', '/api/admin/industries');
   if (state.adminTab === 'backup') return renderBackup();
+  if (state.adminTab === 'internships') return renderAdminInternships();
   const s = SCHEMAS[state.adminTab];
   const rows = await api('GET', s.list);
   const cell = (row, key) => {
@@ -632,6 +707,99 @@ function editRow(s, row) {
     if (s === SCHEMAS.industries) state.industries = await api('GET', '/api/industries');
     loadAdmin();
     return true;
+  });
+}
+
+// ----- admin: internships -----
+const ATTENTION_SHORT = { no_link: 'No link', status: 'Check status', stale: '30+ days old' };
+const ATTENTION_LABEL = { no_link: 'No link', status: 'Not tracked / check site / unconfirmed', stale: 'Info older than 30 days' };
+const INTERNSHIP_FIELDS = () => [
+  ['company', 'Company', 'text', { required: true, hint: 'Use the same name as on the Email formats tab to show the format on the card.' }],
+  ['industry', 'Industry', 'select', { options: [['Consulting', 'Consulting'], ['Finance', 'Finance'], ['Tech', 'Tech']] }],
+  ['category', 'Category', 'text', { placeholder: 'Bulge Bracket, Strategy (MBB), Big Tech…' }],
+  ['program', 'Program', 'text', { required: true }],
+  ['for_students', 'Who can apply', 'text', { placeholder: 'Sophomores (Class of 2029)' }],
+  ['internship_summer', 'Internship summer', 'text', { placeholder: '2028' }],
+  ['status', 'Status', 'list', { options: ['Open', 'Rolling', 'Closing soon', 'Expected', 'Unconfirmed', 'Check site', 'Not posted', 'Not tracked', 'Mostly closed', 'Likely closed', 'Closed'],
+    hint: 'If the deadline date has passed, students see Closed automatically.' }],
+  ['opens', 'Opens (as written)', 'text', { placeholder: 'Jan 2027 (opened Jan 1 last cycle)' }],
+  ['deadline', 'Deadline (as written)', 'text', { placeholder: 'Jan 15, 2027' }],
+  ['deadline_date', 'Deadline date (only if confirmed)', 'date'],
+  ['link', 'Link', 'url'],
+  ['link_type', 'Link type', 'list', { options: ['Posting', 'Careers page', 'Careers board', 'Tracker guide (Extern)', 'Posting (interest form)'],
+    hint: 'Posting → "Apply" button; Careers page/board → "Careers page"; Tracker guide → "Tracker guide".' }],
+  ['next_cycle', 'Next cycle', 'text'], ['notes', 'Notes for students', 'textarea'], ['source', 'Source', 'text'],
+  ['as_of', 'Info as of', 'date', { hint: 'Update this whenever you check the row. "Save as checked today" does it for you.' }],
+];
+
+async function renderAdminInternships(filter = state.intAttention || '') {
+  state.intAttention = filter;
+  const r = await api('GET', `/api/admin/internships${filter ? `?attention=${filter}` : ''}`);
+  const chip = (key, label, n) => `<button type="button" class="chip-btn ${filter === key ? 'active' : ''}" data-attn="${key}">${esc(label)} <span class="count">${n}</span></button>`;
+  $('#admin-body').innerHTML = `<div class="admin-bar">
+      <input id="admin-search" placeholder="Filter internships…">
+      <button class="btn primary" id="int-add">Add internship</button>
+      <button class="btn" id="int-import">Import CSV</button>
+      <a class="btn" href="/api/admin/internships.csv">Export CSV</a>
+    </div>
+    <div class="attn-bar"><strong>Needs attention:</strong>
+      ${chip('', 'All rows', r.total)}${chip('any', 'Any reason', r.counts.any)}
+      ${Object.entries(ATTENTION_LABEL).map(([k, l]) => chip(k, l, r.counts[k])).join('')}</div>
+    <div class="table-wrap"><table class="table"><tr><th>#</th><th>Company</th><th>Program</th><th>Status</th><th>Deadline</th><th>Info as of</th><th>Needs attention</th><th>Last edited</th></tr>
+    ${r.results.map((x) => `<tr class="clickable" data-row="${x.id}"><td class="muted">${x.id}</td><td><strong>${esc(x.company)}</strong><br><span class="muted">${esc(x.industry)}</span></td>
+      <td>${esc(x.program)}</td><td>${esc(x.computed_status)}${x.computed_status !== x.status ? `<br><span class="muted">listed: ${esc(x.status)}</span>` : ''}</td>
+      <td class="nowrap">${esc(x.deadline_date || x.deadline || '—')}</td><td class="nowrap">${esc(x.as_of || '—')}</td>
+      <td class="attn-tags">${x.attention.map((a) => `<span class="badge int-soon">${ATTENTION_SHORT[a]}</span>`).join(' ')}</td>
+      <td class="muted">${esc(x.updated_by || '')}<br>${esc((x.updated_at || '').slice(0, 10))}</td></tr>`).join('')}
+    </table></div>`;
+  $('#admin-search').oninput = (e) => {
+    const q = e.target.value.toLowerCase();
+    $$('#admin-body tr[data-row]').forEach((tr) => { tr.hidden = q && !tr.textContent.toLowerCase().includes(q); });
+  };
+  $$('[data-attn]').forEach((b) => { b.onclick = () => renderAdminInternships(b.dataset.attn); });
+  $('#int-add').onclick = () => editInternship(null);
+  $('#int-import').onclick = importInternships;
+  $('#admin-body table').onclick = (e) => {
+    const tr = e.target.closest('[data-row]');
+    if (tr) editInternship(r.results.find((x) => String(x.id) === tr.dataset.row));
+  };
+}
+
+function editInternship(row) {
+  const fields = INTERNSHIP_FIELDS();
+  openDialog(`<h3>${row ? `Edit internship #${row.id}` : 'Add internship'}</h3>${fields.map((f) => fieldHtml(f, row?.[f[0]] ?? (f[0] === 'as_of' ? ymd(new Date()) : undefined))).join('')}
+    <div class="actions">${row ? '<button class="btn" value="delete" formnovalidate style="margin-right:auto;color:var(--bad)">Delete</button>' : ''}
+      <button class="btn" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn" value="today">Save as checked today</button><button class="btn primary" value="save">Save</button></div>`,
+  async (form, action) => {
+    if (action === 'delete') {
+      if (!confirm('Delete this internship? Students who starred it lose it from My list.')) return false;
+      await api('DELETE', `/api/admin/internships/${row.id}`);
+    } else {
+      const body = readFields(form, fields);
+      if (action === 'today') body.as_of = ymd(new Date());
+      await (row ? api('PUT', `/api/admin/internships/${row.id}`, body) : api('POST', '/api/admin/internships', body));
+    }
+    toast('Saved');
+    renderAdminInternships();
+    return true;
+  });
+}
+
+function importInternships() {
+  openDialog(`<h3>Import internships CSV</h3>
+    <p class="hint">Use the same columns as <strong>Export CSV</strong>: ${'id, company, industry, category, program, for_students, internship_summer, status, opens, deadline, deadline_date, link, link_type, next_cycle, notes, source, as_of'}.
+    Rows are matched by <strong>id</strong>, so an edited export updates rows in place (students keep their stars). Rows with an empty id are added as new.</p>
+    <label>File <input type="file" name="file" accept=".csv,text/csv" required></label>
+    <div id="upload-out"></div>
+    <div class="actions"><button class="btn" value="cancel" formnovalidate>Close</button><button class="btn primary" value="go">Import</button></div>`,
+  async (form, action) => {
+    if (action !== 'go') return true;
+    const fd = new FormData(); fd.append('file', form.file.files[0]);
+    const r = await api('POST', '/api/admin/internships/import', fd);
+    $('#upload-out').innerHTML = `<p class="notice">Added ${r.created}, updated ${r.updated}.${r.errors.length ? `<br>${r.errors.length} row(s) skipped:<br>${r.errors.slice(0, 8).map(esc).join('<br>')}` : ''}</p>`;
+    renderAdminInternships();
+    return false;
   });
 }
 
