@@ -5,6 +5,7 @@ const express = require('express');
 
 const { requireUser, requireAdmin, isAdmin } = require('./auth');
 const { YEAR_NAMES, classYear } = require('./academic');
+const { subscribeLinks } = require('./calendar');
 const authRoutes = require('./routes/auth');
 const contentRoutes = require('./routes/content');
 const eventRoutes = require('./routes/events');
@@ -18,19 +19,22 @@ function createApp(db) {
   app.use(express.json({ limit: '1mb' }));
   app.use(express.static(path.join(__dirname, '..', 'public')));
 
-  const publicUser = (u) => {
+  const CALENDAR_PROVIDERS = ['google', 'outlook', 'outlookcom', 'ics'];
+  const baseUrl = (req) => process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
+  const publicUser = (u, req) => {
     const cy = classYear(u.grad_year);
+    const feed = u.calendar_token ? `/calendar/${u.calendar_token}.ics` : null;
     return {
       id: u.id, email: u.email, name: u.name, gradYear: u.grad_year, classYear: cy, classYearName: YEAR_NAMES[cy] || null,
-      industries: JSON.parse(u.industry_slugs || '[]'), isAdmin: isAdmin(u),
-      calendarFeed: u.calendar_token ? `/calendar/${u.calendar_token}.ics` : null,
+      industries: JSON.parse(u.industry_slugs || '[]'), isAdmin: isAdmin(u), calendarProvider: u.calendar_provider || null,
+      calendarFeed: feed, calendarSubscribe: feed && req ? subscribeLinks(baseUrl(req) + feed) : null,
     };
   };
 
   app.use('/api/auth', authRoutes(db, { publicUser }));
 
   // ----- profile -----
-  app.get('/api/me', auth, (req, res) => res.json(publicUser(req.user)));
+  app.get('/api/me', auth, (req, res) => res.json(publicUser(req.user, req)));
   app.patch('/api/me', auth, (req, res) => {
     const b = req.body || {};
     const sets = [], args = [];
@@ -50,13 +54,17 @@ function createApp(db) {
       if (unknown.length) return res.status(400).json({ error: `Unknown industry: ${unknown.join(', ')}` });
       sets.push('industry_slugs = ?'); args.push(JSON.stringify([...new Set(b.industries)]));
     }
+    if (b.calendarProvider !== undefined) {
+      if (b.calendarProvider !== null && !CALENDAR_PROVIDERS.includes(b.calendarProvider)) return res.status(400).json({ error: 'Unknown calendar.' });
+      sets.push('calendar_provider = ?'); args.push(b.calendarProvider);
+    }
     if (sets.length) db.prepare(`UPDATE users SET ${sets.join(', ')} WHERE id = ?`).run(...args, req.user.id);
-    res.json(publicUser(db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id)));
+    res.json(publicUser(db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id), req));
   });
   app.post('/api/me/calendar-token', auth, (req, res) => {
     const token = crypto.randomBytes(18).toString('base64url');
     db.prepare('UPDATE users SET calendar_token = ? WHERE id = ?').run(token, req.user.id);
-    res.json({ calendarFeed: `/calendar/${token}.ics` });
+    res.json(publicUser(db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id), req));
   });
 
   app.use('/api', auth, contentRoutes(db));

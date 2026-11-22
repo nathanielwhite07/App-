@@ -1,12 +1,1883 @@
 [
-  { "name": "Bain BEL", "firm": "Bain & Company", "industry": "consulting", "eligible_years": [1, 2], "cycle": "2026-27",
-    "description": "Early program named in the consulting recruiting slides (10/28/2026). Add the deadline, link and exact eligibility.", "needs_review": true },
-  { "name": "Bain CREW", "firm": "Bain & Company", "industry": "consulting", "eligible_years": [1, 2], "cycle": "2026-27",
-    "description": "Early program named in the consulting recruiting slides (10/28/2026). Add the deadline, link and exact eligibility.", "needs_review": true },
-  { "name": "BCG Embark", "firm": "Boston Consulting Group (BCG)", "industry": "consulting", "eligible_years": [1, 2], "cycle": "2026-27",
-    "description": "Early program named in the consulting recruiting slides (10/28/2026). Add the deadline, link and exact eligibility.", "needs_review": true },
-  { "name": "BCG Advance", "firm": "Boston Consulting Group (BCG)", "industry": "consulting", "eligible_years": [1, 2], "cycle": "2026-27",
-    "description": "Early program named in the consulting recruiting slides (10/28/2026). Add the deadline, link and exact eligibility.", "needs_review": true },
-  { "name": "A&M CCDP", "firm": "Alvarez & Marsal", "industry": "consulting", "eligible_years": [1, 2], "cycle": "2026-27",
-    "description": "Early program named in the consulting recruiting slides (10/28/2026). Add the deadline, link and exact eligibility.", "needs_review": true }
+  {
+    "name": "Campus Insight Forum (U.S.)",
+    "firm": "Bank of America",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all",
+    "format": "Not stated",
+    "timing": "U.S. dates not yet announced",
+    "status": "watch",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://careers.bankofamerica.com/",
+    "description": "Sophomore Analyst program had no 2027 posting found."
+  },
+  {
+    "name": "Discovery Programme / Insight Days",
+    "firm": "Barclays",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Students two years from graduation",
+    "affinity": "Open to all",
+    "format": "Not stated",
+    "timing": "2027 dates not announced",
+    "status": "watch",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://search.jobs.barclays/insight-days",
+    "description": null
+  },
+  {
+    "name": "Summits (Analyst, Finance, Commercial Banking)",
+    "firm": "Capital One",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore (by track)",
+    "affinity": "Open to all (track-specific majors)",
+    "format": "In person, May and August",
+    "timing": "Spring 2027 (expected)",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-03",
+    "rolling": false,
+    "link": "https://www.capitalonecareers.com/get-ahead-with-early-career-programs-for-students",
+    "description": null
+  },
+  {
+    "name": "Early ID Leadership Program (December start)",
+    "firm": "Citi",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all U.S. sophomores",
+    "format": "Virtual, three weeks",
+    "timing": "Applications expected to open Nov 2026",
+    "status": "watch",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2026-11",
+    "rolling": false,
+    "link": "https://jobs.citi.com/early-career-programs-pre-internships",
+    "description": null
+  },
+  {
+    "name": "Early ID Leadership Program (March start)",
+    "firm": "Citi",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all",
+    "format": "Virtual, three weeks",
+    "timing": "Applications expected to open Feb 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-02",
+    "rolling": false,
+    "link": "https://jobs.citi.com/early-career-programs-pre-internships",
+    "description": null
+  },
+  {
+    "name": "Freshman Discovery",
+    "firm": "Citi",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "eligibility": "Freshman",
+    "affinity": "Open to all",
+    "format": "Virtual, three days in May",
+    "timing": "Applications open late Mar–early Apr 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-03",
+    "rolling": false,
+    "link": "https://jobs.citi.com/early-career-programs-pre-internships",
+    "description": "Good spring target for BBSA freshmen."
+  },
+  {
+    "name": "D1 Athlete Development Program",
+    "firm": "Citi",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore",
+    "affinity": "Division I student-athletes, team managers and assistants",
+    "format": "Virtual, June–August",
+    "timing": "Applications open Mar–Apr 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-03",
+    "rolling": false,
+    "link": "https://jobs.citi.com/early-career-programs-pre-internships",
+    "description": "Relevant for Vanderbilt athletes."
+  },
+  {
+    "name": "Develop with Deutsche Bank (U.S.)",
+    "firm": "Deutsche Bank",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Underrepresented groups encouraged",
+    "format": "Two-day U.S. event",
+    "timing": "2027 dates not announced",
+    "status": "watch",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://careers.db.com/students-graduates/insight-programmes/us/develop",
+    "description": null
+  },
+  {
+    "name": "Sophomore programs & Rising Junior Scholarship",
+    "firm": "Evercore",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Underrepresented backgrounds (scholarship has separate diversity criteria)",
+    "format": "Not stated",
+    "timing": "Summer 2027 cycle opened Jan 2026; expect ~Jan 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-01",
+    "rolling": false,
+    "link": "https://www.evercore.com/careers/",
+    "description": null
+  },
+  {
+    "name": "Possibilities Series (formerly Possibilities Summits)",
+    "firm": "Goldman Sachs",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "eligibility": "Freshman (grads Dec 2029–Jun 2030 expected)",
+    "affinity": "Open to all; earlier cycles had a Black Possibilities Summit track plus HBCU and Diverse Abilities tracks",
+    "format": "Virtual, year-long",
+    "timing": "Expected to open ~Feb 2027 (last cycle opened Feb 1; deadline extended to Mar 22, 2026)",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-02",
+    "rolling": false,
+    "link": "https://www.goldmansachs.com/careers/students/programs-and-internships/americas/possibilities-series",
+    "description": "Top freshman program. Check whether 2027 keeps affinity tracks."
+  },
+  {
+    "name": "Emerging Leaders Series",
+    "firm": "Goldman Sachs",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore (grads Dec 2028–Jun 2029)",
+    "affinity": "Open to all",
+    "format": "In person: NY, Dallas or Salt Lake City (by track)",
+    "timing": "Closed Oct 4, 2026; next cycle expected ~Sep–Oct 2027",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": "2026-10-04",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.goldmansachs.com/careers/students/programs-and-internships/americas/emerging-leaders-series",
+    "description": "Freshmen: apply fall of sophomore year."
+  },
+  {
+    "name": "Global Banking & Markets Spring Insight",
+    "firm": "HSBC",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore (3.2 GPA)",
+    "affinity": "Underrepresented groups encouraged; open to all",
+    "format": "Two days, March",
+    "timing": "Expected to open Mar 2027; rolling",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-03",
+    "rolling": true,
+    "link": "https://www.hsbc.com/careers/students-and-graduates/insight-programmes",
+    "description": null
+  },
+  {
+    "name": "IB Insight Day",
+    "firm": "Houlihan Lokey",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all",
+    "format": "In person, New York",
+    "timing": "Closed Oct 19, 2026",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": "2026-10-19",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://hl.com/careers/",
+    "description": null
+  },
+  {
+    "name": "IB Women's Insight Day",
+    "firm": "Houlihan Lokey",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Women",
+    "format": "In person: NY or Chicago",
+    "timing": "Late Oct (expected)",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://hl.com/careers/",
+    "description": null
+  },
+  {
+    "name": "JPMorganChase Fellowship Program (formerly Advancing Black Pathways Fellowship)",
+    "firm": "JPMorganChase",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore (preferred GPA 3.2+)",
+    "affinity": "Open to all sophomores; was the Advancing Black Pathways (ABP) program through 2025",
+    "format": "5-week paid summer fellowship in select offices",
+    "timing": "Expected Nov 2026–mid-Jan 2027 (last cycle closed Jan 12–13, 2026)",
+    "status": "watch",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2026-11",
+    "rolling": false,
+    "link": "https://www.jpmorganchase.com/careers/explore-opportunities/programs/jpmcfellowship",
+    "description": "Can lead to a summer internship offer. No posting found as of Nov 11, 2026."
+  },
+  {
+    "name": "IB Insight Day (Class of 2029)",
+    "firm": "Jefferies",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "See posting",
+    "format": "See posting",
+    "timing": "Posted; deadline not stated",
+    "status": "check_now",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.jefferies.com/careers/",
+    "description": null
+  },
+  {
+    "name": "IB Sophomore Series",
+    "firm": "KeyBanc Capital Markets",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all",
+    "format": "Virtual, mid-Dec to early Feb",
+    "timing": "Early Nov (expected; last cycle Nov 3)",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.key.com/careers",
+    "description": null
+  },
+  {
+    "name": "Early Insights",
+    "firm": "Lazard",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Sophomores from underrepresented backgrounds",
+    "format": "Multi-day spring workshop",
+    "timing": "Typically Jan 15–Feb 15",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-01",
+    "rolling": false,
+    "link": "https://www.lazard.com/careers/",
+    "description": "Feeds into Summer Analyst interviews."
+  },
+  {
+    "name": "Sophomore Job Shadow Program",
+    "firm": "Lincoln International",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all",
+    "format": "In person, Chicago, one day",
+    "timing": "Deadline Oct 30, 2026 (program Nov 20)",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": "2026-10-30",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.lincolninternational.com/careers/",
+    "description": "One guide lists an early-Dec deadline instead – verify."
+  },
+  {
+    "name": "Women in Finance Workshop",
+    "firm": "Lincoln International",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Women",
+    "format": "Not stated",
+    "timing": "Not stated",
+    "status": "unconfirmed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.lincolninternational.com/careers/",
+    "description": null
+  },
+  {
+    "name": "Leadership Development Program (LDP)",
+    "firm": "Moelis & Company",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Underrepresented groups encouraged; open to all",
+    "format": "In person: NY (early Jan); Boston, Chicago, Houston, LA, SF (late Jan)",
+    "timing": "Late Oct (expected; last cycle Oct 31)",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.moelis.com/careers/",
+    "description": null
+  },
+  {
+    "name": "Early Insights",
+    "firm": "Morgan Stanley",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore (grads Dec 2028–Jun 2029)",
+    "affinity": "Open to all (was a diversity recruiting program in earlier years)",
+    "format": "Virtual, Nov 2 & 5, 2026",
+    "timing": "Registration closed Oct 30, 2026",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": "2026-10-30",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.morganstanley.com/people-opportunities/students-graduates/programs/early-insights",
+    "description": null
+  },
+  {
+    "name": "Explore Nomura",
+    "firm": "Nomura",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore",
+    "affinity": "Underrepresented groups encouraged",
+    "format": "In person, NYC, March",
+    "timing": "February (last confirmed listing 2023)",
+    "status": "unconfirmed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-02",
+    "rolling": false,
+    "link": "https://www.nomura.com/careers",
+    "description": null
+  },
+  {
+    "name": "Insights Program",
+    "firm": "RBC Capital Markets",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all",
+    "format": "Multi-month, virtual and in person",
+    "timing": "October (expected; last U.S. deadline Oct 10, 2025)",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.rbccm.com/careers",
+    "description": "Verify on site."
+  },
+  {
+    "name": "Launch Sophomore Program",
+    "firm": "SMBC",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all",
+    "format": "Virtual, one day",
+    "timing": "Mid-Feb 2027 (expected; last cycle Feb 13)",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-02",
+    "rolling": false,
+    "link": null,
+    "description": "No official link found – search SMBC Americas careers."
+  },
+  {
+    "name": "Sophomore Insight Program",
+    "firm": "Standard Chartered",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all",
+    "format": "In person, NYC, three days",
+    "timing": "Late Nov 2026 (expected; last cycle Nov 28)",
+    "status": "check_now",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2026-11",
+    "rolling": false,
+    "link": null,
+    "description": "No official link found – search Standard Chartered U.S. careers."
+  },
+  {
+    "name": "Sophomore Explorers",
+    "firm": "Stifel",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Underrepresented groups encouraged",
+    "format": "In person, NYC, four days, January",
+    "timing": "Mid-Nov 2026 (expected)",
+    "status": "check_now",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2026-11",
+    "rolling": false,
+    "link": "https://www.stifel.com/careers",
+    "description": null
+  },
+  {
+    "name": "Tomorrow's Talent IB Insights Day (New York)",
+    "firm": "UBS",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all",
+    "format": "In person, NYC, January",
+    "timing": "Late fall (expected)",
+    "status": "check_now",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.ubs.com/global/en/careers/early-careers/tomorrows-talent-program.html",
+    "description": null
+  },
+  {
+    "name": "Sophomore Experience (replaced Sophomore Discovery Fellowship)",
+    "firm": "Wells Fargo",
+    "kind": "firm",
+    "industries": [
+      "investment-banking"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Not stated",
+    "format": "Not stated",
+    "timing": "Interest form only so far",
+    "status": "watch",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.wellsfargojobs.com/en/early-careers/application-process/",
+    "description": null
+  },
+  {
+    "name": "Discover Citadel (U.S.)",
+    "firm": "Citadel / Citadel Securities",
+    "kind": "firm",
+    "industries": [
+      "sales-trading"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore (grads Dec 2028–Jun 2030)",
+    "affinity": "Open to all",
+    "format": "In person, NYC, two days, early April 2027",
+    "timing": "Deadline Mar 5, 2027",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": "2027-03-05",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.citadelsecurities.com/careers/programs-and-events/discover-citadel-securities/apply/",
+    "description": null
+  },
+  {
+    "name": "Fellowships: Discovery (women), Latitude (underrepresented), Momentum (LGBTQ+), Nexus (open to all)",
+    "firm": "D. E. Shaw",
+    "kind": "firm",
+    "industries": [
+      "sales-trading"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Second-year",
+    "affinity": "Varies by fellowship",
+    "format": "In person, NYC, three days, January",
+    "timing": "Mid-Nov (expected)",
+    "status": "unconfirmed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2026-11",
+    "rolling": false,
+    "link": "https://fellowships.deshaw.com",
+    "description": "Sources disagree on whether it still runs."
+  },
+  {
+    "name": "FTTP (First-Year Trading & Technology Program)",
+    "firm": "Jane Street",
+    "kind": "firm",
+    "industries": [
+      "sales-trading",
+      "swe"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "eligibility": "Freshman",
+    "affinity": "Open to all",
+    "format": "In person, NYC, Mar 21–25, 2027",
+    "timing": "Deadline Jan 31, 2027",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": "2027-01-31",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.janestreet.com/join-jane-street/programs-and-events/",
+    "description": null
+  },
+  {
+    "name": "FOCUS",
+    "firm": "Jane Street",
+    "kind": "firm",
+    "industries": [
+      "sales-trading"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "eligibility": "Freshman",
+    "affinity": "First-years facing barriers to advanced STEM education",
+    "format": "In person, NYC, Jan 11–14, 2027",
+    "timing": "Closed Nov 15, 2026",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": "2026-11-15",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.janestreet.com/join-jane-street/programs-and-events/focus/",
+    "description": null
+  },
+  {
+    "name": "INSIGHT",
+    "firm": "Jane Street",
+    "kind": "firm",
+    "industries": [
+      "sales-trading"
+    ],
+    "eligible_years": [],
+    "eligibility": "All years",
+    "affinity": "Women, transgender and gender-expansive students",
+    "format": "In person, NYC, Jan 4–9, 2027",
+    "timing": "See application",
+    "status": "check_now",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.janestreet.com/join-jane-street/programs-and-events/insight/",
+    "description": null
+  },
+  {
+    "name": "Building Entrepreneurial Leaders (BEL)",
+    "firm": "Bain & Company",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Bain's sophomore diversity program (underrepresented groups)",
+    "format": "In person; sessions Jan 28–29, Feb 4–5, Feb 18–19, 2027",
+    "timing": "Deadline Nov 30, 2026",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": "2026-11-30",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.bain.com/careers/work-with-us/internships-programs/building-entrepreneurial-leaders/",
+    "description": "Current sophomores: apply now."
+  },
+  {
+    "name": "CREW (Connecting and Resourcing Empowered Women)",
+    "firm": "Bain & Company",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Women",
+    "format": "In person, 1.5 days",
+    "timing": "Deadline Nov 30, 2026",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": "2026-11-30",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.bain.com/careers/work-with-us/internships-programs/crew/",
+    "description": null
+  },
+  {
+    "name": "First Forward",
+    "firm": "Bain & Company",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "First-generation or low-income students",
+    "format": "In person",
+    "timing": "Deadline Nov 30, 2026",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": "2026-11-30",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.bain.com/careers/work-with-us/internships-programs/first-forward/",
+    "description": null
+  },
+  {
+    "name": "Consulting Kickstart",
+    "firm": "Bain & Company",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Sophomore (Oct 2026 edition); possibly freshmen in spring",
+    "affinity": "Listed as open to all in one guide; as a freshman diversity program in another",
+    "format": "Virtual webinar series",
+    "timing": "Oct 2026 edition closed Oct 5; a spring edition is expected ~Apr 2027",
+    "status": "unconfirmed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-04",
+    "rolling": false,
+    "link": "https://www.bain.com/careers/work-with-us/internships-programs/consulting-kickstart/",
+    "description": null
+  },
+  {
+    "name": "BCG Launch",
+    "firm": "Boston Consulting Group",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [],
+    "eligibility": "Undergrad & non-MBA master's (U.S./Canada)",
+    "affinity": "Open to all",
+    "format": "Virtual series",
+    "timing": "Runs Nov 9, 2026 – Feb 17, 2027",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": "2027-02-17",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://careers.bcg.com/global/en/on-campus/programs/bcg-launch",
+    "description": null
+  },
+  {
+    "name": "BCG Advance",
+    "firm": "Boston Consulting Group",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Women",
+    "format": "Short program",
+    "timing": "Expected Apr 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-04",
+    "rolling": false,
+    "link": "https://careers.bcg.com/",
+    "description": null
+  },
+  {
+    "name": "Bridge to Consulting",
+    "firm": "Boston Consulting Group",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore",
+    "affinity": "Black, Hispanic and Indigenous freshmen/sophomores (historically)",
+    "format": "2-day workshop",
+    "timing": "2026 program canceled",
+    "status": "not_running",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://careers.bcg.com/",
+    "description": "Keep an eye out in case it returns."
+  },
+  {
+    "name": "Growing Future Leaders",
+    "firm": "Boston Consulting Group",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Sophomore diversity (historically)",
+    "format": null,
+    "timing": "No longer listed",
+    "status": "not_running",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://careers.bcg.com/global/en/on-campus/programs/growing-future-leaders",
+    "description": null
+  },
+  {
+    "name": "EPIC Skills Workshop",
+    "firm": "Capgemini Invent",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Not stated",
+    "format": "Workshop",
+    "timing": "Expected Feb 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-02",
+    "rolling": false,
+    "link": "https://www.capgemini.com/careers/",
+    "description": "Participants are often invited to interview for Capgemini's RISE program."
+  },
+  {
+    "name": "Discovery Internship",
+    "firm": "Deloitte",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore",
+    "affinity": "Open to all eligible students (historically encouraged underrepresented applicants)",
+    "format": "Paid summer internship",
+    "timing": "Postings have moved earlier; next postings expected ~Feb 2027 (audit/tax)",
+    "status": "watch",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-02",
+    "rolling": false,
+    "link": "https://apply.deloitte.com/",
+    "description": "Discovery interns can earn a later internship offer."
+  },
+  {
+    "name": "Compass Conference",
+    "firm": "Deloitte",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "eligibility": "Freshman",
+    "affinity": "Not stated",
+    "format": "Conference",
+    "timing": "Spring (last cycle ~Mar–May 2026)",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://apply.deloitte.com/",
+    "description": null
+  },
+  {
+    "name": "Expedition EY",
+    "firm": "EY",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore",
+    "affinity": "Freshman/sophomore diversity",
+    "format": "Not stated",
+    "timing": "Expected Feb 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-02",
+    "rolling": false,
+    "link": "https://www.ey.com/en_us/careers/students",
+    "description": null
+  },
+  {
+    "name": "Emerging Leaders Program",
+    "firm": "EY-Parthenon",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Not stated",
+    "format": "Not stated",
+    "timing": "Expected Oct 2026",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.ey.com/en_us/careers/students",
+    "description": null
+  },
+  {
+    "name": "IMPACT: Summer Leadership Program",
+    "firm": "FTI Consulting",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Not stated",
+    "format": "Summer program",
+    "timing": "Expected Jan–Feb 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-01",
+    "rolling": false,
+    "link": "https://www.fticonsulting.com/careers",
+    "description": null
+  },
+  {
+    "name": "Rise Leadership Conference",
+    "firm": "KPMG",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore",
+    "affinity": "Freshman/sophomore diversity",
+    "format": "Conference",
+    "timing": "Expected Feb 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-02",
+    "rolling": false,
+    "link": "https://www.kpmguscareers.com/",
+    "description": null
+  },
+  {
+    "name": "Embark Scholars (CPA & Technology tracks)",
+    "firm": "KPMG",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore",
+    "affinity": "Freshman/sophomore diversity",
+    "format": "Multi-year program",
+    "timing": "Passed for this cycle (rolling)",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": true,
+    "link": "https://www.kpmguscareers.com/",
+    "description": null
+  },
+  {
+    "name": "Kaleidoscope: Undergraduate Diversity Program",
+    "firm": "L.E.K. Consulting",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2,
+      3
+    ],
+    "eligibility": "Sophomore & junior",
+    "affinity": "Sophomore/junior diversity",
+    "format": "Not stated",
+    "timing": "Expected Nov 2026",
+    "status": "check_now",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2026-11",
+    "rolling": false,
+    "link": "https://www.lek.com/careers",
+    "description": null
+  },
+  {
+    "name": "Connect with McKinsey (gateway form for Up Next, El Futuro, Ignite, LAUNCH, HBCU Consulting League)",
+    "firm": "McKinsey & Company",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [],
+    "eligibility": "All undergrad years",
+    "affinity": "Undergrads in North America; select affinity networks on the form",
+    "format": "Online form",
+    "timing": "Open through Jun 30, 2027; affinity program selection historically ~Mar",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": "2027-06-30",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.mckinsey.com/careers/connect-with-mckinsey",
+    "description": "Fill this out early – it's how you get considered for the affinity programs below."
+  },
+  {
+    "name": "Up Next First Year Leadership Summit",
+    "firm": "McKinsey & Company",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "eligibility": "Freshman",
+    "affinity": "Sponsored by McKinsey's Black and Indigenous networks",
+    "format": "Leadership summit",
+    "timing": "Via Connect form; expected Mar–Apr 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-03",
+    "rolling": false,
+    "link": "https://www.mckinsey.com/careers/connect-with-mckinsey",
+    "description": "High priority for BBSA freshmen."
+  },
+  {
+    "name": "El Futuro First Year Leadership Summit",
+    "firm": "McKinsey & Company",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "eligibility": "Freshman",
+    "affinity": "Sponsored by McKinsey's Hispanic & Latino Network",
+    "format": "Leadership summit",
+    "timing": "Via Connect form; expected Mar–Apr 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-03",
+    "rolling": false,
+    "link": "https://www.mckinsey.com/careers/connect-with-mckinsey",
+    "description": null
+  },
+  {
+    "name": "Ignite",
+    "firm": "McKinsey & Company",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3
+    ],
+    "eligibility": "1st–3rd year",
+    "affinity": "Sponsored by McKinsey Women",
+    "format": "Half-day event",
+    "timing": "Via Connect form; expected Mar–Apr 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-03",
+    "rolling": false,
+    "link": "https://www.mckinsey.com/careers/connect-with-mckinsey",
+    "description": null
+  },
+  {
+    "name": "LAUNCH Leadership Incubator",
+    "firm": "McKinsey & Company",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2,
+      3
+    ],
+    "eligibility": "Sophomore & junior",
+    "affinity": "Sponsored by the McKinsey Black Network",
+    "format": "Multi-day incubator",
+    "timing": "Via Connect form; expected Mar–Apr 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-03",
+    "rolling": false,
+    "link": "https://www.mckinsey.com/careers/connect-with-mckinsey",
+    "description": null
+  },
+  {
+    "name": "Sophomore Summer Business Analyst (SSBA)",
+    "firm": "McKinsey & Company",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Historically Black, Hispanic/Latino and Indigenous sophomores",
+    "format": "Paid 10-week internship",
+    "timing": "Last deadline Jun 10, 2025",
+    "status": "unconfirmed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.mckinsey.com/careers/students/sophomore-diversity-leaders-internship",
+    "description": "One guide reports it canceled for the Class of 2029."
+  },
+  {
+    "name": "First-Year Immersion Program",
+    "firm": "Oliver Wyman",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "eligibility": "Freshman",
+    "affinity": "Freshmen",
+    "format": "Not stated",
+    "timing": "Expected Oct 2026",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.oliverwyman.com/careers.html",
+    "description": "Check now in case it's still open."
+  },
+  {
+    "name": "Black Talent in Business (Consulting)",
+    "firm": "PwC",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Black sophomores",
+    "format": "Not stated",
+    "timing": "Rolling",
+    "status": "check_now",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": true,
+    "link": "https://www.pwc.com/us/en/careers.html",
+    "description": "PwC closes rolling programs once it has enough applicants – apply early."
+  },
+  {
+    "name": "Career Preview",
+    "firm": "PwC",
+    "kind": "firm",
+    "industries": [
+      "consulting"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore",
+    "affinity": "Not stated",
+    "format": "Not stated",
+    "timing": "Last deadline Mar 5, 2025; expect ~Mar 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-03",
+    "rolling": false,
+    "link": "https://www.pwc.com/us/en/careers.html",
+    "description": null
+  },
+  {
+    "name": "Technology Early Internship Program (TEIP)",
+    "firm": "Capital One",
+    "kind": "firm",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all",
+    "format": "Paid internship",
+    "timing": "No summer 2027 posting as of Oct 8, 2026",
+    "status": "watch",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.capitalonecareers.com/early-internships-program",
+    "description": null
+  },
+  {
+    "name": "Thrive (Product Designer track)",
+    "firm": "Duolingo",
+    "kind": "firm",
+    "industries": [
+      "pm"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore (design/HCI; portfolio required)",
+    "affinity": "Open to all",
+    "format": "Internship",
+    "timing": "Deadline Dec 9, 2026",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": "2026-12-09",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://careers.duolingo.com/jobs/8933791002?gh_jid=8933791002",
+    "description": "SWE track closed Sep 30, 2026."
+  },
+  {
+    "name": "STEP",
+    "firm": "Google",
+    "kind": "firm",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore",
+    "affinity": "Freshman & sophomore (past cycles)",
+    "format": null,
+    "timing": "No summer 2027 posting; old page redirects",
+    "status": "not_running",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.google.com/about/careers/applications/",
+    "description": "Google hasn't announced it ended – watch the careers site."
+  },
+  {
+    "name": "WiTTI (Women in Trading & Technology Initiative)",
+    "firm": "Hudson River Trading",
+    "kind": "firm",
+    "industries": [
+      "swe",
+      "sales-trading"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3
+    ],
+    "eligibility": "Grads fall 2028 – summer 2030",
+    "affinity": "Women",
+    "format": "Program",
+    "timing": "Closed Oct 16, 2026",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": "2026-10-16",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.hudsonrivertrading.com/student-opportunities/",
+    "description": null
+  },
+  {
+    "name": "First Play",
+    "firm": "LinkedIn",
+    "kind": "firm",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Finished 1st or 2nd year of CS (grads Dec 2028 or later)",
+    "affinity": "Open to all",
+    "format": "Paid internship",
+    "timing": "Open since Nov 17, 2026; no deadline stated",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://careers.linkedin.com/pathways-programs/internships/Technical/first-play",
+    "description": null
+  },
+  {
+    "name": "Meta University",
+    "firm": "Meta",
+    "kind": "firm",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore",
+    "affinity": "Historically underrepresented students",
+    "format": null,
+    "timing": "Final class accepted in 2025",
+    "status": "not_running",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": null,
+    "description": null
+  },
+  {
+    "name": "Explore Microsoft (first-year posting)",
+    "firm": "Microsoft",
+    "kind": "firm",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "eligibility": "Freshman (intro CS + one semester of calculus done by start)",
+    "affinity": "Open to all",
+    "format": "Paid summer internship",
+    "timing": "Applications reviewed the first week of each month, Nov 2026 – Feb 2027",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": "2027-02-07",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://apply.careers.microsoft.com/careers/job/1970393556925823",
+    "description": "Apply ASAP. The Feb 7 date is an estimate from the monthly review windows."
+  },
+  {
+    "name": "Explore Microsoft (second-year posting)",
+    "firm": "Microsoft",
+    "kind": "firm",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore",
+    "affinity": "Open to all",
+    "format": "Paid summer internship",
+    "timing": "Stopped taking applications Oct 2026",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://apply.careers.microsoft.com/careers/job/1970393556925823",
+    "description": null
+  },
+  {
+    "name": "Ignite",
+    "firm": "NVIDIA",
+    "kind": "firm",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore (CS, CE, EE, math)",
+    "affinity": "Historically aimed at students from underrepresented communities",
+    "format": "12-week paid internship, Santa Clara",
+    "timing": "Closed Oct 18, 2026; next window expected early Oct 2027",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": "2026-10-18",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/NVIDIA-2027-Ignite-Internships--Software-Engineering_JR2026958",
+    "description": "Set a reminder for Oct 2027."
+  },
+  {
+    "name": "Futureforce Tech Launchpad",
+    "firm": "Salesforce (via CodePath)",
+    "kind": "firm",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Students finishing sophomore year",
+    "affinity": "Open to students across the U.S.",
+    "format": "Summer program; travel covered",
+    "timing": "2027 cohort not posted yet",
+    "status": "watch",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://info.codepath.org/futureforce-tech-launchpad",
+    "description": null
+  },
+  {
+    "name": "First-Year SWE Internship",
+    "firm": "Two Sigma",
+    "kind": "firm",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "eligibility": "Freshman",
+    "affinity": "Open to all",
+    "format": "Paid internship",
+    "timing": "Last cycle opened in January; expect ~Jan 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-01",
+    "rolling": false,
+    "link": "https://www.twosigma.com/careers/internships/",
+    "description": null
+  },
+  {
+    "name": "Fellows Program",
+    "firm": "Code2040",
+    "kind": "pipeline",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [],
+    "eligibility": "All undergrad years",
+    "affinity": "Black and/or Latinx CS students",
+    "format": "10-month program + tech internship",
+    "timing": "Applications historically due late June",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-06",
+    "rolling": false,
+    "link": "https://code2040.org/programs",
+    "description": null
+  },
+  {
+    "name": "Free technical courses (Spring 2027)",
+    "firm": "CodePath",
+    "kind": "pipeline",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [],
+    "eligibility": "All undergrad years",
+    "affinity": "Open to all; centered on Black, Latinx, Indigenous and low-income students",
+    "format": "Virtual, instructor-led",
+    "timing": "Rolling admissions for Spring 2027",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": true,
+    "link": "https://www.codepath.org",
+    "description": null
+  },
+  {
+    "name": "ColorStack membership",
+    "firm": "ColorStack",
+    "kind": "pipeline",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [],
+    "eligibility": "All undergrad years",
+    "affinity": "Black and Latinx CS students",
+    "format": "Community, mentorship, Stacked Up Summit",
+    "timing": "Rolling",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": true,
+    "link": "https://www.colorstack.org",
+    "description": null
+  },
+  {
+    "name": "Virtual College Conference",
+    "firm": "Forté Foundation",
+    "kind": "pipeline",
+    "industries": [
+      "investment-banking",
+      "sales-trading"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3
+    ],
+    "eligibility": "Freshman – junior",
+    "affinity": "Women",
+    "format": "Virtual, January",
+    "timing": "Winter (expected)",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.fortefoundation.org",
+    "description": null
+  },
+  {
+    "name": "Scholars Program",
+    "firm": "Girls Who Invest",
+    "kind": "pipeline",
+    "industries": [
+      "investment-banking",
+      "sales-trading"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman & sophomore",
+    "affinity": "Now open to all genders",
+    "format": "Virtual; summer track for some sophomores",
+    "timing": "Closed Oct 15, 2026",
+    "status": "closed",
+    "cycle": "2026-27",
+    "deadline": "2026-10-15",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.girlswhoinvest.org",
+    "description": null
+  },
+  {
+    "name": "Multi-year paid internship program",
+    "firm": "INROADS",
+    "kind": "pipeline",
+    "industries": [
+      "investment-banking",
+      "consulting",
+      "swe",
+      "pm",
+      "sales-trading"
+    ],
+    "eligible_years": [],
+    "eligibility": "All undergrad years",
+    "affinity": "Underrepresented groups encouraged",
+    "format": "Multi-year paid internships",
+    "timing": "Priority deadlines historically Nov 1 and Mar 1",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-03",
+    "rolling": false,
+    "link": "https://inroads.org",
+    "description": "Aim for the Mar 1 priority deadline."
+  },
+  {
+    "name": "MLH Fellowship",
+    "firm": "MLH (Major League Hacking)",
+    "kind": "pipeline",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [],
+    "eligibility": "All years",
+    "affinity": "Open to all (18+)",
+    "format": "Remote fellowship",
+    "timing": "Spring 2027 batch rolling, Jan 25 – Apr 16, 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": "2027-04-16",
+    "expected_month": null,
+    "rolling": true,
+    "link": "https://fellowship.mlh.com/programs/software-engineering",
+    "description": null
+  },
+  {
+    "name": "Career Prep",
+    "firm": "MLT (Management Leadership for Tomorrow)",
+    "kind": "pipeline",
+    "industries": [
+      "investment-banking",
+      "consulting",
+      "swe",
+      "pm",
+      "sales-trading"
+    ],
+    "eligible_years": [
+      2
+    ],
+    "eligibility": "Sophomore (grads fall 2028 – summer 2029)",
+    "affinity": "First-gen, low-income, or students with inequitable access to career resources",
+    "format": "20+ month coaching program",
+    "timing": "Priority (Tech & Corporate Mgmt) Nov 1, 2026; final deadline Jan 15, 2027",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": "2027-01-15",
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://www.mlt.org/career-prep",
+    "description": "Freshmen: plan to apply next fall."
+  },
+  {
+    "name": "Ascend",
+    "firm": "MLT (Management Leadership for Tomorrow)",
+    "kind": "pipeline",
+    "industries": [
+      "investment-banking",
+      "consulting",
+      "swe",
+      "pm",
+      "sales-trading"
+    ],
+    "eligible_years": [
+      1
+    ],
+    "eligibility": "Freshman (and HS seniors)",
+    "affinity": "First-gen or low-income; nomination required; 3.0 GPA",
+    "format": "One-year program",
+    "timing": "Next cycle summer 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://info.mlt.org/ascend-recruiting-resources",
+    "description": null
+  },
+  {
+    "name": "Business / Tech conferences",
+    "firm": "Out for Undergrad (O4U)",
+    "kind": "pipeline",
+    "industries": [
+      "investment-banking",
+      "consulting",
+      "swe",
+      "pm",
+      "sales-trading"
+    ],
+    "eligible_years": [],
+    "eligibility": "Undergraduate",
+    "affinity": "LGBTQ+ students",
+    "format": "Conference (NYC)",
+    "timing": "Next cycle expected early 2027",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": "2027-01",
+    "rolling": false,
+    "link": "https://www.outforundergrad.org",
+    "description": null
+  },
+  {
+    "name": "SEO Career",
+    "firm": "SEO (Sponsors for Educational Opportunity)",
+    "kind": "pipeline",
+    "industries": [
+      "investment-banking",
+      "consulting",
+      "swe",
+      "pm",
+      "sales-trading"
+    ],
+    "eligible_years": [
+      1,
+      2,
+      3
+    ],
+    "eligibility": "Freshman – junior",
+    "affinity": "Open to all (3.2 GPA; 3.0 may be considered; U.S. work authorization)",
+    "format": "Multi-phase program leading to partner-firm internships",
+    "timing": "Rolling; summer class closes mid-April 2027",
+    "status": "open",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": true,
+    "link": "https://career.seo-usa.org",
+    "description": "One of the strongest pipelines into banking."
+  },
+  {
+    "name": "SEO Tech Developer (Core = sophomores; First-Year Academy = freshmen)",
+    "firm": "SEO (Sponsors for Educational Opportunity)",
+    "kind": "pipeline",
+    "industries": [
+      "swe"
+    ],
+    "eligible_years": [
+      1,
+      2
+    ],
+    "eligibility": "Freshman (Academy) & sophomore (Core)",
+    "affinity": "Historically Black, Latinx and Native American CS/engineering students – check current criteria",
+    "format": "Virtual training + paid residency",
+    "timing": "2027 window not posted yet (last cycle Jan 12 – Mar 31, 2026)",
+    "status": "upcoming",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://tech.seo-usa.org",
+    "description": null
+  },
+  {
+    "name": "Wall Street Direct",
+    "firm": "Wall Street Bound",
+    "kind": "pipeline",
+    "industries": [
+      "investment-banking",
+      "sales-trading"
+    ],
+    "eligible_years": [],
+    "eligibility": "Undergraduate",
+    "affinity": "Underrepresented groups encouraged",
+    "format": "Four-month intensive",
+    "timing": "Next cohort TBD (fall 2026 closed)",
+    "status": "watch",
+    "cycle": "2026-27",
+    "deadline": null,
+    "expected_month": null,
+    "rolling": false,
+    "link": "https://wallstreetbound.org/wall-street-direct",
+    "description": null
+  }
 ]

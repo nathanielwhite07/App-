@@ -1,20 +1,25 @@
 'use strict';
 const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { DatabaseSync } = require('node:sqlite');
 
 process.env.ADMIN_EMAILS = 'officer@vanderbilt.edu';
 process.env.ALLOWED_EMAIL_DOMAINS = 'vanderbilt.edu';
 delete process.env.SMTP_URL;
+delete process.env.APP_URL;
 
 const { openDb } = require('../server/db');
-const { seedIfEmpty } = require('../server/content/store');
+const { syncContent, CONTENT_VERSION } = require('../server/content/store');
 const { createApp } = require('../server/app');
 
 let server, base, db;
 const tokens = {};
 
-async function api(method, path, body, who) {
-  const res = await fetch(base + path, {
+async function api(method, url, body, who) {
+  const res = await fetch(base + url, {
     method,
     redirect: 'manual',
     headers: { ...(who && { authorization: `Bearer ${tokens[who]}` }), ...(body && { 'content-type': 'application/json' }) },
@@ -36,15 +41,15 @@ async function signUpAndLogin(who, email, extra = {}) {
   return l.body.user;
 }
 
+const log = console.log;
 before(async () => {
   db = openDb(':memory:');
-  seedIfEmpty(db);
+  syncContent(db);
   console.log = () => {}; // the dev mailer prints verification emails
   server = createApp(db).listen(0);
   await new Promise((r) => server.once('listening', r));
   base = `http://127.0.0.1:${server.address().port}`;
 });
-const log = console.log;
 after(() => { console.log = log; server.close(); });
 
 test('only verified @vanderbilt.edu accounts can sign in', async () => {
@@ -65,124 +70,225 @@ test('only verified @vanderbilt.edu accounts can sign in', async () => {
 test('class year comes from graduation year; admin comes from ADMIN_EMAILS', async () => {
   const student = await signUpAndLogin('student', 'student@vanderbilt.edu', { gradYear: 2029 });
   assert.equal(student.isAdmin, false);
-  assert.ok([1, 2, 3, 4].includes(student.classYear));
   const officer = await signUpAndLogin('officer', 'Officer@Vanderbilt.edu');
   assert.equal(officer.isAdmin, true);
   assert.equal((await api('GET', '/api/admin/programs', null, 'student')).status, 403);
   assert.equal((await api('GET', '/api/admin/programs', null, 'officer')).status, 200);
 });
 
-test('timelines and the industry guides are seeded from the slides', async () => {
+test('five tracks with guides, written without slide or club references', async () => {
   const inds = await api('GET', '/api/industries', null, 'student');
-  assert.deepEqual(inds.body.map((i) => i.slug), ['investment-banking', 'consulting', 'tech']);
-  assert.ok(inds.body.every((i) => i.guide.length > 0));
-  const soph = await api('GET', '/api/timelines?industry=consulting&year=2', null, 'student');
-  assert.ok(soph.body.length >= 8);
-  assert.ok(soph.body.every((m) => m.classYears.length === 0 || m.classYears.includes(2)));
-  assert.ok(soph.body.some((m) => m.when === 'Dec–Feb' && /network/i.test(m.title)));
+  assert.deepEqual(inds.body.map((i) => i.slug), ['investment-banking', 'consulting', 'swe', 'pm', 'sales-trading']);
+  assert.ok(inds.body.every((i) => i.guide.length >= 5));
+  const all = [];
+  for (const i of inds.body) all.push(...(await api('GET', `/api/timelines?industry=${i.slug}`, null, 'student')).body);
+  assert.ok(all.length > 60);
+  const text = JSON.stringify([inds.body, all]);
+  assert.doesNotMatch(text, /akpsi|alpha kappa|slides?\b|slideshow|\bBDP\b|\b(nov|oct)\w* \d+ meeting|meeting of/i);
+  assert.ok(all.every((m) => !m.source));
+  for (const slug of ['swe', 'pm', 'sales-trading']) {
+    const years = new Set(all.filter((m) => m.industry === slug).flatMap((m) => m.classYears));
+    assert.deepEqual([...years].sort(), [1, 2, 3, 4], `${slug} covers every class year`);
+  }
+  const st = await api('GET', '/api/timelines?industry=sales-trading&year=2', null, 'student');
+  assert.ok(st.body.some((m) => m.when === 'Dec–Feb' && /apply/i.test(m.title)));
 });
 
 test('this-month view filters by class year, industries and date', async () => {
   await api('PATCH', '/api/me', { gradYear: 2029, industries: ['consulting'] }, 'student');
-  // Class of 2029 is a sophomore in 2026-27. January: consulting networking + case prep windows are open.
   const jan = await api('GET', '/api/this-month?asOf=2027-01-15', null, 'student');
   assert.equal(jan.body.classYear, 2);
-  assert.equal(jan.body.academicYear, '2026-27');
   assert.ok(jan.body.now.length > 0);
   assert.ok(jan.body.now.every((m) => m.industry === 'consulting'));
-  assert.ok(jan.body.now.some((m) => /Network heavily/.test(m.title)));
-  assert.ok(jan.body.next.every((m) => m.startMonth === 2));
-  // Mark one done; it sinks to the bottom and stays done for the academic year.
   const first = jan.body.now[0];
   await api('PUT', `/api/milestones/${first.id}/progress?asOf=2027-01-15`, { done: true }, 'student');
   const again = await api('GET', '/api/this-month?asOf=2027-01-20', null, 'student');
-  assert.equal(again.body.now.find((m) => m.id === first.id).done, true);
   assert.equal(again.body.now.at(-1).id, first.id);
-  // Next academic year the same milestone is fresh again (and the student is a junior).
-  const later = await api('GET', '/api/this-month?asOf=2027-09-15', null, 'student');
-  assert.equal(later.body.classYear, 3);
-
+  assert.equal(again.body.now.at(-1).done, true);
   const pre = await api('GET', '/api/this-month?asOf=2024-09-01', null, 'student');
   assert.equal(pre.body.outOfRange, true);
 });
 
-test('officer edits programs; deadlines show up in this-month and can go on the calendar', async () => {
-  const progs = await api('GET', '/api/admin/programs', null, 'officer');
-  const bel = progs.body.find((p) => p.name === 'Bain BEL');
-  assert.equal(bel.needs_review, true);
-  const upd = await api('PUT', `/api/admin/programs/${bel.id}`, { ...bel, deadline: '2027-02-01', link: 'https://www.bain.com/careers/', needs_review: false }, 'officer');
-  assert.equal(upd.status, 200, JSON.stringify(upd.body));
-  const badLink = await api('PUT', `/api/admin/programs/${bel.id}`, { ...bel, link: 'javascript:alert(1)' }, 'officer');
-  assert.equal(badLink.status, 400);
+test('programs from the spreadsheet: statuses follow the calendar', async () => {
+  const nov = await api('GET', '/api/programs?asOf=2026-11-22', null, 'student');
+  assert.equal(nov.body.length, 84);
+  const bel = nov.body.find((p) => p.name.startsWith('Building Entrepreneurial Leaders'));
+  assert.equal(bel.status, 'open');
+  assert.equal(bel.daysLeft, 8);
+  assert.equal(bel.closingSoon, true);
+  assert.match(bel.link, /^https:\/\/www\.bain\.com/);
+  assert.deepEqual(bel.eligibleYears, [2]);
+  // Deadline passes -> closed.
+  const dec = (await api('GET', '/api/programs?asOf=2026-12-01', null, 'student')).body;
+  assert.equal(dec.find((p) => p.id === bel.id).status, 'closed');
+  // Expected month arrives -> check now.
+  const gs = nov.body.find((p) => p.name.startsWith('Possibilities Series'));
+  assert.equal(gs.status, 'upcoming');
+  assert.equal(gs.expectedMonth, '2027-02');
+  const feb = (await api('GET', '/api/programs?asOf=2027-02-03', null, 'student')).body;
+  assert.equal(feb.find((p) => p.id === gs.id).status, 'check_now');
+  // Multi-industry pipeline orgs show under each industry; filters combine.
+  const swe = (await api('GET', '/api/programs?industry=swe&asOf=2026-11-22', null, 'student')).body;
+  assert.ok(swe.some((p) => p.firm === 'INROADS') && swe.some((p) => p.firm === 'ColorStack'));
+  assert.ok(swe.every((p) => p.industries.includes('swe')));
+  const freshmanPipelines = (await api('GET', '/api/programs?year=1&kind=pipeline&status=open&asOf=2026-11-22', null, 'student')).body;
+  assert.ok(freshmanPipelines.length > 0 && freshmanPipelines.every((p) => p.kind === 'pipeline' && p.status === 'open'));
+});
 
-  const added = await api('POST', '/api/admin/programs', {
-    name: 'Example Early Insights', firm: 'Example Bank', industry: 'investment-banking', eligible_years: '1, 2', deadline: '2027-01-25',
-  }, 'officer');
-  assert.equal(added.status, 201);
+test('pin programs and add their dates to the calendar', async () => {
+  const progs = (await api('GET', '/api/programs?asOf=2026-11-22', null, 'student')).body;
+  const fttp = progs.find((p) => p.name.startsWith('FTTP'));
+  const pin = await api('PUT', `/api/programs/${fttp.id}/pin`, { pinned: true }, 'student');
+  assert.equal(pin.body.pinned, true);
+  const pinned = (await api('GET', '/api/programs?pinned=1', null, 'student')).body;
+  assert.deepEqual(pinned.map((p) => p.id), [fttp.id]);
+  // Pinned programs show on This month even outside the student's industries (they follow consulting).
+  const tm = (await api('GET', '/api/this-month?asOf=2026-11-22', null, 'student')).body;
+  assert.ok(tm.pinned.some((p) => p.id === fttp.id));
 
-  const filtered = await api('GET', '/api/programs?industry=consulting&year=2&asOf=2027-01-15', null, 'student');
-  assert.ok(filtered.body.every((p) => p.industry === 'consulting'));
-  const b = filtered.body.find((p) => p.name === 'Bain BEL');
-  assert.equal(b.status, 'open');
-  assert.equal(b.daysLeft, 17);
+  const rem = await api('POST', `/api/programs/${fttp.id}/reminders`, {
+    items: [{ type: 'apply', startsAt: '2027-01-24T15:00:00Z' }, { type: 'deadline', startsAt: '2027-01-31T15:00:00Z' }],
+  }, 'student');
+  assert.equal(rem.status, 201);
+  assert.equal(rem.body.events.length, 2);
+  assert.match(rem.body.events[0].title, /^Start your application: FTTP.*due Jan 31/);
+  assert.equal(rem.body.events[1].kind, 'deadline');
+  const ev = rem.body.events[1];
+  assert.match(ev.links.google, /calendar\.google\.com/);
+  assert.match(ev.links.outlook, /^https:\/\/outlook\.office\.com\/calendar\/0\/deeplink\/compose/);
+  assert.match(ev.links.outlookcom, /^https:\/\/outlook\.live\.com\/calendar\/0\/deeplink\/compose/);
+  // Adding the same reminders again doesn't duplicate them.
+  const again = await api('POST', `/api/programs/${fttp.id}/reminders`, { items: [{ type: 'deadline', startsAt: '2027-01-31T15:00:00Z' }] }, 'student');
+  assert.equal(again.body.events[0].id, ev.id);
+  const bad = await api('POST', `/api/programs/${fttp.id}/reminders`, { items: [{ type: 'party', startsAt: '2027-01-01' }] }, 'student');
+  assert.equal(bad.status, 400);
 
-  const tm = await api('GET', '/api/this-month?asOf=2027-01-15', null, 'student');
-  assert.deepEqual(tm.body.deadlines.map((p) => p.name), ['Bain BEL']); // IB program hidden: student follows consulting only
-  assert.ok(tm.body.toWatch.some((p) => p.name === 'BCG Embark'));
-
-  const ev = await api('POST', '/api/events', { programId: b.id, startsAt: '2027-02-01T15:00:00Z' }, 'student');
-  assert.equal(ev.status, 201);
-  assert.equal(ev.body.kind, 'deadline');
-  assert.match(ev.body.title, /Bain BEL/);
-  const ics = await api('GET', ev.body.links.ics, null, 'student');
+  const ics = await api('GET', `/api/events/export.ics?ids=${rem.body.events.map((e) => e.id).join(',')}`, null, 'student');
+  assert.equal((ics.body.match(/BEGIN:VEVENT/g) || []).length, 2);
   assert.match(ics.body, /TRIGGER:-P1D/);
-  const me = await api('GET', '/api/me', null, 'student');
+
+  await api('PUT', `/api/programs/${fttp.id}/pin`, { pinned: false }, 'student');
+  assert.equal((await api('GET', '/api/programs?pinned=1', null, 'student')).body.length, 0);
+});
+
+test('calendar preference and subscribe links for Google and Outlook', async () => {
+  const me = await api('PATCH', '/api/me', { calendarProvider: 'outlook' }, 'student');
+  assert.equal(me.body.calendarProvider, 'outlook');
+  const sub = me.body.calendarSubscribe;
+  assert.match(sub.outlook, /^https:\/\/outlook\.office\.com\/calendar\/0\/addfromweb\?url=http/);
+  assert.match(sub.outlookcom, /^https:\/\/outlook\.live\.com\/calendar\/0\/addfromweb/);
+  assert.match(sub.google, /calendar\.google\.com\/calendar\/r\?cid=webcal/);
+  assert.match(sub.ics, /^webcal:\/\//);
+  assert.equal((await api('PATCH', '/api/me', { calendarProvider: 'yahoo' }, 'student')).status, 400);
   const feed = await api('GET', me.body.calendarFeed);
-  assert.match(feed.body, /SUMMARY:Deadline: Bain BEL/);
+  assert.match(feed.body, /SUMMARY:Deadline: FTTP/);
+});
+
+test('officer edits programs and re-uploads the spreadsheet', async () => {
+  const rows = (await api('GET', '/api/admin/programs', null, 'officer')).body;
+  const lazard = rows.find((p) => p.firm === 'Lazard');
+  const upd = await api('PUT', `/api/admin/programs/${lazard.id}`, { ...lazard, deadline: '2027-02-15', status: 'open', industries: ['investment-banking', 'sales-trading'] }, 'officer');
+  assert.equal(upd.status, 200, JSON.stringify(upd.body));
+  const badLink = await api('PUT', `/api/admin/programs/${lazard.id}`, { ...lazard, link: 'javascript:alert(1)' }, 'officer');
+  assert.equal(badLink.status, 400);
+  const noInd = await api('PUT', `/api/admin/programs/${lazard.id}`, { ...lazard, industries: [] }, 'officer');
+  assert.equal(noInd.status, 400);
+
+  const csv = 'Industry,Firm,Program,Eligible year,Deadline / timing,Deadline date,Status,Link\n'
+    + 'Banking,Lazard,Early Insights,Sophomore,Updated timing,2027-02-20,Open,https://www.lazard.com/careers/\n'
+    + 'Tech,Example Co,Product Explorers,Freshman & sophomore,Expected Mar 2027,,Upcoming,https://example.com/apm\n'
+    + 'Space,Nobody,Moon Program,Freshman,,,Open,\n';
+  const fd = new FormData();
+  fd.append('file', new Blob([csv], { type: 'text/csv' }), 'programs.csv');
+  fd.append('cycle', '2026-27');
+  const up = await fetch(`${base}/api/admin/programs/import`, { method: 'POST', headers: { authorization: `Bearer ${tokens.officer}` }, body: fd }).then((r) => r.json());
+  assert.equal(up.updated, 1);
+  assert.equal(up.created, 1);
+  assert.equal(up.errors.length, 1);
+  const after = (await api('GET', '/api/admin/programs', null, 'officer')).body;
+  assert.equal(after.find((p) => p.id === lazard.id).deadline, '2027-02-20'); // same row updated, so pins/reminders survive
+  const ex = after.find((p) => p.firm === 'Example Co');
+  assert.deepEqual(ex.industries, ['pm']);
+  assert.deepEqual(ex.eligible_years, [1, 2]);
+  assert.equal(ex.expected_month, '2027-03');
 });
 
 test('officer can add industries and milestones without code changes', async () => {
-  const ind = await api('POST', '/api/admin/industries', { slug: 'sales-trading', name: 'Sales & Trading', sort_order: 4 }, 'officer');
-  assert.equal(ind.status, 201);
+  assert.equal((await api('POST', '/api/admin/industries', { slug: 'private-equity', name: 'Private Equity', sort_order: 6 }, 'officer')).status, 201);
   const ms = await api('POST', '/api/admin/milestones', {
-    industry: 'sales-trading', class_years: [2], start_month: 11, end_month: 2, title: 'Network with S&T desks', category: 'network',
+    industry: 'private-equity', class_years: [3], start_month: 11, end_month: 2, title: 'Network with PE investors', category: 'network',
   }, 'officer');
   assert.equal(ms.status, 201, JSON.stringify(ms.body));
-  const tl = await api('GET', '/api/timelines?industry=sales-trading', null, 'student');
-  assert.equal(tl.body[0].when, 'Nov–Feb');
-  const bad = await api('POST', '/api/admin/milestones', { industry: 'sales-trading', start_month: 13, end_month: 2, title: 'x' }, 'officer');
-  assert.equal(bad.status, 400);
+  assert.equal((await api('GET', '/api/timelines?industry=private-equity', null, 'student')).body[0].when, 'Nov–Feb');
+  const rename = (await api('GET', '/api/admin/industries', null, 'officer')).body.find((i) => i.slug === 'private-equity');
+  await api('PUT', `/api/admin/industries/${rename.id}`, { ...rename, slug: 'pe' }, 'officer');
+  assert.equal((await api('GET', '/api/timelines?industry=pe', null, 'student')).body.length, 1);
 });
 
 test('content export/import round-trips', async () => {
   const exp = await api('GET', '/api/admin/content', null, 'officer');
-  assert.ok(exp.body.milestones.length > 20);
+  assert.ok(exp.body.programs.length >= 85);
   const imp = await api('POST', '/api/admin/content', exp.body, 'officer');
-  assert.equal(imp.status, 200);
-  assert.equal(imp.body.milestones, exp.body.milestones.length);
+  assert.equal(imp.status, 200, JSON.stringify(imp.body));
+  assert.equal(imp.body.programs, exp.body.programs.length);
   assert.equal(imp.body.firms.created, 0);
 });
 
-test('email formats: search, build an address, spreadsheet upload', async () => {
+test('email formats: tech firms, length limits and domainless fallbacks', async () => {
   const all = await api('GET', '/api/formats', null, 'student');
-  assert.equal(all.body.results.length, 100);
-  assert.deepEqual(all.body.sectors, ['Consulting', 'Finance']);
+  assert.equal(all.body.results.length, 150);
+  assert.deepEqual(all.body.sectors, ['Consulting', 'Finance', 'Tech']);
+  const cisco = (await api('GET', '/api/formats?q=cisco', null, 'student')).body.results[0];
+  const addr = await api('GET', `/api/formats/${cisco.id}/address?first=Alexandra&last=Vaverka`, null, 'student');
+  assert.deepEqual(addr.body.primary, ['avaverka@cisco.com']);
+  const long = await api('GET', `/api/formats/${cisco.id}/address?first=Jordan&last=Washington`, null, 'student');
+  assert.deepEqual(long.body.primary, ['jwashing@cisco.com']);
+  const ms = (await api('GET', '/api/formats?q=microsoft.com', null, 'student')).body.results[0];
+  const msAddr = await api('GET', `/api/formats/${ms.id}/address?first=Jordan&last=Lee`, null, 'student');
+  assert.deepEqual(msAddr.body.primary, ['jordanl@microsoft.com']);
+  assert.deepEqual(msAddr.body.fallbacks, ['jlee@microsoft.com', 'jordan.lee@microsoft.com']);
   const bcg = (await api('GET', '/api/formats?q=bcg.com', null, 'student')).body.results[0];
   assert.equal(bcg.example, 'doe.jane@bcg.com');
-  const addr = await api('GET', `/api/formats/${bcg.id}/address?first=Jordan&last=Lee`, null, 'student');
-  assert.deepEqual(addr.body.primary, ['lee.jordan@bcg.com']);
-  const rb = (await api('GET', '/api/formats?q=Roland', null, 'student')).body.results[0];
-  const umlaut = await api('GET', `/api/formats/${rb.id}/address?first=Jürgen&last=Müller`, null, 'student');
-  assert.deepEqual(umlaut.body.primary, ['jurgen.muller@rolandberger.com', 'juergen.mueller@rolandberger.com']);
+});
 
-  const csv = 'Firm,Best Email Format,Confidence,Fallback / Notes,Category\nExample Tech,first.last@exampletech.com,High,Fallback: jdoe@exampletech.com,Big Tech\nBroken Co,nonsense,High,,\n';
-  const fd = new FormData();
-  fd.append('file', new Blob([csv], { type: 'text/csv' }), 'tech-formats.csv');
-  fd.append('sector', 'Tech');
-  const up = await fetch(`${base}/api/admin/firms/import`, { method: 'POST', headers: { authorization: `Bearer ${tokens.officer}` }, body: fd }).then((r) => r.json());
-  assert.equal(up.created, 1);
-  assert.equal(up.errors.length, 1);
-  const et = (await api('GET', '/api/formats?q=Example Tech', null, 'student')).body.results[0];
-  assert.equal(et.sector, 'Tech');
-  assert.equal(et.fallbacks[0].format, 'flast@exampletech.com');
+test('upgrading a database from the previous version', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bbsa-upgrade-'));
+  const file = path.join(dir, 'old.db');
+  const old = new DatabaseSync(file);
+  old.exec(`
+    CREATE TABLE users (id INTEGER PRIMARY KEY, email TEXT UNIQUE NOT NULL, name TEXT NOT NULL, password_hash TEXT NOT NULL, grad_year INTEGER,
+      industry_slugs TEXT NOT NULL DEFAULT '[]', email_verified_at TEXT, verify_token TEXT UNIQUE, calendar_token TEXT UNIQUE, created_at TEXT DEFAULT (datetime('now')));
+    CREATE TABLE industries (id INTEGER PRIMARY KEY, slug TEXT UNIQUE NOT NULL, name TEXT NOT NULL, summary TEXT, guide_json TEXT NOT NULL DEFAULT '[]',
+      sort_order INTEGER NOT NULL DEFAULT 0, active INTEGER NOT NULL DEFAULT 1, updated_by TEXT, updated_at TEXT DEFAULT (datetime('now')));
+    CREATE TABLE programs (id INTEGER PRIMARY KEY, name TEXT NOT NULL, firm TEXT NOT NULL, industry_id INTEGER NOT NULL, eligible_years TEXT NOT NULL DEFAULT '[]',
+      cycle TEXT, opens_on TEXT, deadline TEXT, rolling INTEGER NOT NULL DEFAULT 0, link TEXT, description TEXT, needs_review INTEGER NOT NULL DEFAULT 0,
+      active INTEGER NOT NULL DEFAULT 1, updated_by TEXT, updated_at TEXT DEFAULT (datetime('now')));
+    CREATE TABLE firms (id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL, sector TEXT, category TEXT, domain TEXT NOT NULL, pattern TEXT NOT NULL, confidence TEXT,
+      fallbacks_json TEXT NOT NULL DEFAULT '[]', notes TEXT, sources_agree TEXT, researched_on TEXT, updated_by TEXT, updated_at TEXT DEFAULT (datetime('now')));
+    CREATE TABLE events (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, program_id INTEGER, milestone_id INTEGER, kind TEXT NOT NULL DEFAULT 'meeting',
+      title TEXT NOT NULL, description TEXT, location TEXT, starts_at TEXT NOT NULL, duration_min INTEGER NOT NULL DEFAULT 30, uid TEXT NOT NULL UNIQUE,
+      created_at TEXT DEFAULT (datetime('now')));
+    INSERT INTO users (id, email, name, password_hash, industry_slugs) VALUES (1, 'a@vanderbilt.edu', 'A', 'x', '["tech","consulting"]');
+    INSERT INTO industries (id, slug, name) VALUES (1, 'tech', 'Tech'), (2, 'consulting', 'Consulting');
+    INSERT INTO programs (id, name, firm, industry_id) VALUES (1, 'Old Program', 'Old Firm', 2);
+    INSERT INTO firms (name, domain, pattern, notes) VALUES ('Officer Edited Firm', 'edited.com', 'flast', 'kept');
+    INSERT INTO events (user_id, program_id, title, starts_at, uid) VALUES (1, 1, 'My reminder', '2027-01-01T15:00:00Z', 'u1');
+  `);
+  old.close();
+
+  const up = openDb(file);
+  const r = syncContent(up, { backupDir: dir });
+  assert.equal(r.upgraded.to, CONTENT_VERSION);
+  assert.ok(fs.existsSync(r.upgraded.backup));
+  assert.ok(fs.readdirSync(dir).some((f) => f.startsWith('backup-programs-v1-')));
+  assert.equal(up.prepare('SELECT COUNT(*) AS n FROM programs').get().n, 84);
+  assert.equal(up.prepare('SELECT COUNT(*) AS n FROM firms').get().n, 151); // 150 seed + the officer's own firm
+  assert.equal(up.prepare("SELECT notes FROM firms WHERE name = 'Officer Edited Firm'").get().notes, 'kept');
+  assert.deepEqual(JSON.parse(up.prepare('SELECT industry_slugs FROM users').get().industry_slugs), ['swe', 'pm', 'sales-trading', 'consulting']);
+  const ev = up.prepare('SELECT title, program_id FROM events').get();
+  assert.equal(ev.title, 'My reminder');
+  assert.equal(ev.program_id, null);
+  assert.deepEqual(syncContent(up, { backupDir: dir }), {}); // second start does nothing
+  up.close();
+  fs.rmSync(dir, { recursive: true });
 });

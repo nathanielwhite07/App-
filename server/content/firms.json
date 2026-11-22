@@ -6,6 +6,7 @@
     "domain": "mckinsey.com",
     "pattern": "first_last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -23,6 +24,7 @@
     "domain": "bcg.com",
     "pattern": "last.first",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Last name FIRST. RocketReach and Prospeo are wrong here; BCG's own site settles it",
     "sources_agree": "3 of 5",
@@ -35,6 +37,7 @@
     "domain": "kpmg.com",
     "pattern": "flast",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "firstlast",
@@ -52,6 +55,7 @@
     "domain": "rolandberger.com",
     "pattern": "first.last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Umlauts are spelled out: ö→oe, ü→ue, ä→ae",
     "sources_agree": "4 of 5",
@@ -64,6 +68,7 @@
     "domain": "analysisgroup.com",
     "pattern": "first.last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "flast",
@@ -81,6 +86,7 @@
     "domain": "bateswhite.com",
     "pattern": "first.last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Upgraded from Medium",
     "sources_agree": "3 of 3",
@@ -93,6 +99,7 @@
     "domain": "hcg.com",
     "pattern": "flast",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Sites list the domain huronconsultinggroup.com; Huron itself uses hcg.com. Both are Huron domains",
     "sources_agree": "4 of 4",
@@ -105,6 +112,7 @@
     "domain": "brattle.com",
     "pattern": "first.last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Uses the name people go by (Dan, not Daniel). Upgraded from Medium",
     "sources_agree": "3 of 3",
@@ -117,6 +125,7 @@
     "domain": "thinkbrg.com",
     "pattern": "flast",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Domain is thinkbrg.com",
     "sources_agree": "4 of 4",
@@ -129,6 +138,7 @@
     "domain": "slalom.com",
     "pattern": "first.last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "firstl",
@@ -146,6 +156,7 @@
     "domain": "genpact.com",
     "pattern": "first.last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Upgraded from Medium",
     "sources_agree": "4 of 5",
@@ -158,6 +169,7 @@
     "domain": "bain.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -170,6 +182,7 @@
     "domain": "pwc.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "US. Other countries use subdomains like uk.pwc.com",
     "sources_agree": "4 of 4",
@@ -182,6 +195,7 @@
     "domain": "ey.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -199,6 +213,7 @@
     "domain": "accenture.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "4 of 4",
@@ -211,6 +226,7 @@
     "domain": "oliverwyman.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -223,6 +239,7 @@
     "domain": "kearney.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Older addresses used atkearney.com",
     "sources_agree": "4 of 4",
@@ -235,6 +252,7 @@
     "domain": "bah.com",
     "pattern": "last_first",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first_last",
@@ -252,6 +270,7 @@
     "domain": "pwc.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Part of PwC, uses PwC email",
     "sources_agree": "4 of 5",
@@ -264,6 +283,7 @@
     "domain": "alvarezandmarsal.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -281,6 +301,7 @@
     "domain": "simon-kucher.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Note the hyphen in the domain",
     "sources_agree": "4 of 5",
@@ -293,6 +314,7 @@
     "domain": "fticonsulting.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "4 of 5",
@@ -305,6 +327,7 @@
     "domain": "alixpartners.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -317,6 +340,7 @@
     "domain": "crai.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Domain is crai.com",
     "sources_agree": "4 of 5",
@@ -329,6 +353,7 @@
     "domain": "us.gt.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Includes Grant Thornton Stax",
     "sources_agree": "4 of 4",
@@ -341,6 +366,7 @@
     "domain": "mercer.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -353,6 +379,7 @@
     "domain": "gartner.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -365,6 +392,7 @@
     "domain": "zs.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "4 of 4",
@@ -377,6 +405,7 @@
     "domain": "capgemini.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "flast",
@@ -394,6 +423,7 @@
     "domain": "cognizant.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -406,6 +436,7 @@
     "domain": "protiviti.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -418,6 +449,7 @@
     "domain": "westmonroe.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Older addresses used wmp.com or westmonroepartners.com",
     "sources_agree": "4 of 4",
@@ -430,6 +462,7 @@
     "domain": "nera.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "4 of 4",
@@ -442,6 +475,7 @@
     "domain": "paconsulting.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "4 of 5",
@@ -454,6 +488,7 @@
     "domain": "capco.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "4 of 4",
@@ -466,6 +501,7 @@
     "domain": "wtwco.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Domain is wtwco.com",
     "sources_agree": "4 of 4",
@@ -478,6 +514,7 @@
     "domain": "kroll.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "flast",
@@ -495,6 +532,7 @@
     "domain": "ankura.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Upgraded from Medium",
     "sources_agree": "4 of 5",
@@ -507,6 +545,7 @@
     "domain": "wipro.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "4 of 4",
@@ -519,6 +558,7 @@
     "domain": "cgi.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -531,6 +571,7 @@
     "domain": "nttdata.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -543,6 +584,7 @@
     "domain": "epam.com",
     "pattern": "first_last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Underscore, not a dot",
     "sources_agree": "5 of 5",
@@ -555,6 +597,7 @@
     "domain": "bdo.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "3 of 4",
@@ -567,6 +610,7 @@
     "domain": "deloitte.com",
     "pattern": "flast",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Format is right, but name clashes are common. If jdoe bounces, add first-name letters: jadoe, then janedoe",
     "sources_agree": "5 of 5",
@@ -579,6 +623,7 @@
     "domain": "lek.com",
     "pattern": "f.last",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -596,6 +641,7 @@
     "domain": "cornerstone.com",
     "pattern": "flast",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -613,6 +659,7 @@
     "domain": "adlittle.com",
     "pattern": "last.first",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -630,6 +677,7 @@
     "domain": "infosys.com",
     "pattern": "first_last",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -647,6 +695,7 @@
     "domain": "tcs.com",
     "pattern": "first.last",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "last.first",
@@ -668,6 +717,7 @@
     "domain": "publicissapient.com",
     "pattern": "first.last",
     "confidence": "Medium",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "flast",
@@ -685,6 +735,7 @@
     "domain": "lazard.com",
     "pattern": "first.last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "lastf",
@@ -702,6 +753,7 @@
     "domain": "moelis.com",
     "pattern": "first.last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "flast",
@@ -719,6 +771,7 @@
     "domain": "williamblair.com",
     "pattern": "flast",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "4 of 5",
@@ -731,6 +784,7 @@
     "domain": "blackstone.com",
     "pattern": "first.last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "last",
@@ -748,6 +802,7 @@
     "domain": "carlyle.com",
     "pattern": "first.last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -760,6 +815,7 @@
     "domain": "warburgpincus.com",
     "pattern": "first.last",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "flast",
@@ -777,6 +833,7 @@
     "domain": "aresmgmt.com",
     "pattern": "flast",
     "confidence": "Confirmed",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Domain is aresmgmt.com, not ares.com",
     "sources_agree": "4 of 4",
@@ -789,6 +846,7 @@
     "domain": "gs.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Domain is gs.com. Older addresses used goldmansachs.com",
     "sources_agree": "5 of 6",
@@ -801,6 +859,7 @@
     "domain": "morganstanley.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "firstl",
@@ -818,6 +877,7 @@
     "domain": "bofa.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -835,6 +895,7 @@
     "domain": "citi.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "firstlast",
@@ -852,6 +913,7 @@
     "domain": "barclays.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -864,6 +926,7 @@
     "domain": "db.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Domain is db.com",
     "sources_agree": "5 of 5",
@@ -876,6 +939,7 @@
     "domain": "ubs.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -888,6 +952,7 @@
     "domain": "wellsfargo.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -900,6 +965,7 @@
     "domain": "evercore.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "last",
@@ -917,6 +983,7 @@
     "domain": "guggenheimpartners.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Domain is guggenheimpartners.com. Clay's page uses guggenheiminvestments.com (the asset-management arm)",
     "sources_agree": "5 of 5",
@@ -929,6 +996,7 @@
     "domain": "qatalyst.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Only 3 sites cover it, but all agree",
     "sources_agree": "3 of 3",
@@ -941,6 +1009,7 @@
     "domain": "liontree.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -958,6 +1027,7 @@
     "domain": "rothschildandco.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Current domain is rothschildandco.com; older addresses used rothschild.com",
     "sources_agree": "5 of 5",
@@ -970,6 +1040,7 @@
     "domain": "ducerapartners.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -987,6 +1058,7 @@
     "domain": "jefferies.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -1004,6 +1076,7 @@
     "domain": "rbccm.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Domain is rbccm.com. Staff of the parent bank use rbc.com",
     "sources_agree": "5 of 5",
@@ -1016,6 +1089,7 @@
     "domain": "mizuhogroup.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Older addresses used mizuhoamericas.com or mizuhosecurities.com",
     "sources_agree": "4 of 5",
@@ -1028,6 +1102,7 @@
     "domain": "nomura.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -1040,6 +1115,7 @@
     "domain": "bmo.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Domain is bmo.com",
     "sources_agree": "4 of 5",
@@ -1052,6 +1128,7 @@
     "domain": "truist.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "flast",
@@ -1069,6 +1146,7 @@
     "domain": "harriswilliams.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "4 of 4",
@@ -1081,6 +1159,7 @@
     "domain": "rwbaird.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Domain is rwbaird.com",
     "sources_agree": "5 of 5",
@@ -1093,6 +1172,7 @@
     "domain": "raymondjames.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": null,
     "sources_agree": "5 of 5",
@@ -1105,6 +1185,7 @@
     "domain": "stifel.com",
     "pattern": "lastf",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -1122,6 +1203,7 @@
     "domain": "kkr.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "lastf",
@@ -1139,6 +1221,7 @@
     "domain": "apollo.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Older addresses used agm.com or apollolp.com. Name clashes add letters: jadoe@apollo.com (RocketReach 7%)",
     "sources_agree": "4 of 4",
@@ -1151,6 +1234,7 @@
     "domain": "tpg.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "firstlast",
@@ -1168,6 +1252,7 @@
     "domain": "baincapital.com",
     "pattern": "flast",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Not Bain & Company (first.last@bain.com). Name clashes: jadoe@baincapital.com (RocketReach 5%)",
     "sources_agree": "4 of 4",
@@ -1180,6 +1265,7 @@
     "domain": "blackrock.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "flast",
@@ -1197,6 +1283,7 @@
     "domain": "fidelity.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -1214,6 +1301,7 @@
     "domain": "vanguard.com",
     "pattern": "first_last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Underscore, not a dot",
     "sources_agree": "4 of 5",
@@ -1226,6 +1314,7 @@
     "domain": "citadel.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "flast",
@@ -1243,6 +1332,7 @@
     "domain": "bwater.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [],
     "notes": "Domain is bwater.com, not bridgewater.com",
     "sources_agree": "3 of 4",
@@ -1255,6 +1345,7 @@
     "domain": "twosigma.com",
     "pattern": "first.last",
     "confidence": "Very High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first",
@@ -1272,6 +1363,7 @@
     "domain": "jpmchase.com",
     "pattern": "first.last",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -1289,6 +1381,7 @@
     "domain": "centerview.com",
     "pattern": "flast",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "flast",
@@ -1306,6 +1399,7 @@
     "domain": "pjtpartners.com",
     "pattern": "first.last",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "last",
@@ -1323,6 +1417,7 @@
     "domain": "pwpartners.com",
     "pattern": "flast",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -1340,6 +1435,7 @@
     "domain": "hl.com",
     "pattern": "flast",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first.last",
@@ -1357,6 +1453,7 @@
     "domain": "lincolninternational.com",
     "pattern": "flast",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "firstlast",
@@ -1374,6 +1471,7 @@
     "domain": "psc.com",
     "pattern": "first.last",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "f.last",
@@ -1391,6 +1489,7 @@
     "domain": "deshaw.com",
     "pattern": "first.last",
     "confidence": "High",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "lfirst",
@@ -1412,6 +1511,7 @@
     "domain": "key.com",
     "pattern": "first.last",
     "confidence": "Medium",
+    "max_local": null,
     "fallbacks": [
       {
         "pattern": "first_last",
@@ -1421,5 +1521,835 @@
     "notes": "Not settled. Corporate staff use first_last@keybank.com (sometimes with middle initial). Try jane.doe@key.com, then jane_doe@keybank.com. Verify before sending",
     "sources_agree": "3 of 5",
     "researched_on": "2026-10-12"
+  },
+  {
+    "name": "Oracle",
+    "sector": "Tech",
+    "category": "Enterprise Software",
+    "domain": "oracle.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "f.last",
+        "domain": "oracle.com"
+      }
+    ],
+    "notes": "Fallback: j.doe@oracle.com (Prospeo 45%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Intel",
+    "sector": "Tech",
+    "category": "Semiconductors",
+    "domain": "intel.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "f.last",
+        "domain": "intel.com"
+      }
+    ],
+    "notes": "Fallback: j.doe@intel.com",
+    "sources_agree": "2 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "AMD",
+    "sector": "Tech",
+    "category": "Semiconductors",
+    "domain": "amd.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "amd.com"
+      }
+    ],
+    "notes": "Fallback: jdoe@amd.com (Prospeo 24%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "IBM",
+    "sector": "Tech",
+    "category": "Enterprise Software",
+    "domain": "ibm.com",
+    "pattern": "first.last",
+    "confidence": "Confirmed",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "ibm.com"
+      }
+    ],
+    "notes": "Common names get a number (Joseph.Brown4). Some long-time staff use a username at us.ibm.com (tfdavids@us.ibm.com in IBM releases). Fallback: jdoe@ibm.com",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Adobe",
+    "sector": "Tech",
+    "category": "Enterprise Software",
+    "domain": "adobe.com",
+    "pattern": "flast",
+    "confidence": "Confirmed",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "adobe.com"
+      }
+    ],
+    "notes": "Fallback: jane.doe@adobe.com (AddToCRM 7%)",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "SAP",
+    "sector": "Tech",
+    "category": "Enterprise Software",
+    "domain": "sap.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "f.last",
+        "domain": "sap.com"
+      }
+    ],
+    "notes": "Fallback: j.doe@sap.com (RocketReach 8%)",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Salesforce",
+    "sector": "Tech",
+    "category": "Enterprise Software",
+    "domain": "salesforce.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "salesforce.com"
+      }
+    ],
+    "notes": "Fallback: jane.doe@salesforce.com (RocketReach 28%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Workday",
+    "sector": "Tech",
+    "category": "Enterprise Software",
+    "domain": "workday.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Intuit",
+    "sector": "Tech",
+    "category": "Enterprise Software / Fintech",
+    "domain": "intuit.com",
+    "pattern": "first_last",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": "Underscore, not a dot. Fallback: j_doe@intuit.com (Prospeo 46%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "ServiceNow",
+    "sector": "Tech",
+    "category": "Enterprise Software",
+    "domain": "servicenow.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Databricks",
+    "sector": "Tech",
+    "category": "Data & AI Software",
+    "domain": "databricks.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first",
+        "domain": "databricks.com"
+      }
+    ],
+    "notes": "Fallback: jane@databricks.com (AddToCRM 19%)",
+    "sources_agree": "3 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Palantir",
+    "sector": "Tech",
+    "category": "Data & AI Software",
+    "domain": "palantir.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "NVIDIA",
+    "sector": "Tech",
+    "category": "Semiconductors",
+    "domain": "nvidia.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "firstl",
+        "domain": "nvidia.com"
+      }
+    ],
+    "notes": "Fallback: janed@nvidia.com (RocketReach 23%)",
+    "sources_agree": "5 of 5",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Netflix",
+    "sector": "Tech",
+    "category": "Consumer Internet / Media",
+    "domain": "netflix.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "firstl",
+        "domain": "netflix.com"
+      }
+    ],
+    "notes": "Fallback: janed@netflix.com (RocketReach 19%)",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Tesla",
+    "sector": "Tech",
+    "category": "Hardware / Auto",
+    "domain": "tesla.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": "Older addresses can be on teslamotors.com (Prospeo)",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Lyft",
+    "sector": "Tech",
+    "category": "Consumer Internet",
+    "domain": "lyft.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "LinkedIn",
+    "sector": "Tech",
+    "category": "Consumer Internet",
+    "domain": "linkedin.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": "Owned by Microsoft but keeps its own linkedin.com addresses",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Airbnb",
+    "sector": "Tech",
+    "category": "Consumer Internet",
+    "domain": "airbnb.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Shopify",
+    "sector": "Tech",
+    "category": "Enterprise Software / E-commerce",
+    "domain": "shopify.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": null,
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Duolingo",
+    "sector": "Tech",
+    "category": "Consumer Internet / EdTech",
+    "domain": "duolingo.com",
+    "pattern": "first",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "duolingo.com"
+      }
+    ],
+    "notes": "First name only. People with a common first name get a variation; fallback: jdoe@duolingo.com (AddToCRM 5%)",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Stripe",
+    "sector": "Tech",
+    "category": "Fintech",
+    "domain": "stripe.com",
+    "pattern": "first",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "stripe.com"
+      }
+    ],
+    "notes": "First name only for early staff; later hires with taken names often get flast. Fallback: jdoe@stripe.com",
+    "sources_agree": "4 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "PayPal",
+    "sector": "Tech",
+    "category": "Fintech",
+    "domain": "paypal.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "firstlast",
+        "domain": "paypal.com"
+      }
+    ],
+    "notes": "Fallback: janedoe@paypal.com (Prospeo 64%)",
+    "sources_agree": "3 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Visa",
+    "sector": "Tech",
+    "category": "Fintech / Payments",
+    "domain": "visa.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "lastf",
+        "domain": "visa.com"
+      }
+    ],
+    "notes": "Fallback: doej@visa.com (AddToCRM 4%)",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Plaid",
+    "sector": "Tech",
+    "category": "Fintech",
+    "domain": "plaid.com",
+    "pattern": "flast",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first",
+        "domain": "plaid.com"
+      }
+    ],
+    "notes": "Fallback: jane@plaid.com (AddToCRM 13%)",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Capital One",
+    "sector": "Tech",
+    "category": "Fintech / Banking",
+    "domain": "capitalone.com",
+    "pattern": "first.last",
+    "confidence": "Very High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": "Domain is capitalone.com (one word)",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Cisco",
+    "sector": "Tech",
+    "category": "Networking / Hardware",
+    "domain": "cisco.com",
+    "pattern": "flast",
+    "confidence": "High",
+    "max_local": 8,
+    "fallbacks": [],
+    "notes": "Cisco addresses are usernames of 8 characters or fewer: usually first initial (or two letters) + last name, cut off at 8 (avaverka, mechansl). Some are last name + initial (corleym) or first name + initial (carroh)",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Apple",
+    "sector": "Tech",
+    "category": "Big Tech",
+    "domain": "apple.com",
+    "pattern": "flast",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": "Apple's own press contacts use several formats, so flast is likeliest but not certain. Fallbacks: first_last@, firstlast@apple.com",
+    "sources_agree": "3 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Google",
+    "sector": "Tech",
+    "category": "Big Tech",
+    "domain": "google.com",
+    "pattern": "flast",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "firstlast",
+        "domain": "google.com"
+      },
+      {
+        "pattern": "firstl",
+        "domain": "google.com"
+      }
+    ],
+    "notes": "Addresses vary a lot (RocketReach counts 17 formats). Fallbacks: janedoe@, janed@google.com",
+    "sources_agree": "3 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Dell Technologies",
+    "sector": "Tech",
+    "category": "Hardware",
+    "domain": "dell.com",
+    "pattern": "first.last",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first_last",
+        "domain": "dell.com"
+      }
+    ],
+    "notes": "Dell uses both dot and underscore. Fallback: jane_doe@dell.com (RocketReach 32%)",
+    "sources_agree": "3 of 5",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "HP",
+    "sector": "Tech",
+    "category": "Hardware",
+    "domain": "hp.com",
+    "pattern": "first.last",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first_last",
+        "domain": "hp.com"
+      }
+    ],
+    "notes": "Fallback: jane_doe@hp.com (AddToCRM 2%)",
+    "sources_agree": "2 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Qualcomm",
+    "sector": "Tech",
+    "category": "Semiconductors",
+    "domain": "qualcomm.com",
+    "pattern": "flast",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": "Only two sites cover it. Verify before sending",
+    "sources_agree": "2 of 2",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Snowflake",
+    "sector": "Tech",
+    "category": "Data & AI Software",
+    "domain": "snowflake.com",
+    "pattern": "first.last",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": "Only two sites cover it. Verify before sending",
+    "sources_agree": "2 of 2",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Atlassian",
+    "sector": "Tech",
+    "category": "Enterprise Software",
+    "domain": "atlassian.com",
+    "pattern": "flast",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "atlassian.com"
+      }
+    ],
+    "notes": "Fallback: jane.doe@atlassian.com (AddToCRM 6%)",
+    "sources_agree": "2 of 2",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Bloomberg L.P.",
+    "sector": "Tech",
+    "category": "Financial Data / Media",
+    "domain": "bloomberg.net",
+    "pattern": "flast",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "bloomberg.com"
+      }
+    ],
+    "notes": "Sites agree on flast but split on the domain. Try bloomberg.net first, then bloomberg.com",
+    "sources_agree": "3 of 3 (format)",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Coinbase",
+    "sector": "Tech",
+    "category": "Fintech / Crypto",
+    "domain": "coinbase.com",
+    "pattern": "first.last",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first",
+        "domain": "coinbase.com"
+      }
+    ],
+    "notes": "Fallback: jane@coinbase.com (AddToCRM 19%)",
+    "sources_agree": "2 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Robinhood",
+    "sector": "Tech",
+    "category": "Fintech",
+    "domain": "robinhood.com",
+    "pattern": "first",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "robinhood.com"
+      }
+    ],
+    "notes": "Fallback: jane.doe@robinhood.com (AddToCRM 26%)",
+    "sources_agree": "2 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "DoorDash",
+    "sector": "Tech",
+    "category": "Consumer Internet",
+    "domain": "doordash.com",
+    "pattern": "first",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first.last",
+        "domain": "doordash.com"
+      }
+    ],
+    "notes": "Close split. Fallback: jane.doe@doordash.com (AddToCRM 39%)",
+    "sources_agree": "2 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Pinterest",
+    "sector": "Tech",
+    "category": "Consumer Internet",
+    "domain": "pinterest.com",
+    "pattern": "first",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "pinterest.com"
+      }
+    ],
+    "notes": "Fallback: jdoe@pinterest.com (AddToCRM 30%)",
+    "sources_agree": "2 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "OpenAI",
+    "sector": "Tech",
+    "category": "AI",
+    "domain": "openai.com",
+    "pattern": "first",
+    "confidence": "High",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "openai.com"
+      }
+    ],
+    "notes": "Fallback: jdoe@openai.com (AddToCRM 6%)",
+    "sources_agree": "2 of 2",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Microsoft",
+    "sector": "Tech",
+    "category": "Big Tech",
+    "domain": "microsoft.com",
+    "pattern": "firstl",
+    "confidence": "Medium",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "microsoft.com"
+      },
+      {
+        "pattern": "first.last",
+        "domain": "microsoft.com"
+      }
+    ],
+    "notes": "Not settled: Microsoft addresses are aliases. Try janed@, then jdoe@ (AddToCRM 26%), then jane.doe@ (23%)",
+    "sources_agree": "1 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Amazon",
+    "sector": "Tech",
+    "category": "Big Tech",
+    "domain": "amazon.com",
+    "pattern": "flast",
+    "confidence": "Medium",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "firstl",
+        "domain": "amazon.com"
+      },
+      {
+        "pattern": "lastf",
+        "domain": "amazon.com"
+      }
+    ],
+    "notes": "Not settled: Amazon addresses are login aliases. Try jdoe@, then janed@, then doej@amazon.com",
+    "sources_agree": "2 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Meta",
+    "sector": "Tech",
+    "category": "Big Tech",
+    "domain": "meta.com",
+    "pattern": "firstlast",
+    "confidence": "Medium",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "meta.com"
+      },
+      {
+        "pattern": "first",
+        "domain": "meta.com"
+      }
+    ],
+    "notes": "Not settled. Fallbacks: jdoe@meta.com (RocketReach 24%), jane@meta.com. Long-time staff may still use fb.com",
+    "sources_agree": "2 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Uber",
+    "sector": "Tech",
+    "category": "Consumer Internet",
+    "domain": "uber.com",
+    "pattern": "first.last",
+    "confidence": "Medium",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first",
+        "domain": "uber.com"
+      }
+    ],
+    "notes": "Not settled. Fallback: jane@uber.com",
+    "sources_agree": "2 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Spotify",
+    "sector": "Tech",
+    "category": "Consumer Internet / Media",
+    "domain": "spotify.com",
+    "pattern": "firstl",
+    "confidence": "Medium",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "first",
+        "domain": "spotify.com"
+      },
+      {
+        "pattern": "flast",
+        "domain": "spotify.com"
+      }
+    ],
+    "notes": "Not settled. Fallbacks: jane@, jdoe@spotify.com",
+    "sources_agree": "2 of 3",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Snap Inc.",
+    "sector": "Tech",
+    "category": "Consumer Internet",
+    "domain": "snap.com",
+    "pattern": "first.last",
+    "confidence": "Medium",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "snap.com"
+      }
+    ],
+    "notes": "Sites disagree; one person on Blind said a Snap recruiter's email was firstname.lastname@snap.com. Fallback: jdoe@snap.com",
+    "sources_agree": "1 of 4",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Figma",
+    "sector": "Tech",
+    "category": "Design Software",
+    "domain": "figma.com",
+    "pattern": "first",
+    "confidence": "Medium",
+    "max_local": null,
+    "fallbacks": [
+      {
+        "pattern": "flast",
+        "domain": "figma.com"
+      }
+    ],
+    "notes": "Not settled. Fallback: jdoe@figma.com",
+    "sources_agree": "1 of 2",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Anthropic",
+    "sector": "Tech",
+    "category": "AI",
+    "domain": "anthropic.com",
+    "pattern": "first",
+    "confidence": "Medium",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": "Only one site covers it. Verify before sending",
+    "sources_agree": "1 of 1",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Scale AI",
+    "sector": "Tech",
+    "category": "AI",
+    "domain": "scale.com",
+    "pattern": "first.last",
+    "confidence": "Medium",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": "Only one site covers it. Domain is scale.com",
+    "sources_agree": "1 of 1",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Block (Square, Cash App)",
+    "sector": "Tech",
+    "category": "Fintech",
+    "domain": "block.xyz",
+    "pattern": "flast",
+    "confidence": "Medium",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": "Only one site covers it. Square and Cash App staff may use other company domains",
+    "sources_agree": "1 of 1",
+    "researched_on": "2026-11-21"
+  },
+  {
+    "name": "Ramp",
+    "sector": "Tech",
+    "category": "Fintech",
+    "domain": "ramp.com",
+    "pattern": "flast",
+    "confidence": "Medium",
+    "max_local": null,
+    "fallbacks": [],
+    "notes": "Only one site covers it. Verify before sending",
+    "sources_agree": "1 of 1",
+    "researched_on": "2026-11-21"
   }
 ]

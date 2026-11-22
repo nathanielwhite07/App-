@@ -37,32 +37,39 @@ function detectPattern(email, firstName, lastName) {
   return null;
 }
 
-/** "first_last@mckinsey.com" -> { pattern: 'first_last', domain: 'mckinsey.com' }, or null. */
+/**
+ * "first_last@mckinsey.com" -> { pattern: 'first_last', domain: 'mckinsey.com' }, or null.
+ * A trailing note like "(8-character limit)" sets maxLocal (Cisco truncates usernames).
+ */
 function parseFormat(format) {
-  const m = /^\s*([a-z._-]+)@([a-z0-9.-]+\.[a-z]{2,})\s*$/i.exec(String(format || ''));
+  const m = /^\s*([a-z._-]+)@([a-z0-9.-]+\.[a-z]{2,})\s*(?:\((\d+)[- ]character limit\))?\s*$/i.exec(String(format || ''));
   if (!m || !PATTERNS[m[1].toLowerCase()]) return null;
-  return { pattern: m[1].toLowerCase(), domain: m[2].toLowerCase() };
+  const out = { pattern: m[1].toLowerCase(), domain: m[2].toLowerCase() };
+  if (m[3]) out.maxLocal = Number(m[3]);
+  return out;
 }
 
 /**
  * Pull fallback formats out of free-text notes that use Jane Doe examples, e.g.
  * "Fallback: jane.doe@mckinsey.com (RocketReach 23%)" -> [{ pattern: 'first.last', domain: 'mckinsey.com' }].
+ * A local part with no domain ("try janed@, then jdoe@") uses defaultDomain.
  */
-function fallbacksFromNotes(notes) {
+function fallbacksFromNotes(notes, defaultDomain = null) {
   const out = [];
-  for (const [, email] of String(notes || '').matchAll(/\b([a-z._-]+@[a-z0-9.-]+\.[a-z]{2,})\b/gi)) {
-    const pattern = detectPattern(email, 'Jane', 'Doe');
-    const domain = email.split('@')[1].toLowerCase();
-    if (pattern && !out.some((o) => o.pattern === pattern && o.domain === domain)) out.push({ pattern, domain });
+  for (const [, local, dom] of String(notes || '').matchAll(/(?<![\w.])([a-z._-]+)@([a-z0-9.-]+\.[a-z]{2,})?/gi)) {
+    const domain = (dom || defaultDomain || '').toLowerCase();
+    const pattern = detectPattern(`${local}@x`, 'Jane', 'Doe');
+    if (pattern && domain && !out.some((o) => o.pattern === pattern && o.domain === domain)) out.push({ pattern, domain });
   }
   return out;
 }
 
 /** Build an address from a name, or null if the name or format is unusable. */
-function buildAddress(firstName, lastName, { pattern, domain }, opts) {
+function buildAddress(firstName, lastName, { pattern, domain, maxLocal }, opts) {
   const f = normName(firstName, opts), l = normName(lastName, opts);
   if (!f || !l || !PATTERNS[pattern] || !domain) return null;
-  return `${PATTERNS[pattern](f, l)}@${domain}`;
+  const local = PATTERNS[pattern](f, l);
+  return `${maxLocal ? local.slice(0, maxLocal) : local}@${domain}`;
 }
 
 module.exports = { PATTERNS, normName, detectPattern, parseFormat, fallbacksFromNotes, buildAddress };

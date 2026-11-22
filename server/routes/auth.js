@@ -61,7 +61,7 @@ module.exports = function authRoutes(db, { publicUser }) {
     if (!u.email_verified_at) return res.status(403).json({ error: 'Confirm your email first. Check your Vanderbilt inbox for the link.', needsVerification: true });
     const { token } = createSession(db, u.id);
     sendCookie(res, token);
-    res.json({ token, user: publicUser(u) });
+    res.json({ token, user: publicUser(u, req) });
   });
 
   r.post('/logout', auth, (req, res) => {

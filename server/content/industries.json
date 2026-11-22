@@ -2,134 +2,226 @@
   {
     "slug": "investment-banking",
     "name": "Investment Banking",
-    "summary": "Banks advise companies, governments and investors on mergers and acquisitions and help them raise money by issuing debt and equity. They earn fees for finding investors and structuring deals.",
+    "summary": "Investment banks advise companies, governments and investors on mergers and acquisitions and help them raise money by issuing debt and equity. They earn fees for finding investors and structuring deals.",
     "sort_order": 1,
     "guide": [
       { "heading": "How a bank is organised", "items": [
-        "Main divisions: Investment Banking (IBD), Sales & Trading, and Research. IBD is walled off from the rest of the firm (\"the Wall\").",
-        "Industry (coverage) groups: Consumer/Retail, Tech/Media/Telecom (TMT), Industrials, Natural Resources, Financial Institutions (FIG), Healthcare, Real Estate, Gaming & Lodging (REGL), and more.",
-        "Product groups: M&A, Equity Capital Markets (IPOs, secondary offerings), Debt Capital Markets (refinancing, restructuring, acquisition debt), Leveraged Finance (high-yield debt).",
-        "Life of a deal: pitching (industry groups with product support; pitch books, modeling and valuation), then execution (industry and product groups together), then follow-ups.",
-        "Hierarchy: Analyst (2–3 years), Associate, Vice President (where the job shifts to clients), Director, Managing Director."
+        "Main divisions: Investment Banking (IBD), Sales & Trading, and Research. IBD is separated from the rest of the firm by an information barrier (\"the wall\").",
+        "Industry (coverage) groups focus on a sector: Consumer/Retail, Tech/Media/Telecom (TMT), Industrials, Natural Resources, Financial Institutions (FIG), Healthcare, Real Estate, Gaming & Lodging (REGL), and more.",
+        "Product groups focus on a type of deal: M&A, Equity Capital Markets (IPOs, follow-on offerings), Debt Capital Markets (refinancing, acquisition debt), and Leveraged Finance (high-yield debt).",
+        "A deal moves from pitching (pitch books, modeling and valuation) to execution, where coverage and product groups work together, and then to follow-up work.",
+        "Typical ladder: Analyst (2–3 years), Associate, Vice President (where the job shifts toward clients), Director, Managing Director."
       ]},
       { "heading": "Types of banks", "items": [
-        "Bulge bracket: Goldman Sachs, Morgan Stanley, JP Morgan, Bank of America, Citi, Barclays, UBS, Wells Fargo.",
-        "Middle market: Jefferies, Raymond James, Harris Williams, HSBC, BNP Paribas, Houlihan Lokey.",
-        "Elite boutiques: Evercore, Greenhill, Lazard, Moelis, Perella Weinberg, Centerview."
+        "Bulge bracket: Goldman Sachs, Morgan Stanley, JPMorganChase, Bank of America, Citi, Barclays, UBS, Wells Fargo.",
+        "Elite boutiques: Evercore, Lazard, Moelis, Centerview, PJT Partners, Perella Weinberg, Qatalyst.",
+        "Middle market: Jefferies, Houlihan Lokey, Harris Williams, William Blair, Baird, Lincoln International, Raymond James."
       ]},
       { "heading": "The analyst role", "items": [
-        "Financial modeling in Excel, building pitch books, presenting ideas to senior bankers, and working with clients and executives.",
-        "Long hours, especially on live deals; a typical day runs from about 9 a.m. to midnight.",
-        "Why IB: a strong foundation in modeling and valuation, deals with tangible results, C-suite exposure, a strong network, and exits to private equity, venture capital, hedge funds, development finance, corporate finance, or promotion to Associate."
+        "Building financial models in Excel, putting together pitch books, presenting analysis to senior bankers, and working with clients and executives.",
+        "Long hours, especially on live deals; days often run well into the night, with weekend work.",
+        "Why people choose IB: a strong foundation in modeling and valuation, deals with tangible results, early exposure to senior executives, and exits to private equity, venture capital, hedge funds, corporate finance, or promotion to Associate."
       ]},
-      { "heading": "How to get the job", "items": [
-        "Network: cold calls, coffee chats and info sessions.",
-        "Interviews: HireVue, then a first round (phone or on campus), then a Superday of 3–5 back-to-back interviews.",
-        "Know every common behavioral question. For technicals, the M&I 400 guide covers most topics."
+      { "heading": "Early programs", "items": [
+        "Many banks run freshman and sophomore insight days, early-ID programs and fellowships. They often lead to interviews or fast-tracked internship applications.",
+        "Applications for sophomore programs usually close in the fall, and the programs themselves run over winter and early spring.",
+        "Since 2025 many banks have renamed their diversity programs or opened them to all applicants. Always check the current eligibility on the firm's page.",
+        "Track deadlines on the Programs tab, and pin the ones you want reminders for."
       ]},
-      { "heading": "Technical questions to know", "items": [
-        "The 3 main ways to value a company, and which gives the highest and lowest values. Other valuation methods.",
-        "What is investment banking? How do product and coverage groups work together?",
-        "Walk through how a change in one balance-sheet account flows through the statements. What is working capital?",
-        "Walk me through a DCF (WACC, CAPM). What is Beta?",
-        "What is EBITDA and why is it used? What is an LBO?",
-        "Enterprise value vs. equity value, and how to calculate each. Debt vs. equity."
+      { "heading": "Networking", "items": [
+        "Reach out to Vanderbilt alumni and upperclassmen who have done IB internships. LinkedIn, BBSA events, the Career Center and Handshake events are good places to find them.",
+        "Go to firm info sessions and coffee chats. Research the person and their group before you meet, and come with questions.",
+        "Follow up with a short thank-you email within a day. The Email formats tab shows how each bank formats addresses."
       ]},
-      { "heading": "IB vs. Sales & Trading", "items": [
-        "Hours: banking about 9 a.m.–1 a.m. with weekend work; trading about 7 a.m.–6 p.m. with weekends off.",
-        "Culture: in banking, reputation is built on endurance; in trading, on results.",
-        "Work: banking is project-based and quiet; trading is continuous (you manage your book), loud and fast."
+      { "heading": "Interviews", "items": [
+        "A common sequence: a HireVue or phone screen, a first round, then a Superday of 3–5 back-to-back interviews.",
+        "Behavioral: \"Walk me through your resume\", \"Why investment banking?\", \"Why our bank?\", plus teamwork and leadership stories.",
+        "Technical: the main valuation methods and which gives the highest value, walking through a DCF (WACC, CAPM, beta), how the three financial statements connect, EBITDA, LBO basics, and enterprise value vs. equity value.",
+        "Keep up with markets and recent deals at the banks you're targeting. Technical guides such as Mergers & Inquisitions or the BIWS 400 questions cover most of what's asked."
       ]}
     ]
   },
   {
     "slug": "consulting",
     "name": "Consulting",
-    "summary": "Consultants give expert advice to organizations to improve performance and make hard decisions, creating value through revenue growth, cost savings, M&A and other advisory work.",
+    "summary": "Consultants advise organizations on their hardest problems: growth, cost, operations, M&A and strategy. Most work is project-based, on teams that rotate across clients and industries.",
     "sort_order": 2,
     "guide": [
       { "heading": "What the work looks like", "items": [
-        "Firms advise most blue-chip companies across industries. Many management consultancies are industry-agnostic; boutiques specialize by industry, function or region.",
-        "Projects (cases) usually last 3–6 months and are renewed monthly; long-term clients may sign multi-year contracts. Work happens at the client site or in the office.",
-        "Expect 50–60 hour weeks, with weekends protected.",
-        "Types of work: management, strategy, M&A, operations, HR, tech/IT, risk & compliance, supply chain, sustainability, and more.",
-        "Example roles on a case: the Partner wins the work and sets the approach; the Manager runs client meetings, the timeline and sub-teams; the Analyst gathers and analyzes data, builds clear visuals and brings recommendations to the manager."
+        "Firms advise companies across industries. Large management consultancies are generalists; boutiques specialize by industry, function or region.",
+        "Projects (cases) usually last 3–6 months, at the client's site or in the office.",
+        "Expect 50–60 hour weeks, with weekends usually protected.",
+        "Types of work: strategy, operations, M&A, technology, people and organization, risk, supply chain, sustainability, and more.",
+        "On a typical team, a partner wins the work and sets the approach, a manager runs the day-to-day and client meetings, and analysts gather and analyze data and turn it into clear recommendations."
       ]},
       { "heading": "Major firms", "items": [
-        "MBB (\"Big Three\"): McKinsey, BCG and Bain, the most prestigious management consulting firms.",
-        "Big Four: Deloitte, PwC, EY and KPMG, best known for tax and audit, with large consulting arms.",
-        "Specialized boutiques: industry- or service-specific firms."
+        "MBB: McKinsey, BCG and Bain, the three most prestigious strategy firms.",
+        "Big Four: Deloitte, PwC, EY (including EY-Parthenon) and KPMG, best known for audit and tax, with large consulting practices.",
+        "Others: Oliver Wyman, L.E.K., Kearney, Accenture, Alvarez & Marsal, and many specialized boutiques."
       ]},
       { "heading": "Why consulting", "items": [
-        "Exposure to many industries and frequent C-suite interaction; travel perks at global firms.",
-        "Real responsibility as a junior analyst; builds speaking, Excel modeling and strategy skills.",
-        "Funded graduate school, a lifelong network and strong exits: corporate strategy, senior management, MBA/law school, PE/VC/hedge funds, entrepreneurship, tech, international development, non-profits.",
-        "These jobs are very hard to get: firms hire fewer than 1% of applicants."
+        "Exposure to many industries and to senior executives early in your career.",
+        "Real responsibility as a junior analyst, plus training in communication, Excel and structured problem solving.",
+        "A strong network and broad exits: corporate strategy, business school, private equity, startups, and the public and non-profit sectors.",
+        "Offers are very competitive, so preparation matters."
       ]},
       { "heading": "What firms look for", "items": [
-        "Coachability, a hard-working attitude, and meaningful experiences with clear personal impact.",
-        "Clear communication and public speaking; teamwork, leadership and initiative.",
-        "Structured problem solving and quantitative reasoning; intellectual curiosity.",
-        "Personability and the ability to build trust (the \"airport test\")."
+        "Strong academics (a high GPA matters more in consulting than in most fields).",
+        "Leadership and impact: roles where you can point to a result you drove.",
+        "Structured problem solving, comfort with numbers, and clear communication.",
+        "Coachability, curiosity, and being someone a team would want to work with (the \"airport test\")."
       ]},
-      { "heading": "Online assessments", "items": [
-        "McKinsey Solve: game-based problems testing analytical reasoning, decisions and adaptability; evaluated alongside the application.",
-        "Bain TestGorilla: timed questions on analysis, problem solving and communication; one data point and a smaller factor.",
-        "BCG Casey: a chatbot-led case testing quantitative reasoning, exhibit analysis and recommendations; an evaluative stage.",
-        "Aim for the 9th or 10th decile on Solve and Casey; lower scores make it harder to progress."
+      { "heading": "Early programs", "items": [
+        "Many firms run freshman and sophomore programs, such as Bain's BEL, CREW and First Forward, BCG Launch, and McKinsey's first-year summits.",
+        "McKinsey uses a single \"Connect with McKinsey\" form as the way in to several of its programs, so fill it out early.",
+        "Several firms renamed, paused or opened up their diversity programs recently. Check the Programs tab and each firm's page for current eligibility."
       ]},
-      { "heading": "Case interviews", "items": [
-        "Tests how you think, communicate and solve problems; typically 20–40 minutes. Format and length vary by firm.",
-        "Main types: profitability, market sizing, market entry, M&A.",
-        "New formats: digital cases (BCG Casey) and AI-assisted interviews where you work with an AI tool. Independent reasoning, checking outputs and explaining your recommendation still matter.",
-        "McKinsey is piloting a simulated client conversation: handle ambiguity and pushback, ask useful questions, and show empathy. It was non-evaluative in the 2026 cycle, with wider use expected."
+      { "heading": "Recruiting process", "items": [
+        "Deadlines for sophomore-year internship applications have moved earlier, into late winter and spring, and may keep moving earlier.",
+        "Many firms use online assessments: McKinsey Solve (game-based), BCG Casey (chatbot case) and Bain's online test. Strong scores matter for moving forward.",
+        "Interviews mix case interviews (profitability, market sizing, market entry, M&A) with behavioral questions. Final rounds are often in person.",
+        "Some firms now include AI-assisted exercises or simulated client conversations, so practice explaining your own judgment clearly."
       ]},
       { "heading": "Resources", "items": [
-        "CaseCoach (free through Vanderbilt), Management Consulted, PrepLounge, CaseInterview.com, Crafting Cases, RocketBlocks, and firms' own prep pages.",
-        "MBA case books for practice cases.",
-        "Vanderbilt Career Center / Handshake; levels.fyi for salaries; Fishbowl for industry forums."
+        "CaseCoach (free through Vanderbilt), Management Consulted, PrepLounge, CaseInterview.com, Crafting Cases and RocketBlocks.",
+        "MBA case books for practice cases; practice live with partners as often as you can.",
+        "Vanderbilt Career Center and Handshake for on-campus recruiting; levels.fyi for pay data."
       ]},
-      { "heading": "Entry-level base pay (figures from the Oct 2026 slides)", "items": [
-        "MBB: McKinsey $125k, BCG $125k, Bain $120k.",
-        "Big Four: Deloitte $84–95k, KPMG $78–94k, EY up to $90k, PwC up to $90k.",
-        "Others: Oliver Wyman $110k, Alvarez & Marsal up to $112k, Accenture Strategy $105k, EY-Parthenon $100k, L.E.K. $95k."
+      { "heading": "Entry-level pay (2026, approximate)", "items": [
+        "MBB: about $120k–$125k base.",
+        "Big Four consulting: about $78k–$95k base.",
+        "Other strategy firms: about $95k–$112k base (e.g., Oliver Wyman, L.E.K., Alvarez & Marsal, EY-Parthenon)."
       ]}
     ]
   },
   {
-    "slug": "tech",
-    "name": "Tech, Trading & Frontier AI",
-    "summary": "Big Tech builds software, hardware and digital infrastructure at scale; quantitative trading firms use math, statistics and code to trade systematically; frontier AI labs push the state of the art in AI research.",
+    "slug": "swe",
+    "name": "Software Engineering",
+    "summary": "Software engineers design, build, test and maintain software, turning requirements into reliable, scalable systems. The job is changing quickly as AI tools write more code.",
     "sort_order": 3,
     "guide": [
-      { "heading": "Roles", "items": [
-        "Tech: Software Engineer (designs, builds and maintains systems; not programming all day), Product Manager (sets strategy and priorities across engineering, design and business), UI/UX Designer (research, interface design, prototyping, usability testing).",
-        "Trading: Quant Trader (runs strategies, manages risk and inventory), Quant Researcher (finds predictive signals with statistics and ML), Quant Developer (builds research and trading systems), Trading Systems Engineer (low-latency infrastructure).",
-        "Frontier AI labs: Member of Technical Staff (MTS), a broad role on 10–14 week projects whose priorities shift quickly; high-risk, high-reward."
+      { "heading": "What the job is", "items": [
+        "Writing code, designing systems and reviewing teammates' work. It isn't coding all day: stand-ups, design reviews and meetings with product managers and designers take real time.",
+        "Teams are organized by product (search, payments, ads) or by platform (infrastructure, data, AI).",
+        "A typical day mixes a short team stand-up, a planning meeting or two, and long blocks of focused development time."
       ]},
-      { "heading": "Hours, pay and location (figures from the Nov 2026 slides)", "items": [
-        "Tech: 30–45 hours a week, usually hybrid, weekends protected; entry-level total compensation $150k–$250k (base + stock); mostly California.",
-        "Trading: 45–50 hours a week on desk, weekends protected; entry-level TC $350k–$1.1M (base + bonus); mostly Chicago and NYC.",
-        "AI labs: 50–60 hours a week, usually on desk; entry-level TC $200k–$600k (base, equity and stock); mostly California.",
-        "Generally excellent benefits across all three. For pay: Quant > Frontier AI > Big Tech."
+      { "heading": "Who hires", "items": [
+        "Big Tech: Google, Meta, Microsoft, Amazon, Apple, NVIDIA.",
+        "Fintech companies and banks' engineering teams.",
+        "Startups and AI labs, which hire at any time and vary widely in process.",
+        "Quant trading firms, as software or systems engineers."
       ]},
-      { "heading": "How recruiting works", "items": [
-        "Big Tech recruits starting late summer going into junior year: typically 2–3 technical rounds and 1–2 behavioral, including a superday.",
-        "Quant recruits starting late spring at the end of sophomore year: up to 8 technical rounds, usually at most 1 behavioral, with an in-person superday.",
-        "AI labs and startups recruit at any time; processes vary widely.",
-        "Most people apply with just a resume and a referral; cover letters are rare. A referral helps you get the first interview, and after that only your ability matters."
+      { "heading": "How AI is changing the job", "items": [
+        "A large and growing share of new code at big companies is AI-generated and then reviewed by engineers.",
+        "Interviews are changing too: some companies now run AI-assisted coding rounds or code-reading rounds.",
+        "You still need strong fundamentals, but you're increasingly judged on reading code, breaking problems down and checking AI output. Interviewers notice when someone accepts buggy AI code without reviewing it."
       ]},
-      { "heading": "How to get good", "items": [
-        "It takes time, and lots of it.",
-        "Technical interviews test two things: getting the answer right, and how you think: approaching problems sensibly, explaining your reasoning and showing you're coachable.",
-        "Behavioral interviews are where you stand out: be reasonable, rational and sociable.",
-        "Example: given a dataset and an LLM, explore the data, form ideas and use the LLM to build models quickly.",
-        "Example: a fair coin is flipped 1000 times (+$1 heads, −$1 tails) and you can stop any time. How do you maximize profit? What is the chance you're ever at +$3? What if the coin is biased, or the bias is unknown?"
+      { "heading": "When it recruits", "items": [
+        "SWE recruiting opens in the summer, not the spring. Most Big Tech, fintech and quant internship postings for the junior summer go up between July and September, the summer after sophomore year.",
+        "Applications are rolling, so apply in the first week a posting opens. More companies keep posting from January to April.",
+        "Freshman and sophomore programs (e.g., Explore Microsoft, NVIDIA Ignite, SEO Tech Developer) recruit earlier. See the Programs tab.",
+        "Most people apply with a resume and, ideally, a referral; cover letters are rare. A referral helps you get the first interview, and after that your performance decides."
+      ]},
+      { "heading": "Interviews", "items": [
+        "Online assessment: timed coding problems, auto-graded.",
+        "Technical rounds: usually 2–3 rounds of live coding where you need the right answer and a clear explanation of your approach.",
+        "Behavioral: 1–2 rounds on teamwork, conflict and learning from failure. This is where you can stand out.",
+        "In an AI-assisted round, the test is whether you check the code: read every line the AI writes, test edge cases, and say out loud what you're verifying.",
+        "Practice: \"Given an array of numbers, return the two that add up to a target. What's the fastest approach?\" or \"Here's code an AI wrote. Find the bug and explain your fix.\""
+      ]},
+      { "heading": "Pay", "items": [
+        "Big Tech SWE interns: roughly $98k–$131k annualized, sometimes with equity.",
+        "Big Tech entry-level total compensation: about $150k–$250k, split between base salary and stock."
       ]},
       { "heading": "Resources", "items": [
-        "Levels.fyi (salaries), LeetCode (coding interviews), Quantable (quant interviews), APMList.com (product roles).",
-        "Reddit: r/csMajors and r/quantfinance.",
-        "Internship trackers: github.com/SimplifyJobs (Summer internships) and github.com/northwesternfintech (quant internships)."
+        "LeetCode for coding practice; the Simplify Summer Internships list on GitHub to track postings; r/csMajors; Levels.fyi for pay.",
+        "Set alerts on Simplify and Handshake so you see postings the week they open."
+      ]}
+    ]
+  },
+  {
+    "slug": "pm",
+    "name": "Product Management",
+    "summary": "Product managers decide what gets built and why, then lead engineers, designers and business teams to launch it, balancing what users need, what the business needs and what engineering can build.",
+    "sort_order": 4,
+    "guide": [
+      { "heading": "What the job is", "items": [
+        "Define product strategy, decide which features matter most, and guide a product from idea to launch.",
+        "PMs lead without being the boss: they persuade engineers and designers rather than manage them.",
+        "You'll like it if you care about users and strategy and enjoy running the room."
+      ]},
+      { "heading": "How people get in", "items": [
+        "New grads usually enter through Associate Product Manager (APM) programs: 1–2 years with rotations, mentorship and training.",
+        "APM programs are extremely selective (top programs accept a tiny fraction of applicants).",
+        "Many PMs start as engineers, analysts or consultants and switch in later, so tech-adjacent experience is valuable."
+      ]},
+      { "heading": "When it recruits", "items": [
+        "PM internship applications open roughly August to November of junior year. Many top APM intern roles require you to be in your second-to-last or last year.",
+        "Windows can be very short, sometimes only a week, so set alerts and apply as soon as a posting opens.",
+        "Some programs now ask for a product demo instead of a resume, and a few companies run APM tracks for students earlier in school.",
+        "New-grad APM programs typically post in early fall of senior year."
+      ]},
+      { "heading": "Interviews", "items": [
+        "Product sense: \"Design a product for…\" or \"Improve X.\" Clarify the goal, pick a user, find their pain points and prioritize solutions.",
+        "Analytical / execution: metrics and experiments. \"Signups dropped 10%, what happened?\" \"How would you measure success?\" A/B testing.",
+        "Behavioral and technical: leadership stories (STAR method), plus enough technical understanding to discuss tradeoffs with engineers.",
+        "Usually a recruiter screen, then a first interview mixing product and analytical questions, then a final round of 3–5 interviews.",
+        "Practice: \"How would you improve Vanderbilt's course registration?\" or \"Daily active users fell 10% overnight. Walk me through what you'd check.\""
+      ]},
+      { "heading": "Pay", "items": [
+        "PM interns: roughly $94k–$125k annualized at large tech companies (some pay hourly, around $55–$60/hour).",
+        "New-grad APMs: roughly $116k–$165k base plus equity at top programs."
+      ]},
+      { "heading": "Resources", "items": [
+        "APMList for program dates; Simplify's APM tracker; Exponent for interview prep; Levels.fyi for pay.",
+        "Build something people use (an app, a tool for a club) so you have real product stories to tell."
+      ]}
+    ]
+  },
+  {
+    "slug": "sales-trading",
+    "name": "Sales & Trading",
+    "summary": "Sales & Trading is the part of a bank that pitches trading ideas to clients and executes their trades in stocks, bonds, currencies and commodities, while managing the bank's own risk.",
+    "sort_order": 5,
+    "guide": [
+      { "heading": "What the job is", "items": [
+        "S&T sits in a bank's Markets (Global Markets) division, separate from investment banking.",
+        "Sales is client-facing: building relationships with investors such as hedge funds, pension funds and asset managers, pitching ideas and taking orders. It tests communication and pitching.",
+        "Trading means making markets for clients, managing the desk's risk and positions, and pricing trades. It tests math and judgment under pressure.",
+        "Desks: Equities (stocks, equity derivatives) and FICC (fixed income such as rates and credit, currencies, commodities). Summer analyst programs often rotate you across desks before you're placed.",
+        "Hours follow the market: roughly 7 a.m. to 6 p.m., with weekends usually off. It's intense during market hours and loud and fast on the floor."
+      ]},
+      { "heading": "Who hires", "items": [
+        "Bulge brackets: Goldman Sachs, Morgan Stanley, JPMorganChase, Citi, Bank of America.",
+        "Foreign banks: Barclays, BNP Paribas, Société Générale, Deutsche Bank, and others."
+      ]},
+      { "heading": "S&T vs. quant trading", "items": [
+        "Bank S&T serves clients. Quant firms like Jane Street, Citadel Securities and Hudson River Trading trade the firm's own money using models.",
+        "Quant roles: quant trader (runs strategies, manages risk), quant researcher (finds predictive signals with statistics and ML), quant developer (builds trading and research systems).",
+        "Quant firms recruit earlier, often starting late in sophomore spring, with many more math and probability rounds (sometimes up to 8) and an in-person superday.",
+        "Pay at top quant firms is among the highest for new grads, often well above bank S&T."
+      ]},
+      { "heading": "When it recruits", "items": [
+        "S&T recruits alongside investment banking, about a year and a half ahead of the internship. Junior-summer applications land mostly in December through February of sophomore year.",
+        "Network in the fall of sophomore year, before applications open.",
+        "Some banks limit how many business/location combinations you can apply to each year, so choose carefully.",
+        "Some banks run sophomore S&T programs, and a few freshman insight programs are open too. See the Programs tab."
+      ]},
+      { "heading": "Interviews", "items": [
+        "Usually a HireVue or phone screen, then a superday.",
+        "Fit: \"Why S&T?\" \"Sales or trading?\" \"Why our bank?\"",
+        "Markets: Where are the S&P 500 and the 10-year Treasury yield? What moved this week, and why?",
+        "Pitch: a stock or a trade, with a long side, a short side and the risks.",
+        "Math: mental math, probability and brainteasers answered out loud, e.g. \"What is 18 × 22?\", \"What's the angle between the clock hands at 9:30?\", \"If rates rise, what happens to bond prices, and why?\""
+      ]},
+      { "heading": "Pay", "items": [
+        "S&T summer analysts: around $100k annualized at large banks.",
+        "Quant trading new grads: often several hundred thousand dollars in total compensation."
+      ]},
+      { "heading": "Resources", "items": [
+        "Mergers & Inquisitions and Wall Street Prep S&T guides; The Coffee Chat newsletter for recruiting updates.",
+        "Read the WSJ, Bloomberg and daily market news. Track indices, rates, oil and the dollar every day.",
+        "Practice mental math and definitions out loud with a timer."
       ]}
     ]
   }

@@ -103,3 +103,25 @@ test('calendar: ics escaping/folding and business days', () => {
   assert.ok(ics.split('\r\n').every((l) => Buffer.byteLength(l) <= 75));
   assert.equal(addBusinessDays(new Date('2030-01-04T12:00:00Z'), 1).toISOString().slice(0, 10), '2030-01-07');
 });
+
+test('programs import: eligibility, industry mapping and expected month', () => {
+  const { parseYears, classify, expectedMonth } = require('../server/content/programs-import');
+  assert.deepEqual(parseYears('Freshman & sophomore (3.2 GPA)', 2026), [1, 2]);
+  assert.deepEqual(parseYears('Freshman – junior', 2026), [1, 2, 3]);
+  assert.deepEqual(parseYears('1st–3rd year', 2026), [1, 2, 3]);
+  assert.deepEqual(parseYears('Students two years from graduation', 2026), [2]);
+  assert.deepEqual(parseYears('Grads fall 2028 – summer 2030', 2026), [1, 2, 3]);
+  assert.deepEqual(parseYears('All undergrad years', 2026), []);
+  assert.deepEqual(parseYears('Freshman (and HS seniors)', 2026), [1]);
+  assert.deepEqual(classify('Pipeline org (multi-industry)', 'SEO Career').industries.length, 5);
+  assert.deepEqual(classify('Tech', 'Thrive (Product Designer track)').industries, ['pm']);
+  assert.deepEqual(classify('Tech', 'WiTTI (Women in Trading & Technology Initiative)').industries, ['swe', 'sales-trading']);
+  assert.deepEqual(classify('Finance (Quant/Trading)', 'FTTP (First-Year Trading & Technology Program)').industries, ['sales-trading', 'swe']);
+  assert.equal(classify('Pipeline org (finance)', 'x').kind, 'pipeline');
+  const now = new Date(2026, 10, 22);
+  assert.equal(expectedMonth('Applications expected to open Nov 2026', now), '2026-11');
+  assert.equal(expectedMonth('Summer 2027 cycle opened Jan 2026; expect ~Jan 2027', now), '2027-01');
+  assert.equal(expectedMonth('Priority deadlines historically Nov 1 and Mar 1', now), '2027-03');
+  assert.equal(expectedMonth('Applications open late Mar–early Apr 2027', now), '2027-03');
+  assert.equal(expectedMonth('No summer 2027 posting as of Oct 8, 2026', now), null);
+});

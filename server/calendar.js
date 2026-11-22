@@ -62,14 +62,37 @@ function googleCalendarLink(e) {
   return `https://calendar.google.com/calendar/render?${p}`;
 }
 
-function outlookCalendarLink(e) {
+/**
+ * Outlook "new event" link. host 'outlook.office.com' is Microsoft 365 (Vanderbilt accounts);
+ * 'outlook.live.com' is personal Outlook.com / Hotmail.
+ */
+function outlookCalendarLink(e, host = 'outlook.office.com') {
   const start = new Date(e.starts_at);
   const end = new Date(start.getTime() + (e.duration_min || 30) * 60000);
   const p = new URLSearchParams({
     path: '/calendar/action/compose', rru: 'addevent', subject: e.title,
     startdt: start.toISOString(), enddt: end.toISOString(), body: e.description || '', location: e.location || '',
   });
-  return `https://outlook.office.com/calendar/0/deeplink/compose?${p}`;
+  return `https://${host}/calendar/0/deeplink/compose?${p}`;
+}
+
+/** One-click links to add an event to each supported calendar. */
+const calendarLinks = (e) => ({
+  google: googleCalendarLink(e),
+  outlook: outlookCalendarLink(e, 'outlook.office.com'),
+  outlookcom: outlookCalendarLink(e, 'outlook.live.com'),
+});
+
+/** Links that subscribe a calendar app to a public .ics feed URL (so it keeps syncing). */
+function subscribeLinks(feedUrl, name = 'BBSA Recruiting') {
+  const webcal = feedUrl.replace(/^https?:/, 'webcal:');
+  const q = new URLSearchParams({ url: feedUrl, name });
+  return {
+    google: `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcal)}`,
+    outlook: `https://outlook.office.com/calendar/0/addfromweb?${q}`,
+    outlookcom: `https://outlook.live.com/calendar/0/addfromweb?${q}`,
+    ics: webcal,
+  };
 }
 
 /** Add n business days (skipping Sat/Sun), keeping the time of day. */
@@ -83,4 +106,4 @@ function addBusinessDays(date, n) {
   return d;
 }
 
-module.exports = { toIcs, googleCalendarLink, outlookCalendarLink, addBusinessDays, icsDate };
+module.exports = { toIcs, googleCalendarLink, outlookCalendarLink, calendarLinks, subscribeLinks, addBusinessDays, icsDate };

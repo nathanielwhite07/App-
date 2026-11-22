@@ -79,13 +79,16 @@
 
       <!-- Programs -->
       <section class="view" id="view-programs">
-        <div class="view-head"><h2>Diversity &amp; early-ID programs</h2><p class="muted">Early insight, diversity and sophomore programs. Officers keep deadlines up to date.</p></div>
+        <div class="view-head"><h2>Diversity &amp; early-ID programs</h2><p class="muted">Insight days, early-ID and affinity programs, fellowships and pipeline organizations. Dates change every cycle, so confirm on the firm's page before applying. Tap ☆ to pin a program and "Remind me" to put its dates on your calendar.</p></div>
         <form id="prog-filters" class="filters">
-          <input name="q" placeholder="Search programs or firms">
+          <input name="q" placeholder="Search programs, firms or who it's for">
           <select name="industry"><option value="">All industries</option></select>
           <select name="year"><option value="">Any class year</option><option value="1">Freshman</option><option value="2">Sophomore</option><option value="3">Junior</option><option value="4">Senior</option></select>
-          <select name="status"><option value="">Any status</option><option value="open">Open</option><option value="upcoming">Opening soon</option><option value="tba">Deadline not announced</option><option value="rolling">Rolling</option><option value="closed">Closed</option></select>
+          <select name="status"><option value="">Current programs</option><option value="open">Open</option><option value="check_now">Check now</option><option value="upcoming">Upcoming</option><option value="watch">Not posted yet</option><option value="unconfirmed">Unconfirmed</option><option value="closed">Closed this cycle</option><option value="not_running">Not running</option></select>
+          <select name="kind"><option value="">Firms &amp; pipeline orgs</option><option value="firm">Firm programs</option><option value="pipeline">Pipeline orgs (SEO, MLT…)</option></select>
+          <label class="pin-filter"><input type="checkbox" name="pinned" value="1"> ★ Pinned only</label>
         </form>
+        <p class="muted" id="prog-count"></p>
         <div id="prog-list" class="list"></div>
       </section>
 
@@ -114,9 +117,18 @@
           </div>
         </div>
         <div class="feed-box">
-          <span>Calendar feed:</span> <code id="feed-url"></code>
-          <button class="btn small" id="copy-feed">Copy</button>
-          <a class="btn small" id="gcal-subscribe" target="_blank" rel="noopener">Add to Google Calendar</a>
+          <div class="feed-row">
+            <strong>Sync with</strong>
+            <select id="feed-provider" aria-label="Calendar app">
+              <option value="outlook">Outlook (Vanderbilt / Microsoft 365)</option>
+              <option value="google">Google Calendar</option>
+              <option value="outlookcom">Outlook.com (personal)</option>
+              <option value="ics">Apple Calendar / other</option>
+            </select>
+            <a class="btn small primary" id="feed-subscribe" target="_blank" rel="noopener">Subscribe</a>
+          </div>
+          <p class="muted small-text" id="feed-help"></p>
+          <details><summary class="muted small-text">Feed URL</summary><code id="feed-url"></code> <button class="btn small" id="copy-feed">Copy</button></details>
         </div>
         <div id="cal-grid" class="cal-grid"></div>
         <h3>Upcoming</h3>
@@ -142,6 +154,8 @@
             <label>Name <input name="name" required></label>
             <label>Graduation year <input name="gradYear" type="number" min="2020" max="2040"></label>
             <p class="muted" id="profile-year"></p>
+            <label>My calendar <select name="calendarProvider"></select>
+              <span class="muted small-text">Used for "Add to calendar" buttons and the calendar feed.</span></label>
             <fieldset>
               <legend>Industries I'm recruiting for</legend>
               <div id="profile-industries" class="checks-row"></div>

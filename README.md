@@ -4,11 +4,11 @@ An internal recruiting tool for Vanderbilt's Black Business Student Association.
 
 **Phase 1 (this version):**
 
-- **Recruiting timelines** for investment banking, consulting and tech/trading/AI, broken down by class year. Each industry also has a guide covering roles, interview prep and resources. Officers can add more industries from the admin page without code changes.
-- **Diversity & early-ID programs tracker** with program, firm, industry, eligible class years, deadline and link, filterable by industry, year and status.
+- **Recruiting timelines** for investment banking, consulting, software engineering, product management and sales & trading, broken down by class year. Each industry also has a guide covering roles, interview prep and resources. Officers can add more industries from the admin page without code changes.
+- **Diversity & early-ID programs tracker**: 84 programs and pipeline organizations with firm, industries, who it's for, eligibility, format, timing, deadline and link. Filterable by industry, class year, status and type. Students can **pin** programs and set **reminders** for when applications open, a "start your application" nudge, and the deadline.
 - **This month**: what a student should focus on now, based on their class year (worked out from their graduation year) and the industries they chose. It shows open milestones they can tick off, deadlines in the next 45 days, what starts next month, and programs to watch.
-- **Calendar** (kept from the original app): add program deadlines and milestone reminders, export `.ics`, use Google/Outlook links, or subscribe to a private feed.
-- **Email formats** (kept): how 100 large consulting and finance firms format addresses, with confidence levels and fallbacks. Click a firm to build an address from a name.
+- **Calendar**: every reminder can be added to **Google Calendar, Outlook (Vanderbilt / Microsoft 365), Outlook.com or Apple Calendar (.ics)**, and students can subscribe to a private feed so new reminders sync automatically. Each student can save a preferred calendar.
+- **Email formats**: how 150 large consulting, finance and tech firms format addresses, with confidence levels and fallbacks. Click a firm to build an address from a name.
 
 Later phases are planned in [`docs/data-model.md`](docs/data-model.md) and not built yet.
 
@@ -38,20 +38,31 @@ Sign-up requires a `@vanderbilt.edu` address, and the account only works after t
 
 Everything students see is stored in the database and edited from **Admin** (visible only to `ADMIN_EMAILS`):
 
-- **Programs**: add each program's deadline, link and eligibility. Programs marked *needs review* show "details being confirmed" to students.
+- **Programs**: edit programs one at a time, or **upload the programs spreadsheet** (.xlsx or .csv with Industry, Firm, Program, and optionally Affinity focus, Eligible year, Format / location, Deadline / timing, Deadline date, Status, Link, Notes). Programs are matched by firm + name, so re-uploading an updated sheet refreshes them without losing students' pins or reminders. Status updates itself as dates pass: a passed deadline shows *Closed*, and an *upcoming* program whose expected month arrives shows *Check now*.
 - **Timelines**: milestones have class years (none = every year) and a month window. Windows can wrap past December (Dec–Feb).
 - **Industries**: add a new industry (e.g. Sales & Trading), then give it milestones and programs.
 - **Email formats**: edit firms one at a time, or **upload a spreadsheet** (.xlsx or .csv) with `Firm` and `Best Email Format` columns, plus optional `Confidence`, `Fallback / Notes`, `Category`, `Sites Agreeing` and `Sector`. Firms are matched by name, so re-uploading updates them. Columns listing real people's published addresses are never read.
 - **Backup**: download everything as one JSON file, or restore from one (for example, to hand over to next year's board).
 
-The starter content in `server/content/*.json` is only used to fill an empty database. To regenerate the firms list from spreadsheets: `node scripts/formats-to-json.js sheet1.xlsx sheet2.xlsx > server/content/firms.json`.
+The starter content in `server/content/*.json` fills an empty database. When the starter content changes in a new version of the app (`CONTENT_VERSION` in `server/content/store.js`), an existing database is upgraded on startup: industries, timelines and programs are replaced, new email formats are added (edited firms are left alone), and **the previous content is saved first** to a `backup-content-*.json` file next to the database. Students' own calendar events are kept.
+
+To regenerate the seed files from spreadsheets:
+
+```bash
+node scripts/formats-to-json.js consulting.xlsx finance.xlsx tech.xlsx > server/content/firms.json
+node scripts/programs-to-json.js programs.xlsx 2026-27 > server/content/programs.json
+```
 
 ### Where the starter content came from
 
-- Timelines and industry guides: the IB (10/14/2026), consulting (10/28/2026) and tech/trading/AI (11/1/2026) recruiting slides. Each milestone records its source.
-- Programs: the five early consulting programs named in the consulting slides (Bain BEL/CREW, BCG Embark/Advance, A&M CCDP). Their deadlines and links are blank and flagged for review. The slides didn't name specific IB or tech programs.
-- Email formats: *Top 50 Consulting Firms* (researched 10/10/2026) and *Top 50 Finance & IB Firms* (researched 10/12/2026) spreadsheets.
-- No junior- or senior-year milestones yet, because the slides focus on freshman and sophomore recruiting (except Big Tech, which recruits the summer before junior year).
+- Timelines and industry guides: BBSA's recruiting materials, rewritten for BBSA members.
+- Programs: the *BBSA Affinity Programs 2026-27* sheet (compiled Nov 21, 2026).
+- Email formats: the *Top 50 Consulting*, *Top 50 Finance & IB* and *Top 50 Tech Firms* email-format sheets.
+
+## Calendar notes
+
+- "Add to Outlook" opens Outlook on the web with the event filled in. Vanderbilt accounts use the Microsoft 365 option; personal Hotmail/Outlook.com accounts use Outlook.com.
+- Subscribing to the feed (Calendar tab) needs the app on a public web address (`APP_URL`), because Google and Outlook fetch the feed from their own servers and can't reach `localhost`. One-off "Add to calendar" links and `.ics` downloads work anywhere.
 
 ## Privacy
 

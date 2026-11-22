@@ -58,12 +58,25 @@ function milestone(b) {
   };
 }
 
+const STATUSES = ['open', 'check_now', 'upcoming', 'watch', 'closed', 'not_running', 'unconfirmed'];
+const flag = (v) => v === true || v === 'true' || v === 'on';
+
 function program(b) {
+  const industries = (Array.isArray(b.industries) ? b.industries : String(b.industries ?? b.industry ?? '').split(','))
+    .map((s) => String(s).trim()).filter(Boolean);
+  if (!industries.length) throw bad('Pick at least one industry.');
+  const status = str(b.status, 20) || 'upcoming';
+  if (!STATUSES.includes(status)) throw bad(`Status must be one of ${STATUSES.join(', ')}.`);
+  const kind = str(b.kind, 10) || 'firm';
+  if (!['firm', 'pipeline'].includes(kind)) throw bad('Kind must be "firm" or "pipeline".');
+  const expected = str(b.expected_month, 7);
+  if (expected && !/^\d{4}-\d{2}$/.test(expected)) throw bad('Expected month must look like 2027-02.');
   const p = {
-    name: req(b.name, 'Program name', 200), firm: req(b.firm, 'Firm', 200), industry: req(b.industry, 'Industry', 60),
-    eligible_years: years(b.eligible_years), cycle: str(b.cycle, 20), opens_on: date(b.opens_on, 'Opens on'),
-    deadline: date(b.deadline, 'Deadline'), rolling: b.rolling === true || b.rolling === 'true', link: url(b.link),
-    description: str(b.description), needs_review: b.needs_review === true || b.needs_review === 'true',
+    name: req(b.name, 'Program name', 200), firm: req(b.firm, 'Firm', 200), kind, industries: [...new Set(industries)],
+    eligible_years: years(b.eligible_years), eligibility: str(b.eligibility, 300), affinity: str(b.affinity, 500),
+    format: str(b.format, 300), timing: str(b.timing, 500), status, cycle: str(b.cycle, 20),
+    opens_on: date(b.opens_on, 'Opens on'), deadline: date(b.deadline, 'Deadline'), expected_month: expected,
+    rolling: flag(b.rolling), link: url(b.link), description: str(b.description), needs_review: flag(b.needs_review),
     active: b.active !== false && b.active !== 'false',
   };
   if (p.opens_on && p.deadline && p.opens_on > p.deadline) throw bad('"Opens on" is after the deadline.');
@@ -79,10 +92,13 @@ function firm(b) {
   if (typeof fallbacks === 'string') {
     fallbacks = fallbacks.split(/[\s,]+/).filter(Boolean).map((f) => parseFormat(f) || (() => { throw bad(`Couldn't read fallback "${f}".`); })());
   }
+  const maxLocal = b.max_local === '' || b.max_local == null ? parsed.maxLocal ?? null : Number(b.max_local);
+  if (maxLocal != null && (!Number.isInteger(maxLocal) || maxLocal < 1 || maxLocal > 64)) throw bad('Username length limit must be a whole number.');
+  delete parsed.maxLocal;
   return {
-    name: req(b.name, 'Firm name', 200), sector: str(b.sector, 60), category: str(b.category, 100), ...parsed, confidence: str(b.confidence, 30),
+    name: req(b.name, 'Firm name', 200), sector: str(b.sector, 60), category: str(b.category, 100), ...parsed, max_local: maxLocal, confidence: str(b.confidence, 30),
     fallbacks, notes: str(b.notes), sources_agree: str(b.sources_agree, 30), researched_on: date(b.researched_on, 'Researched on'),
   };
 }
 
-module.exports = { industry, milestone, program, firm, CATEGORIES };
+module.exports = { industry, milestone, program, firm, CATEGORIES, STATUSES };

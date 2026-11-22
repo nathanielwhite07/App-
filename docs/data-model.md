@@ -11,7 +11,8 @@ phases so Phase 1 doesn't paint them into a corner. **None of the Phase 2/3 tabl
 | `sessions` | Login sessions. |
 | `industries` | Investment banking, consulting, tech, plus any industries officers add. `guide_json` holds the industry guide sections. |
 | `milestones` | Recurring, academic-year-relative guidance: class years plus a month window (`start_month`–`end_month`, which may wrap past December). |
-| `programs` | Dated diversity and early-ID programs: firm, industry, eligible years, cycle, opens/deadline dates, link, `needs_review`. |
+| `programs` | Diversity, early-ID and pipeline programs: firm, kind, industries (several allowed), eligible years, who it's for, timing, status, confirmed dates or an expected month, link. |
+| `program_pins` | Programs a student has pinned. |
 | `firms` | Email format per firm (pattern + domain + fallbacks), imported from officers' spreadsheets. |
 | `milestone_progress` | A student's "done" checkmarks, keyed by academic year so they reset each August. |
 | `events` | Calendar items (meetings, deadlines, reminders). Optional `program_id`/`milestone_id`. The Phase 2 networking tracker adds `contact_id`. |

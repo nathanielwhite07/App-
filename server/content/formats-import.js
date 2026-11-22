@@ -21,10 +21,11 @@ const COLUMNS = {
 const cellText = (v) => {
   if (v == null) return '';
   if (typeof v === 'object') {
-    if (v.richText) return v.richText.map((r) => r.text).join('');
-    if (v.text) return String(v.text);
-    if (v.result != null) return String(v.result);
     if (v instanceof Date) return v.toISOString().slice(0, 10);
+    if (v.richText) return v.richText.map((r) => r.text).join('');
+    if (v.text) return cellText(v.text);
+    if (v.result != null) return String(v.result);
+    if (v.formula) return '';
   }
   return String(v);
 };
@@ -59,7 +60,8 @@ function rowsToFirms(rows, defaults = {}) {
       domain: parsed.domain,
       pattern: parsed.pattern,
       confidence: get('confidence') || null,
-      fallbacks: fallbacksFromNotes(notes).filter((f) => !(f.pattern === parsed.pattern && f.domain === parsed.domain)),
+      max_local: parsed.maxLocal || null,
+      fallbacks: fallbacksFromNotes(notes, parsed.domain).filter((f) => !(f.pattern === parsed.pattern && f.domain === parsed.domain)),
       notes: notes || null,
       sources_agree: get('sources') || null,
       researched_on: defaults.researched_on || null,
@@ -69,7 +71,7 @@ function rowsToFirms(rows, defaults = {}) {
 }
 
 /** Guess the sector from a file name like "Top_50_Consulting_Firms_...xlsx". */
-const sectorFromFilename = (name = '') => (/consult/i.test(name) ? 'Consulting' : /financ|bank|\bib\b/i.test(name) ? 'Finance' : null);
+const sectorFromFilename = (name = '') => (/consult/i.test(name) ? 'Consulting' : /financ|bank|\bib\b/i.test(name) ? 'Finance' : /tech/i.test(name) ? 'Tech' : null);
 
 async function readFormatsFile(buffer, filename = '', { sector } = {}) {
   const defaults = { sector: sector || sectorFromFilename(filename) };
@@ -98,4 +100,4 @@ async function readFormatsFile(buffer, filename = '', { sector } = {}) {
   return all;
 }
 
-module.exports = { readFormatsFile, rowsToFirms, sectorFromFilename };
+module.exports = { readFormatsFile, rowsToFirms, sectorFromFilename, cellText };
